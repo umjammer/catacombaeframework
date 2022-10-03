@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2008 Erik Larsson
+ * Copyright (C) 2020 Erik Larsson
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,19 +16,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package org.catacombae.util;
+package org.catacombae.io;
 
 /**
- * Utility class for wrapping an object.
+ * Interface with common methods implemented by file-backed streams.
  *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
-public class ObjectContainer<A> {
+public interface AbstractFileStream {
 
-    public volatile A o;
-
-    public ObjectContainer(A o) {
-        super();
-        this.o = o;
-    }
+    /**
+     * Get the path passed to the underlying file open interface.
+     *
+     * This is informational only and only represents the file path at open time
+     * and doesn't trace any renames or moves that may have happened after it
+     * was opened (i.e. it's not guaranteed to exist.
+     *
+     * @return the path passed to the underlying file open interface.
+     */
+    public String getOpenPath();
 }
