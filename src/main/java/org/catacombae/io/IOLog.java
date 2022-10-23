@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 2009 Erik Larsson
+ * Copyright (C) 2009-2021 Erik Larsson
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,21 @@
 
 package org.catacombae.io;
 
+import java.util.LinkedList;
+import java.util.logging.Logger;
+
+import org.catacombae.util.Util;
+
+
 /**
- * Logging class for the I/O package.
+ * Common logging class for Catacombae framework.
  *
- * @author Erik Larsson
+ * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 class IOLog {
+
+    private static final Logger logger = Logger.getLogger("org.catacombae");
+
     /** The default setting for the 'trace' log level. */
     public static boolean defaultTrace = false;
 
@@ -36,52 +45,66 @@ class IOLog {
     /** The current setting of the 'debug' log level for this instance. */
     public boolean debug = defaultDebug;
 
-    private IOLog() {}
+    private IOLog(Class cls) {
+        final LinkedList<String> debugLogProperties = new LinkedList<>();
+        final LinkedList<String> traceLogProperties = new LinkedList<>();
+        String component = null;
+
+        for (String s : cls.getCanonicalName().split("\\.")) {
+            component = ((component != null) ? component + "." : "") + s;
+            debugLogProperties.add(component + ".debug");
+            traceLogProperties.add(component + ".trace");
+        }
+
+        this.debug = Util.booleanEnabledByProperties(this.debug,
+                debugLogProperties.toArray(new String[0]));
+        this.trace = Util.booleanEnabledByProperties(this.trace,
+                traceLogProperties.toArray(new String[0]));
+    }
 
     /** Emits a 'debug' level message. */
-    public void debug(String message) {
-        if(debug)
-            System.err.println("DEBUG: " + message);
+    public final void debug(String message) {
+        if (debug)
+            logger.fine(message);
     }
 
     /**
      * Free form trace level log message.
+     *
      * @param msg the message to emit.
      */
-    public void trace(String msg) {
-        if(trace)
-            System.err.println("TRACE: " + msg);
+    public final void trace(String msg) {
+        if (trace)
+            logger.finest(msg);
     }
 
     /**
      * Called upon method entry, and generates a trace level message starting
      * with "ENTER: ".
      *
-     * @param methodName the name of the method. <code>null</code> indicates a
-     * constructor and the message will be formatted accordingly.
      * @param args the method/constructor's arguments.
      */
-    public void traceEnter(Object... args) {
-        if(trace) {
+    public final void traceEnter(Object... args) {
+        if (trace) {
             final StackTraceElement ste =
                     Thread.currentThread().getStackTrace()[2];
-            final String className = ste.getClass().getSimpleName();
+            final String className = ste.getClassName();
             final String methodName = ste.getMethodName();
 
             StringBuilder sb = new StringBuilder("ENTER: ");
             sb.append(className);
-            if(methodName != null)
+            if (methodName != null)
                 sb.append(".").append(methodName);
             sb.append("(");
-            for(int i = 0; i < args.length; ++i) {
-                if(i != 0) {
+            for (int i = 0; i < args.length; ++i) {
+                if (i != 0) {
                     sb.append(", ");
                 }
                 sb.append(args[i]);
             }
             sb.append(")");
 
-            System.err.println(sb.toString());
+            trace(sb.toString());
         }
     }
 
@@ -89,24 +112,22 @@ class IOLog {
      * Called upon method exit, and generates a trace level message starting
      * with "LEAVE: ".
      *
-     * @param methodName the name of the method. <code>null</code> indicates a
-     * constructor and the message will be formatted accordingly.
      * @param args the method/constructor's arguments.
      */
-    public void traceLeave(Object... args) {
-        if(trace) {
+    public final void traceLeave(Object... args) {
+        if (trace) {
             final StackTraceElement ste =
                     Thread.currentThread().getStackTrace()[2];
-            final String className = ste.getClass().getSimpleName();
+            final String className = ste.getClassName();
             final String methodName = ste.getMethodName();
 
             StringBuilder sb = new StringBuilder("LEAVE: ");
             sb.append(className);
-            if(methodName != null)
+            if (methodName != null)
                 sb.append(".").append(methodName);
             sb.append("(");
-            for(int i = 0; i < args.length; ++i) {
-                if(i != 0) {
+            for (int i = 0; i < args.length; ++i) {
+                if (i != 0) {
                     sb.append(", ");
                 }
                 sb.append(args[i]);
@@ -117,17 +138,18 @@ class IOLog {
             else*/
             sb.append(")");
 
-            System.err.println(sb.toString());
+            trace(sb.toString());
         }
     }
 
     /**
      * Called before a method returns with a value.
+     *
      * @param retval the value returned.
      */
-    public void traceReturn(Object retval) {
-        if(trace)
-            System.err.println("RETURN: " + retval);
+    public final void traceReturn(Object retval) {
+        if (trace)
+            trace("RETURN: " + retval);
     }
 
     /**
@@ -136,15 +158,7 @@ class IOLog {
      * @param cls the class for which the instance should be valid.
      * @return an IOLog instance.
      */
-    public static IOLog getInstance() {
-        return new IOLog();
+    public static IOLog getInstance(Class cls) {
+        return new IOLog(cls);
     }
-
-    /*
-    public static void traceLeaveVoid(String methodName, Object... args) {
-        if(trace) {
-            traceLeave(methodName, null, args);
-        }
-    }
-    */
 }

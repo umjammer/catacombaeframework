@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *
- * @author erik
+ * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 class TestUnsign {
 

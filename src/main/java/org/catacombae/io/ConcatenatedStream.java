@@ -22,7 +22,7 @@ package org.catacombae.io;
  * A full read/write version of ReadableConcatenatedStream.
  * Note: Untested!
  *
- * @author <a href="http://hem.bredband.net/catacombae">Erik Larsson</a>
+ * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStream> implements RandomAccessStream {
     
@@ -39,19 +39,21 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
 
         // First: Look up the position represented by our virtual file pointer.
         long bytesToSkip = virtualFP;
-        int requestedPartIndex = -1;
+        int requestedPartIndex = 0;
         for(Part p : parts) {
-            ++requestedPartIndex;
-
-            if(bytesToSkip > p.length) {
-                bytesToSkip -= p.length;
-            }
-            else {
+            if(bytesToSkip < p.length) {
+                /* The first byte of virtualFP is within this part. */
                 break;
             }
+
+            ++requestedPartIndex;
+            bytesToSkip -= p.length;
         }
-        if(requestedPartIndex == -1)
-            throw new RuntimeIOException("Tried to write beyond end of file.");
+
+        if(requestedPartIndex >= parts.size()) {
+            throw new RuntimeIOException("Tried to write beyond end of " +
+                    "stream.");
+        }
 
         // Loop as long as we still have data to fill, and we still have parts to process.
         while(bytesWritten < len && requestedPartIndex < parts.size()) {
@@ -61,6 +63,11 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
 
             int bytesLeftToWrite = len - bytesWritten;
             int bytesToWrite = (int) ((bytesLeftToWrite < requestedPart.length) ? bytesLeftToWrite : requestedPart.length);
+
+            if(requestedPart.file == null) {
+                throw new RuntimeException("Tried to write to hole at " +
+                        "offset: " + requestedPart.startOffset);
+            }
 
             requestedPart.file.seek(bytesToSkipInPart);
             requestedPart.file.write(data, off + bytesWritten, bytesToWrite);
