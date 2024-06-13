@@ -31,5 +31,5 @@ public interface Stream {
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred, preventing the stream
      * to close.
      */
-    public void close() throws RuntimeIOException;
+    void close() throws RuntimeIOException;
 }

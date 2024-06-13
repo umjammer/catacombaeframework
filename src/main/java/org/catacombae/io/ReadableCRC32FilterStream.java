@@ -28,15 +28,15 @@ import java.util.zip.CRC32;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ReadableCRC32FilterStream implements ReadableRandomAccessStream {
-    private ReadableRandomAccessStream source;
-    private CRC32 checksum;
+    private final ReadableRandomAccessStream source;
+    private final CRC32 checksum;
 	
     public ReadableCRC32FilterStream(ReadableRandomAccessStream source) {
 	this.source = source;
 	this.checksum = new CRC32();
     }
 	
-    public int getChecksumValue() { return (int)(checksum.getValue() & 0xFFFFFFFF); }
+    public int getChecksumValue() { return (int)(checksum.getValue() & 0xFFFFFFFFL); }
     public void resetChecksum() { checksum.reset(); }
     
     public void seek(long pos) {

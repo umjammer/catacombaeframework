@@ -26,7 +26,7 @@ public enum IntegerFieldBits {
 
     private final int bitCount;
 
-    private IntegerFieldBits(int bitCount) {
+    IntegerFieldBits(int bitCount) {
         this.bitCount = bitCount;
     }
 

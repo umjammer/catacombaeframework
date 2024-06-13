@@ -34,7 +34,7 @@ public interface PrintableStruct {
      * @param ps the stream to print the contents to.
      * @param prefix the string prefix to prepend to each line (useful for indenting).
      */
-    public void print(PrintStream ps, String prefix);
+    void print(PrintStream ps, String prefix);
 
     /**
      * Prints <b>only the fields of the struct</b> to <code>ps</code> prepending
@@ -43,5 +43,5 @@ public interface PrintableStruct {
      * @param ps the stream to print the contents to.
      * @param prefix the string prefix to prepend to each line (useful for indenting).
      */
-    public void printFields(PrintStream ps, String prefix);
+    void printFields(PrintStream ps, String prefix);
 }

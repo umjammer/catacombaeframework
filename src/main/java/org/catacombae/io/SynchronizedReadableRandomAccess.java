@@ -31,12 +31,12 @@ public interface SynchronizedReadableRandomAccess extends SynchronizedReadable, 
      * 
      * @param referrer the object referring to this stream.
      */
-    public void addReference(Object referrer);
+    void addReference(Object referrer);
     
     /**
      * When a substream closes, it must remove itself from the reference list of the parent stream.
      * 
      * @param referrer the object referring to this stream.
      */
-    public void removeReference(Object referrer);
+    void removeReference(Object referrer);
 }

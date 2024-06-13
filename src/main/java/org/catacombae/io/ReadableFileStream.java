@@ -87,7 +87,7 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
         try {
             raf.seek(pos);
         } catch(IOException ioe) {
-            throw new RuntimeIOException("pos=" + pos + "," + ioe.toString(),
+            throw new RuntimeIOException("pos=" + pos + "," + ioe,
                     ioe);
         } finally {
             if(log.trace)

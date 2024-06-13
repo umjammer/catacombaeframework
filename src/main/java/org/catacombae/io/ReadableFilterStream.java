@@ -28,7 +28,7 @@ package org.catacombae.io;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ReadableFilterStream implements ReadableRandomAccessStream {
-    protected ReadableRandomAccessStream backingStore;
+    protected final ReadableRandomAccessStream backingStore;
     
     public ReadableFilterStream(ReadableRandomAccessStream backing) {
 	this.backingStore = backing;

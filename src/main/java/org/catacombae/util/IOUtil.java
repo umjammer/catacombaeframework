@@ -18,6 +18,8 @@
 
 package org.catacombae.util;
 
+import java.util.Objects;
+
 import org.catacombae.io.ReadableRandomAccessStream;
 import org.catacombae.io.RuntimeIOException;
 
@@ -31,7 +33,7 @@ public class IOUtil {
      * Reads the supplied ReadableRandomAccessStream from its current position
      * until the end of the stream.
      *
-     * @param s
+     * @param s the stream
      * @return the contents of the remainder of the stream.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred
      * when reading the stream.
@@ -58,12 +60,7 @@ public class IOUtil {
     {
         long trueOffset;
 
-        if(offset == null) {
-            trueOffset = s.getFilePointer();
-        }
-        else {
-            trueOffset = offset;
-        }
+        trueOffset = Objects.requireNonNullElseGet(offset, s::getFilePointer);
 
         if(length > s.length()) {
             throw new IllegalArgumentException("'length' is unreasonably " +

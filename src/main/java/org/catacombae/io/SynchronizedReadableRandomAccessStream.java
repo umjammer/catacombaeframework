@@ -46,11 +46,11 @@ public class SynchronizedReadableRandomAccessStream
             ".references_debug");
 
     /** The underlying stream. */
-    private ReadableRandomAccessStream ras;
+    private final ReadableRandomAccessStream ras;
     private long refCount;
     private boolean closed = false;
-    private HashMap<Object, Reference> references =
-            REFERENCES_DEBUG ? new HashMap<Object, Reference>() : null;
+    private final HashMap<Object, Reference> references =
+            REFERENCES_DEBUG ? new HashMap<>() : null;
 
     public SynchronizedReadableRandomAccessStream(
             ReadableRandomAccessStream sourceStream) {
@@ -76,7 +76,7 @@ public class SynchronizedReadableRandomAccessStream
 
     /** {@inheritDoc} */
     //@Override
-    public synchronized int readFrom(final long pos, byte[] b, int off, int len)
+    public synchronized int readFrom(long pos, byte[] b, int off, int len)
             throws RuntimeIOException {
         if(DEBUG) {
             System.err.println(
@@ -84,7 +84,7 @@ public class SynchronizedReadableRandomAccessStream
                     ", byte[" + b.length + "], " + off + ", " + len + ");");
         }
 
-        final long oldFP = getFilePointer();
+        long oldFP = getFilePointer();
 
         if(DEBUG) { System.err.println("  oldFP=" + oldFP); }
 
@@ -117,12 +117,12 @@ public class SynchronizedReadableRandomAccessStream
 
     /** {@inheritDoc} */
     //@Override
-    public synchronized long skipFrom(final long pos, final long length)
+    public synchronized long skipFrom(long pos, long length)
             throws RuntimeIOException {
-        final long streamLength = length();
-        final long newPos = pos + length;
+        long streamLength = length();
+        long newPos = pos + length;
 
-        final long res;
+        long res;
         if(newPos > streamLength) {
             //seek(streamLength);
             res = streamLength - pos;
@@ -264,7 +264,7 @@ public class SynchronizedReadableRandomAccessStream
     }
 
     @Override
-    public synchronized void finalize() throws Throwable {
+    protected synchronized void finalize() throws Throwable {
         try {
             if(refCount != 0) {
                 System.err.println("[WARNING] " + this + " is garbage " +
@@ -284,7 +284,7 @@ public class SynchronizedReadableRandomAccessStream
         }
     }
 
-    private class Reference {
+    private static class Reference {
         final Object referrer;
         final StackTraceElement[] stackTrace;
 

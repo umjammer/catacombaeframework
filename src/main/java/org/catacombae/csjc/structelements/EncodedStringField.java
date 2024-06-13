@@ -57,7 +57,7 @@ public class EncodedStringField extends StringRepresentableField {
             byte[] array = bb.array();
             return validate(array, 0, array.length);
         } catch(CharacterCodingException cce) {
-            return "Exception while encoding string data: " + cce.toString();
+            return "Exception while encoding string data: " + cce;
         }
     }
 
@@ -69,7 +69,7 @@ public class EncodedStringField extends StringRepresentableField {
             CharsetDecoder dec = charset.newDecoder();
             dec.decode(ByteBuffer.wrap(data, offset, length));
         } catch(Exception e) {
-            return "Decode operation failed! Exception: " + e.toString();
+            return "Decode operation failed! Exception: " + e;
         }
         return null;
     }

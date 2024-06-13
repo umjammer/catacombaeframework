@@ -34,10 +34,10 @@ class IOLog {
     private static final Logger logger = Logger.getLogger("org.catacombae");
 
     /** The default setting for the 'trace' log level. */
-    public static boolean defaultTrace = false;
+    public static final boolean defaultTrace = false;
 
     /** The default setting for the 'debug' log level. */
-    public static boolean defaultDebug = false;
+    public static final boolean defaultDebug = false;
 
     /** The current setting of the 'trace' log level for this instance. */
     public boolean trace = defaultTrace;
@@ -45,9 +45,9 @@ class IOLog {
     /** The current setting of the 'debug' log level for this instance. */
     public boolean debug = defaultDebug;
 
-    private IOLog(Class cls) {
-        final LinkedList<String> debugLogProperties = new LinkedList<>();
-        final LinkedList<String> traceLogProperties = new LinkedList<>();
+    private IOLog(Class<?> cls) {
+        LinkedList<String> debugLogProperties = new LinkedList<>();
+        LinkedList<String> traceLogProperties = new LinkedList<>();
         String component = null;
 
         for (String s : cls.getCanonicalName().split("\\.")) {
@@ -86,10 +86,10 @@ class IOLog {
      */
     public final void traceEnter(Object... args) {
         if (trace) {
-            final StackTraceElement ste =
+            StackTraceElement ste =
                     Thread.currentThread().getStackTrace()[2];
-            final String className = ste.getClassName();
-            final String methodName = ste.getMethodName();
+            String className = ste.getClassName();
+            String methodName = ste.getMethodName();
 
             StringBuilder sb = new StringBuilder("ENTER: ");
             sb.append(className);
@@ -116,10 +116,10 @@ class IOLog {
      */
     public final void traceLeave(Object... args) {
         if (trace) {
-            final StackTraceElement ste =
+            StackTraceElement ste =
                     Thread.currentThread().getStackTrace()[2];
-            final String className = ste.getClassName();
-            final String methodName = ste.getMethodName();
+            String className = ste.getClassName();
+            String methodName = ste.getMethodName();
 
             StringBuilder sb = new StringBuilder("LEAVE: ");
             sb.append(className);
@@ -132,10 +132,9 @@ class IOLog {
                 }
                 sb.append(args[i]);
             }
-            /*
-            if(retval != null)
-                sb.append("): ").append(retval);
-            else*/
+//            if (retval != null)
+//                sb.append("): ").append(retval);
+//            else
             sb.append(")");
 
             trace(sb.toString());
@@ -158,7 +157,7 @@ class IOLog {
      * @param cls the class for which the instance should be valid.
      * @return an IOLog instance.
      */
-    public static IOLog getInstance(Class cls) {
+    public static IOLog getInstance(Class<?> cls) {
         return new IOLog(cls);
     }
 }

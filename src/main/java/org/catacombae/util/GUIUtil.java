@@ -81,24 +81,20 @@ public class GUIUtil {
      * @param messageType the dialog's message type (JOptionPane.ERROR_MESSAGE,
      * JOptionPane.INFORMATION_MESSAGE, etc.).
      */
-    public static void displayExceptionDialog(final Throwable t, final int maxStackTraceLines,
-            final Component c, final String message, final String title, final int messageType) {
+    public static void displayExceptionDialog(Throwable t, int maxStackTraceLines,
+                                              Component c, String message, String title, int messageType) {
         StringBuilder sb = new StringBuilder();
-        if(message.length() > 0) {
+        if(!message.isEmpty()) {
             sb.append(message);
             sb.append("\n\n");
         }
         
         Util.buildStackTrace(t, maxStackTraceLines, sb);
         
-        final String finalMessage = sb.toString();
+        String finalMessage = sb.toString();
         try {
-            Runnable r = new Runnable() {
-                //@Override
-                public void run() {
-                    JOptionPane.showMessageDialog(c, finalMessage, title, messageType);
-                }
-            };
+            //@Override
+            Runnable r = () -> JOptionPane.showMessageDialog(c, finalMessage, title, messageType);
             if(SwingUtilities.isEventDispatchThread())
                 r.run();
             else

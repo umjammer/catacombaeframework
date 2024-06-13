@@ -48,24 +48,13 @@ class IntegerFieldDataHandle implements DataHandle {
 
     public byte[] getBytesAsCopy() {
         try {
-            byte[] res;
-
-            switch(length) {
-                case 1:
-                    res = Util.toByteArrayBE(field.getByte(object));
-                    break;
-                case 2:
-                    res = Util.toByteArrayBE(field.getShort(object));
-                    break;
-                case 4:
-                    res = Util.toByteArrayBE(field.getInt(object));
-                    break;
-                case 8:
-                    res = Util.toByteArrayBE(field.getLong(object));
-                    break;
-                default:
-                    throw new RuntimeException(); // Won't happen.
-            }
+            byte[] res = switch (length) {
+                case 1 -> Util.toByteArrayBE(field.getByte(object));
+                case 2 -> Util.toByteArrayBE(field.getShort(object));
+                case 4 -> Util.toByteArrayBE(field.getInt(object));
+                case 8 -> Util.toByteArrayBE(field.getLong(object));
+                default -> throw new RuntimeException(); // Won't happen.
+            };
 
             return res;
         } catch(IllegalAccessException e) {

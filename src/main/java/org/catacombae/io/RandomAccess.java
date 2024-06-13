@@ -31,7 +31,7 @@ public interface RandomAccess {
      * @param pos the new stream position.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public void seek(long pos) throws RuntimeIOException;
+    void seek(long pos) throws RuntimeIOException;
     
     /**
      * Returns the length of the stream in bytes, counted from the start. Maximum seekable position
@@ -40,7 +40,7 @@ public interface RandomAccess {
      * @return the length of the stream in bytes.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public long length() throws RuntimeIOException;
+    long length() throws RuntimeIOException;
     
     /**
      * Returns the current byte position in the stream. This method is named getFilePointer()
@@ -50,5 +50,5 @@ public interface RandomAccess {
      * @return the current byte position in the stream.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public long getFilePointer() throws RuntimeIOException;
+    long getFilePointer() throws RuntimeIOException;
 }

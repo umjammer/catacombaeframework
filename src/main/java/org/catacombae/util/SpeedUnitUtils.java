@@ -46,10 +46,10 @@ public class SpeedUnitUtils {
      * Set this to change the standard output of bytesToBinaryUnit(long) and
      * bytesToDecimalBitUnit(long).
      */
-    protected static DecimalFormat standardUnitFormatter = new DecimalFormat("0");
+    protected static final DecimalFormat standardUnitFormatter = new DecimalFormat("0");
 
     protected static String format(double d, DecimalFormat unitFormatter) {
-        final double rounded =
+        double rounded =
                 roundDoubleToDecimals(d, unitFormatter.getMaximumFractionDigits());
         return unitFormatter.format(rounded);
     }
@@ -134,38 +134,4 @@ public class SpeedUnitUtils {
             result *= a;
         return result;
     }
-
-    /*
-    public static void main(String[] args) {
-        PrintStream ps = System.err;
-        ps.println("Testing roundDoubleToDecimals:");
-        ps.println("  Pi: " + Math.PI);
-        ps.println("  Pi 0: " + roundDoubleToDecimals(Math.PI, 0));
-        ps.println("  Pi 1: " + roundDoubleToDecimals(Math.PI, 1));
-        ps.println("  Pi 2: " + roundDoubleToDecimals(Math.PI, 2));
-        ps.println("  Pi 4: " + roundDoubleToDecimals(Math.PI, 4));
-        ps.println("  Pi 44: " + roundDoubleToDecimals(Math.PI, 44));
-
-        ps.println("Testing different DecimalFormat variants:");
-        DecimalFormat[] fmts = new DecimalFormat[] {
-            new DecimalFormat("0"),
-            new DecimalFormat("0.0"),
-            new DecimalFormat("0.00"),
-            new DecimalFormat("0.000"),
-            new DecimalFormat("0.0000"),
-            new DecimalFormat("0.00000"),
-        };
-
-        for(int i = 0; i < fmts.length; ++i) {
-            DecimalFormat fmt = fmts[i];
-            ps.println("  Entry " + i + ":");
-            ps.println("    getMaximumIntegerDigits()=" + fmt.getMaximumIntegerDigits());
-            ps.println("    getMinimumIntegerDigits()=" + fmt.getMinimumIntegerDigits());
-            ps.println("    getMaximumFractionDigits()=" + fmt.getMaximumFractionDigits());
-            ps.println("    getMinimumFractionDigits()=" + fmt.getMinimumFractionDigits());
-            ps.println("    format(Pi)=" + fmt.format(Math.PI));
-            ps.println("    format(rounded Pi)=" + fmt.format(roundDoubleToDecimals(Math.PI, fmt.getMaximumFractionDigits())));
-        }
-    }
-    */
 }

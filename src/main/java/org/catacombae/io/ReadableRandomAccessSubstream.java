@@ -35,7 +35,7 @@ public class ReadableRandomAccessSubstream extends BasicReadableRandomAccessStre
             "org.catacombae.io." +
             ReadableRandomAccessSubstream.class.getSimpleName() + ".debug");
 
-    private SynchronizedReadableRandomAccess sourceStream;
+    private final SynchronizedReadableRandomAccess sourceStream;
     private long internalFP;
     private boolean closed = false;
     

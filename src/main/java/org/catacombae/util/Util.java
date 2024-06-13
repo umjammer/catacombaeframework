@@ -60,15 +60,15 @@ public class Util {
     public static String byteArrayToHexString(byte[] array, int offset,
             int length)
     {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for(int i = offset; i < (offset + length); ++i) {
             byte b = array[i];
             String currentHexString = Integer.toHexString(b & 0xFF);
             if(currentHexString.length() == 1)
                 currentHexString = "0" + currentHexString;
-            result += currentHexString;
+            result.append(currentHexString);
         }
-        return result;
+        return result.toString();
     }
 
     public static String toHexStringBE(char[] array) {
@@ -322,20 +322,20 @@ public class Util {
 
     public static void zero(int[]... arrays) {
         for(int[] array : arrays)
-            set(array, 0, array.length, (int) 0);
+            set(array, 0, array.length, 0);
     }
 
     public static void zero(int[] ba, int offset, int length) {
-        set(ba, offset, length, (int) 0);
+        set(ba, offset, length, 0);
     }
 
     public static void zero(long[]... arrays) {
         for(long[] array : arrays)
-            set(array, 0, array.length, (long) 0);
+            set(array, 0, array.length, 0);
     }
 
     public static void zero(long[] ba, int offset, int length) {
-        set(ba, offset, length, (long) 0);
+        set(ba, offset, length, 0);
     }
 
     public static void set(boolean[] array, boolean value) {
@@ -456,7 +456,7 @@ public class Util {
      * Creates a copy of the input data reversed byte by byte. This is helpful
      * for endian swapping.
      *
-     * @param data
+     * @param data the input data
      * @return a copy of the input data reversed byte by byte.
      */
     public static byte[] createReverseCopy(byte[] data) {
@@ -467,9 +467,9 @@ public class Util {
      * Creates a copy of the input data reversed byte by byte. This is helpful
      * for endian swapping.
      *
-     * @param data
-     * @param offset
-     * @param length
+     * @param data the input data
+     * @param offset start offset to store
+     * @param length store length
      * @return a copy of the input data reversed byte by byte.
      */
     public static byte[] createReverseCopy(byte[] data, int offset, int length)
@@ -888,9 +888,9 @@ public class Util {
         if(bitNumber < 0 || bitNumber > 63)
             throw new IllegalArgumentException("bitNumber out of range");
         if(value)
-            return data | (0x1 << bitNumber);
+            return data | (0x1L << bitNumber);
         else
-            return data & (data ^ (0x1 << bitNumber));
+            return data & (data ^ (0x1L << bitNumber));
     }
 
     public static int arrayCompareLex(byte[] a, byte[] b) {
@@ -1378,7 +1378,7 @@ public class Util {
      *              thus the number of bytes to write to <code>b</code>.
      */
     public static void encodeASCIIString(String s, int sPos, byte[] b, int bPos,
-            final int len)
+            int len)
     {
         for(int i = 0; i < len; ++i) {
             int curCodePoint = s.codePointAt(i+sPos);
@@ -1527,8 +1527,8 @@ public class Util {
      * <code>concatenateStrings(new String[] {"joe", "lisa", "bob"},
      * " and ");</code> yields the string "joe and lisa and bob".
      *
-     * @param strings
-     * @param glueString
+     * @param strings the input strings
+     * @param glueString the strings to concatenate inter words
      * @return the input strings concatenated into one string, adding the
      * <code>glueString</code> between each pair.
      */
@@ -1544,10 +1544,10 @@ public class Util {
             return "";
     }
 
-    public static String concatenateStrings(List<? extends Object> strings,
+    public static String concatenateStrings(List<?> strings,
             String glueString)
     {
-        if(strings.size() > 0) {
+        if(!strings.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             boolean first = true;
             for(Object s : strings) {
@@ -1567,13 +1567,13 @@ public class Util {
         int parts = string.length() / unitSize;
         StringBuilder sizeStringBuilder = new StringBuilder();
         String head = string.substring(0, string.length() - parts * unitSize);
-        if(head.length() > 0)
+        if(!head.isEmpty())
             sizeStringBuilder.append(head);
         for(int i = parts - 1; i >= 0; --i) {
-            if(i < parts-1 || (i == parts-1 && head.length() > 0))
+            if(i < parts-1 || (i == parts-1 && !head.isEmpty()))
                 sizeStringBuilder.append(" ");
-            sizeStringBuilder.append(string.substring(string.length() -
-                    (i + 1) * unitSize, string.length() - i * unitSize));
+            sizeStringBuilder.append(string, string.length() -
+                    (i + 1) * unitSize, string.length() - i * unitSize);
         }
         return sizeStringBuilder.toString();
     }
@@ -1585,7 +1585,7 @@ public class Util {
         Throwable curThrowable = t;
         while(curThrowable != null && stackTraceLineCount < maxStackTraceLines)
         {
-            sb.append(curThrowable.toString()).append("\n");
+            sb.append(curThrowable).append("\n");
             ++stackTraceLineCount;
             for(StackTraceElement ste : curThrowable.getStackTrace()) {
                 if(stackTraceLineCount < maxStackTraceLines) {
@@ -2102,7 +2102,7 @@ public class Util {
     }
 
     public static boolean booleanEnabledByProperties(boolean defaultValue,
-            final String... debugProperties)
+            String... debugProperties)
     {
         boolean debug = defaultValue;
         for(String debugProperty : debugProperties) {

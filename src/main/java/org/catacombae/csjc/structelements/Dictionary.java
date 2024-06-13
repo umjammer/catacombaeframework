@@ -42,8 +42,8 @@ public class Dictionary extends StructElement {
         super(typeName, typeDescription);
         this.keys = new String[keys.length];
         System.arraycopy(keys, 0, this.keys, 0, keys.length);
-        this.mappings = new HashMap<String, StructElement>();
-        this.descriptions = new HashMap<String, String>();
+        this.mappings = new HashMap<>();
+        this.descriptions = new HashMap<>();
         for(String key : keys) {
             this.mappings.put(key, mappings.get(key));
             String description = descriptions.get(key);

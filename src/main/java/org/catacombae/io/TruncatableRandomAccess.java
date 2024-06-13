@@ -25,6 +25,6 @@ package org.catacombae.io;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface TruncatableRandomAccess extends RandomAccess {
-    public void setLength(long newLength)
+    void setLength(long newLength)
             throws RuntimeIOException;
 }

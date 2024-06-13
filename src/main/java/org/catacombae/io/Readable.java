@@ -32,7 +32,7 @@ public interface Readable {
      * @return the next byte in the stream, or -1 if there are no more bytes to read.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public int read() throws RuntimeIOException;
+    int read() throws RuntimeIOException;
     
     /**
      * Reads as much data as possible from the stream into the array <code>data</code>, until the
@@ -44,7 +44,7 @@ public interface Readable {
      * stream.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public int read(byte[] data) throws RuntimeIOException;
+    int read(byte[] data) throws RuntimeIOException;
     
     /**
      * Reads as much data as possible from the stream into the array <code>data</code> at position
@@ -59,7 +59,7 @@ public interface Readable {
      * stream.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public int read(byte[] data, int pos, int len) throws RuntimeIOException;
+    int read(byte[] data, int pos, int len) throws RuntimeIOException;
     
     /**
      * Reads one byte from the stream and return it. If this is not possible due
@@ -69,7 +69,7 @@ public interface Readable {
      * @throws org.catacombae.io.RuntimeIOException if the stream doesn't
      *     contain one more byte, or if an I/O error occurred.
      */
-    public byte readFully() throws RuntimeIOException;
+    byte readFully() throws RuntimeIOException;
 
     /**
      * Reads into <code>data</code> until the end of the array has been reached. If this is not
@@ -79,7 +79,7 @@ public interface Readable {
      * @throws org.catacombae.io.RuntimeIOException if the stream doesn't contain enough data to
      * fill the output array, or if an I/O error occurred.
      */
-    public void readFully(byte[] data) throws RuntimeIOException;
+    void readFully(byte[] data) throws RuntimeIOException;
     
     /**
      * Reads into <code>data</code> at position <code>pos</code> until <code>len</code> bytes have
@@ -91,5 +91,5 @@ public interface Readable {
      * @throws org.catacombae.io.RuntimeIOException if the stream doesn't contain enough data to
      * fill <code>len</code> bytes, or if an I/O error occurred.
      */
-    public void readFully(byte[] data, int offset, int length) throws RuntimeIOException;
+    void readFully(byte[] data, int offset, int length) throws RuntimeIOException;
 }

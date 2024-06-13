@@ -47,7 +47,7 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
         }
     }
 
-    protected final List<Part> parts = new ArrayList<Part>();
+    protected final List<Part> parts = new ArrayList<>();
     protected long virtualFP;
 
     protected BasicConcatenatedStream(A firstPart, long startOffset, long length) {

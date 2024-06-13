@@ -24,7 +24,7 @@ import org.catacombae.util.Util;
  */
 class ByteArrayDataHandle implements DataHandle {
 
-    private byte[] data;
+    private final byte[] data;
 
     public ByteArrayDataHandle(byte[] data) {
         this.data = data;

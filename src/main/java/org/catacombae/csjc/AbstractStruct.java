@@ -28,5 +28,5 @@ public interface AbstractStruct {
      *
      * @return a serialized one-to-one representation of the struct's data.
      */
-    public byte[] getBytes();
+    byte[] getBytes();
 }

@@ -34,5 +34,5 @@ public interface AbstractFileStream {
      *
      * @return the path passed to the underlying file open interface.
      */
-    public String getOpenPath();
+    String getOpenPath();
 }

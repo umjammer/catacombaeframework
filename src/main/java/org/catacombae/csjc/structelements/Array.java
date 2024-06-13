@@ -29,9 +29,7 @@ public class Array extends StructElement {
     public Array(String typeName, StructElement[] elements) {
         super(typeName + "[" + elements.length + "]");
         this.elements = new StructElement[elements.length];
-        for(int i = 0; i < this.elements.length; ++i) {
-            this.elements[i] = elements[i];
-        }
+        System.arraycopy(elements, 0, this.elements, 0, this.elements.length);
     }
 
     public StructElement[] getElements() {

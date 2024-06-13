@@ -26,7 +26,7 @@ public enum IntegerFieldRepresentation {
     private final String prefix;
     private final int radix;
 
-    private IntegerFieldRepresentation(String prefix, int radix) {
+    IntegerFieldRepresentation(String prefix, int radix) {
         this.prefix = prefix;
         this.radix = radix;
     }

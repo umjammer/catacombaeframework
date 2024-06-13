@@ -34,47 +34,47 @@ import org.catacombae.csjc.structelements.IntegerFieldRepresentation;
  */
 public interface StructElements {
     /** Shorthand constant. */
-    public static final Endianness BIG_ENDIAN = Endianness.BIG_ENDIAN;
+    Endianness BIG_ENDIAN = Endianness.BIG_ENDIAN;
     /** Shorthand constant. */
-    public static final Endianness LITTLE_ENDIAN = Endianness.LITTLE_ENDIAN;
+    Endianness LITTLE_ENDIAN = Endianness.LITTLE_ENDIAN;
     /** Shorthand constant. */
-    public static final Signedness SIGNED = Signedness.SIGNED;
+    Signedness SIGNED = Signedness.SIGNED;
     /** Shorthand constant. */
-    public static final Signedness UNSIGNED = Signedness.UNSIGNED;
+    Signedness UNSIGNED = Signedness.UNSIGNED;
     /** Shorthand constant. */
-    public static final FieldType BOOLEAN = FieldType.BOOLEAN;
+    FieldType BOOLEAN = FieldType.BOOLEAN;
     /** Shorthand constant. */
-    public static final FieldType INTEGER = FieldType.INTEGER;
+    FieldType INTEGER = FieldType.INTEGER;
     /** Shorthand constant. */
-    public static final FieldType BYTEARRAY = FieldType.BYTEARRAY;
+    FieldType BYTEARRAY = FieldType.BYTEARRAY;
     /** Shorthand constant. */
-    public static final FieldType ASCIISTRING = FieldType.ASCIISTRING;
+    FieldType ASCIISTRING = FieldType.ASCIISTRING;
     /** Shorthand constant. */
-    public static final FieldType CUSTOM_CHARSET_STRING = FieldType.CUSTOM_CHARSET_STRING;
+    FieldType CUSTOM_CHARSET_STRING = FieldType.CUSTOM_CHARSET_STRING;
     /** Shorthand constant. */
-    public static final FieldType DATE = FieldType.DATE;
+    FieldType DATE = FieldType.DATE;
     /** Shorthand constant. */
-    public static final IntegerFieldBits BITS_8 = IntegerFieldBits.BITS_8;
+    IntegerFieldBits BITS_8 = IntegerFieldBits.BITS_8;
     /** Shorthand constant. */
-    public static final IntegerFieldBits BITS_16 = IntegerFieldBits.BITS_16;
+    IntegerFieldBits BITS_16 = IntegerFieldBits.BITS_16;
     /** Shorthand constant. */
-    public static final IntegerFieldBits BITS_32 = IntegerFieldBits.BITS_32;
+    IntegerFieldBits BITS_32 = IntegerFieldBits.BITS_32;
     /** Shorthand constant. */
-    public static final IntegerFieldBits BITS_64 = IntegerFieldBits.BITS_64;
+    IntegerFieldBits BITS_64 = IntegerFieldBits.BITS_64;
     /** Shorthand constant. */
-    public static final IntegerFieldRepresentation DECIMAL = IntegerFieldRepresentation.DECIMAL;
+    IntegerFieldRepresentation DECIMAL = IntegerFieldRepresentation.DECIMAL;
     /** Shorthand constant. */
-    public static final IntegerFieldRepresentation HEXADECIMAL = IntegerFieldRepresentation.HEXADECIMAL;
+    IntegerFieldRepresentation HEXADECIMAL = IntegerFieldRepresentation.HEXADECIMAL;
     /** Shorthand constant. */
-    public static final IntegerFieldRepresentation OCTAL = IntegerFieldRepresentation.OCTAL;
+    IntegerFieldRepresentation OCTAL = IntegerFieldRepresentation.OCTAL;
     /** Shorthand constant. */
-    public static final IntegerFieldRepresentation BINARY = IntegerFieldRepresentation.BINARY;
+    IntegerFieldRepresentation BINARY = IntegerFieldRepresentation.BINARY;
 
     /**
      * Shorthand subclass, so the user doesn't have to import DictionaryBuilder in every
      * implementation of StructElements.
      */
-    public class DictionaryBuilder extends org.catacombae.csjc.structelements.DictionaryBuilder {
+    class DictionaryBuilder extends org.catacombae.csjc.structelements.DictionaryBuilder {
         /**
          * @see org.catacombae.csjc.structelements.DictionaryBuilder#DictionaryBuilder(java.lang.String)
          */
@@ -96,5 +96,5 @@ public interface StructElements {
      *
      * @return a dictionary of the elements of this data structure.
      */
-    public Dictionary getStructElements();
+    Dictionary getStructElements();
 }

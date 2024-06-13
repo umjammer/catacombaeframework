@@ -17,6 +17,7 @@
 
 package org.catacombae.csjc.structelements;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.*;
 import static org.catacombae.csjc.structelements.Signedness.*;
@@ -28,7 +29,7 @@ import static org.catacombae.csjc.structelements.Endianness.*;
 public class ArrayBuilder {
 
     private final String typeName;
-    private final LinkedList<StructElement> elements = new LinkedList<StructElement>();
+    private final LinkedList<StructElement> elements = new LinkedList<>();
 
     public ArrayBuilder(String typeName) {
         super();
@@ -36,8 +37,7 @@ public class ArrayBuilder {
     }
 
     public void add(StructElement... elements) {
-        for(StructElement element : elements)
-            this.elements.add(element);
+        this.elements.addAll(Arrays.asList(elements));
     }
 
     /*
@@ -95,6 +95,6 @@ public class ArrayBuilder {
     }
 
     public Array getResult() {
-        return new Array(typeName, elements.toArray(new StructElement[elements.size()]));
+        return new Array(typeName, elements.toArray(StructElement[]::new));
     }
 }
