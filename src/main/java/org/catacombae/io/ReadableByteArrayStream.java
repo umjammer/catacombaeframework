@@ -46,6 +46,7 @@ public class ReadableByteArrayStream extends BasicReadableRandomAccessStream {
         this.filePointer = 0;
     }
 
+    @Override
     public void seek(long pos) {
         if (closed)
             throw new RuntimeException("File has been closed!");
@@ -56,6 +57,7 @@ public class ReadableByteArrayStream extends BasicReadableRandomAccessStream {
             filePointer = (int) pos;
     }
 
+    @Override
     public int read(byte[] data, int pos, int len) {
         if (closed)
             throw new RuntimeException("File has been closed!");
@@ -70,6 +72,7 @@ public class ReadableByteArrayStream extends BasicReadableRandomAccessStream {
         return trueLen;
     }
 
+    @Override
     public long length() {
         if (closed)
             throw new RuntimeException("File has been closed!");
@@ -77,6 +80,7 @@ public class ReadableByteArrayStream extends BasicReadableRandomAccessStream {
         return length;
     }
 
+    @Override
     public long getFilePointer() {
         if (closed)
             throw new RuntimeException("File has been closed!");
@@ -84,11 +88,11 @@ public class ReadableByteArrayStream extends BasicReadableRandomAccessStream {
         return filePointer;
     }
 
+    @Override
     public void close() {
         if (closed)
             throw new RuntimeException("File has been closed!");
 
         closed = true;
     }
-
 }

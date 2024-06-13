@@ -26,6 +26,5 @@ package org.catacombae.io;
  */
 public interface TruncatableRandomAccess extends RandomAccess {
 
-    void setLength(long newLength)
-            throws RuntimeIOException;
+    void setLength(long newLength) throws RuntimeIOException;
 }

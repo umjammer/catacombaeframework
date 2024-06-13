@@ -50,7 +50,6 @@ public class Dictionary extends StructElement {
             String description = descriptions.get(key);
             if (description != null) {
                 this.descriptions.put(key, description);
-
             }
         }
     }

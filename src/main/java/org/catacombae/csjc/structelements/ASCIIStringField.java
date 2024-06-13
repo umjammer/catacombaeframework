@@ -27,12 +27,10 @@ public class ASCIIStringField extends StringRepresentableField {
     public ASCIIStringField(byte[] fieldData) {
         super("Char[" + fieldData.length + "]", FieldType.ASCIISTRING);
         this.fieldData = fieldData;
-        //String validateMsg = validate(fieldData);
-        /*
-        if(validateMsg != null) {
-            throw new IllegalArgumentException("Invalid value passed to constructor! Message: " + validateMsg);
-        }
-         * */
+//        String validateMsg = validate(fieldData);
+//        if (validateMsg != null) {
+//            throw new IllegalArgumentException("Invalid value passed to constructor! Message: " + validateMsg);
+//        }
     }
 
     @Override
@@ -55,7 +53,7 @@ public class ASCIIStringField extends StringRepresentableField {
             return "Invalid length for string. Was: " + data.length + " Should be: " + fieldData.length;
         // Check that the bytes are 7-bit only.
         for (int i = 0; i < data.length; ++i) {
-            if (data[i] < 0 || data[i] > 127) {
+            if (data[i] < 0 || (data[i] & 0xff) > 127) {
                 return "Invalid ASCII character at position " + i;
             }
         }

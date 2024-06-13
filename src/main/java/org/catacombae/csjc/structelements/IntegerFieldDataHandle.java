@@ -48,6 +48,7 @@ class IntegerFieldDataHandle implements DataHandle {
         this.length = length;
     }
 
+    @Override
     public byte[] getBytesAsCopy() {
         try {
             byte[] res = switch (length) {
@@ -65,10 +66,12 @@ class IntegerFieldDataHandle implements DataHandle {
         }
     }
 
+    @Override
     public byte[] getBytesAsCopy(int offset, int length) {
         return Util.createCopy(getBytesAsCopy(), offset, length);
     }
 
+    @Override
     public int getLength() {
         return length;
     }

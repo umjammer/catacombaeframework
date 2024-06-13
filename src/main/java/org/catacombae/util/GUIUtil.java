@@ -67,8 +67,7 @@ public class GUIUtil {
      * @param message            the message to be printed above the exception.
      * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
      */
-    public static void displayExceptionDialog(Throwable t, int maxStackTraceLines, Component c,
-                                              String message) {
+    public static void displayExceptionDialog(Throwable t, int maxStackTraceLines, Component c, String message) {
         displayExceptionDialog(t, maxStackTraceLines, c, message, "Exception", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -102,8 +101,7 @@ public class GUIUtil {
             else
                 SwingUtilities.invokeAndWait(r);
         } catch (Exception e) {
-            throw new RuntimeException("Exception during invokeAndWait!", e);
+            throw new IllegalStateException("Exception during invokeAndWait!", e);
         }
-
     }
 }

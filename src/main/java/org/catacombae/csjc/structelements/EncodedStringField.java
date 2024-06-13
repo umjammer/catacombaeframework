@@ -17,6 +17,8 @@
 
 package org.catacombae.csjc.structelements;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -24,11 +26,15 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class EncodedStringField extends StringRepresentableField {
+
+    private static final Logger logger = getLogger(EncodedStringField.class.getName());
 
     private final byte[] fieldData;
     private final Charset charset;
@@ -59,6 +65,7 @@ public class EncodedStringField extends StringRepresentableField {
             byte[] array = bb.array();
             return validate(array, 0, array.length);
         } catch (CharacterCodingException cce) {
+            logger.log(Level.DEBUG, cce.getMessage(), cce);
             return "Exception while encoding string data: " + cce;
         }
     }
@@ -71,6 +78,7 @@ public class EncodedStringField extends StringRepresentableField {
             CharsetDecoder dec = charset.newDecoder();
             dec.decode(ByteBuffer.wrap(data, offset, length));
         } catch (Exception e) {
+            logger.log(Level.DEBUG, e.getMessage(), e);
             return "Decode operation failed! Exception: " + e;
         }
         return null;
@@ -82,7 +90,7 @@ public class EncodedStringField extends StringRepresentableField {
             CharsetDecoder dec = charset.newDecoder();
             return dec.decode(ByteBuffer.wrap(fieldData, offset, length)).toString();
         } catch (CharacterCodingException cce) {
-            throw new RuntimeException("Exception while decoding data...", cce);
+            throw new IllegalStateException("Exception while decoding data...", cce);
         }
     }
 
@@ -98,7 +106,7 @@ public class EncodedStringField extends StringRepresentableField {
                     throw new RuntimeException("You should not see this.");
                 System.arraycopy(encodedData, 0, fieldData, offset, length);
             } catch (CharacterCodingException cce) {
-                throw new RuntimeException("Exception while encoding string data: ", cce);
+                throw new IllegalStateException("Exception while encoding string data: ", cce);
             }
         } else
             throw new IllegalArgumentException("Invalid string value! Message: " + validateMsg);

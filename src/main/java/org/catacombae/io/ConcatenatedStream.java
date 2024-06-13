@@ -30,10 +30,12 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
         super(firstPart, startOffset, length);
     }
 
+    @Override
     public void write(byte[] data) throws RuntimeIOException {
         BasicWritable.defaultWrite(this, data);
     }
 
+    @Override
     public void write(byte[] data, int off, int len) throws RuntimeIOException {
         int bytesWritten = 0;
 
@@ -42,7 +44,7 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
         int requestedPartIndex = 0;
         for (Part p : parts) {
             if (bytesToSkip < p.length) {
-                /* The first byte of virtualFP is within this part. */
+                // The first byte of virtualFP is within this part.
                 break;
             }
 
@@ -51,8 +53,7 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
         }
 
         if (requestedPartIndex >= parts.size()) {
-            throw new RuntimeIOException("Tried to write beyond end of " +
-                    "stream.");
+            throw new RuntimeIOException("Tried to write beyond end of stream.");
         }
 
         // Loop as long as we still have data to fill, and we still have parts to process.
@@ -65,8 +66,7 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
             int bytesToWrite = (int) ((bytesLeftToWrite < requestedPart.length) ? bytesLeftToWrite : requestedPart.length);
 
             if (requestedPart.file == null) {
-                throw new RuntimeException("Tried to write to hole at " +
-                        "offset: " + requestedPart.startOffset);
+                throw new RuntimeException("Tried to write to hole at offset: " + requestedPart.startOffset);
             }
 
             requestedPart.file.seek(bytesToSkipInPart);
@@ -84,6 +84,7 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
                     " / " + len + " bytes)! This can't happen.");
     }
 
+    @Override
     public void write(int data) throws RuntimeIOException {
         BasicWritable.defaultWrite(this, data);
     }

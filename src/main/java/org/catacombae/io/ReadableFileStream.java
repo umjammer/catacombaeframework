@@ -21,6 +21,10 @@ package org.catacombae.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -29,11 +33,9 @@ import java.io.RandomAccessFile;
  *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
-public class ReadableFileStream implements ReadableRandomAccessStream,
-        AbstractFileStream {
+public class ReadableFileStream implements ReadableRandomAccessStream, AbstractFileStream {
 
-    private static final IOLog log =
-            IOLog.getInstance(ReadableFileStream.class);
+    private static final Logger logger = getLogger(ReadableFileStream.class.getName());
 
     protected final RandomAccessFile raf;
     private final String openPath;
@@ -47,8 +49,7 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
     }
 
     public ReadableFileStream(RandomAccessFile raf, String openPath) {
-        if (log.trace)
-            log.traceEnter(raf);
+        logger.log(Level.TRACE, "enter: {}", raf);
 
         try {
             if (raf == null)
@@ -56,8 +57,7 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
             this.raf = raf;
             this.openPath = openPath;
         } finally {
-            if (log.trace)
-                log.traceLeave(raf);
+            logger.log(Level.TRACE, "leave");
         }
     }
 
@@ -66,8 +66,7 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
     }
 
     protected ReadableFileStream(File file, String mode) {
-        if (log.trace)
-            log.traceEnter(file, mode);
+        logger.log(Level.TRACE, "enter: {}, {}", file, mode);
 
         try {
             this.raf = new RandomAccessFile(file, mode);
@@ -75,81 +74,72 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave(file, mode);
+            logger.log(Level.TRACE, "leave");
         }
     }
 
+    @Override
     public void seek(long pos) {
-        if (log.trace)
-            log.traceEnter(pos);
+        logger.log(Level.TRACE, "enter: {}", pos);
+
 
         try {
             raf.seek(pos);
         } catch (IOException ioe) {
-            throw new RuntimeIOException("pos=" + pos + "," + ioe,
-                    ioe);
+            throw new RuntimeIOException("pos=" + pos + "," + ioe, ioe);
         } finally {
-            if (log.trace)
-                log.traceLeave(pos);
+            logger.log(Level.TRACE, "leave: {}", pos);
         }
     }
 
+    @Override
     public int read() {
-        if (log.trace)
-            log.traceEnter();
+        logger.log(Level.TRACE, "enter");
 
         try {
             int res = raf.read();
-            if (log.trace)
-                log.traceReturn(res);
+            logger.log(Level.TRACE, "return: {}", res);
             return res;
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave();
+            logger.log(Level.TRACE, "leave");
         }
     }
 
+    @Override
     public int read(byte[] data) {
-        if (log.trace)
-            log.traceEnter(data);
+        logger.log(Level.TRACE, "enter: {}", data);
 
         try {
             int res = raf.read(data);
-            if (log.trace)
-                log.traceReturn(res);
+            logger.log(Level.TRACE, "return: {}", res);
             return res;
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave(data);
+            logger.log(Level.TRACE, "leave: {}", data);
         }
     }
 
+    @Override
     public int read(byte[] data, int pos, int len) {
-        if (log.trace)
-            log.traceEnter(data, pos, len);
+        logger.log(Level.TRACE, "enter: {}, {}, {}", data, pos, len);
 
         try {
             int res = raf.read(data, pos, len);
-            if (log.trace)
-                log.traceReturn(res);
+            logger.log(Level.TRACE, "return: {}", res);
             return res;
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave(data, pos, len);
+            logger.log(Level.TRACE, "leave: {}, {}, {}", data, pos, len);
         }
     }
 
+    @Override
     public byte readFully() {
-        if (log.trace) {
-            log.traceEnter();
-        }
+        logger.log(Level.TRACE, "enter");
 
         try {
             byte[] data = new byte[1];
@@ -158,86 +148,78 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace) {
-                log.traceLeave();
-            }
+            logger.log(Level.TRACE, "leave");
         }
     }
 
+    @Override
     public void readFully(byte[] data) {
-        if (log.trace)
-            log.traceEnter(data);
+        logger.log(Level.TRACE, "enter: {}", data);
 
         try {
             raf.readFully(data);
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave(data);
+            logger.log(Level.TRACE, "leave: {}", data);
         }
     }
 
+    @Override
     public void readFully(byte[] data, int offset, int length) {
-        if (log.trace)
-            log.traceEnter(data, offset, length);
+        logger.log(Level.TRACE, "enter: {}, {}, {}", data, offset, length);
 
         try {
             raf.readFully(data, offset, length);
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave(data, offset, length);
+            logger.log(Level.TRACE, "leave: {}, {}, {}", data, offset, length);
         }
     }
 
+    @Override
     public long length() {
-        if (log.trace)
-            log.traceEnter();
+        logger.log(Level.TRACE, "enter");
 
         try {
             return raf.length();
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave();
+            logger.log(Level.TRACE, "leave");
         }
     }
 
+    @Override
     public long getFilePointer() {
-        if (log.trace)
-            log.traceEnter();
+        logger.log(Level.TRACE, "enter");
 
         try {
             long res = raf.getFilePointer();
-            if (log.trace)
-                log.traceReturn(res);
+            logger.log(Level.TRACE, "return: {}", res);
             return res;
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave();
+            logger.log(Level.TRACE, "leave");
         }
     }
 
+    @Override
     public void close() {
-        if (log.trace)
-            log.traceEnter();
+        logger.log(Level.TRACE, "enter");
 
         try {
             raf.close();
         } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if (log.trace)
-                log.traceLeave();
+            logger.log(Level.TRACE, "leave");
         }
     }
 
-    /* @Override */
+    @Override
     public String getOpenPath() {
         return openPath;
     }

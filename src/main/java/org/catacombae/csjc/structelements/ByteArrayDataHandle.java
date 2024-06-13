@@ -31,14 +31,17 @@ class ByteArrayDataHandle implements DataHandle {
         this.data = data;
     }
 
+    @Override
     public byte[] getBytesAsCopy() {
         return getBytesAsCopy(0, data.length);
     }
 
+    @Override
     public byte[] getBytesAsCopy(int offset, int length) {
         return Util.createCopy(data, offset, length);
     }
 
+    @Override
     public int getLength() {
         return data.length;
     }

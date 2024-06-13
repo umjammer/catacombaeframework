@@ -38,6 +38,7 @@ public class FileStream extends ReadableFileStream implements TruncatableRandomA
         super(file, "rw");
     }
 
+    @Override
     public void write(byte[] b) {
         try {
             raf.write(b);
@@ -46,6 +47,7 @@ public class FileStream extends ReadableFileStream implements TruncatableRandomA
         }
     }
 
+    @Override
     public void write(byte[] b, int off, int len) {
         try {
             raf.write(b, off, len);
@@ -54,6 +56,7 @@ public class FileStream extends ReadableFileStream implements TruncatableRandomA
         }
     }
 
+    @Override
     public void write(int b) {
         try {
             raf.write(b);
@@ -62,6 +65,7 @@ public class FileStream extends ReadableFileStream implements TruncatableRandomA
         }
     }
 
+    @Override
     public void setLength(long newLength) throws RuntimeIOException {
         try {
             raf.setLength(newLength);

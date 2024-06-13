@@ -17,11 +17,12 @@
 
 package org.catacombae.csjc.structelements;
 
+import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import static org.catacombae.csjc.structelements.Endianness.BIG_ENDIAN;
-import static org.catacombae.csjc.structelements.Endianness.LITTLE_ENDIAN;
+import static java.nio.ByteOrder.BIG_ENDIAN;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_16;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_32;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_64;
@@ -82,7 +83,7 @@ public class ArrayBuilder {
         addInt(data, offset, length, UNSIGNED, LITTLE_ENDIAN);
     }
 
-    private void addInt(byte[] data, int offset, int length, Signedness signedness, Endianness endianness) {
+    private void addInt(byte[] data, int offset, int length, Signedness signedness, ByteOrder endianness) {
         switch (length) {
             case 1:
                 add(new IntegerField(data, offset, BITS_8, signedness, endianness));

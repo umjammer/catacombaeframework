@@ -18,11 +18,12 @@
 package org.catacombae.csjc.structelements;
 
 import java.lang.reflect.Field;
+import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static org.catacombae.csjc.structelements.Endianness.BIG_ENDIAN;
-import static org.catacombae.csjc.structelements.Endianness.LITTLE_ENDIAN;
+import static java.nio.ByteOrder.BIG_ENDIAN;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_16;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_32;
 import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_64;
@@ -40,10 +41,8 @@ public class DictionaryBuilder {
     private final String typeName;
     private final String typeDescription;
     private final LinkedList<String> keys = new LinkedList<>();
-    private final HashMap<String, StructElement> mappings =
-            new HashMap<>();
-    private final HashMap<String, String> descriptions =
-            new HashMap<>();
+    private final HashMap<String, StructElement> mappings = new HashMap<>();
+    private final HashMap<String, String> descriptions = new HashMap<>();
 
     public DictionaryBuilder(String typeName) {
         this(typeName, null);
@@ -55,30 +54,29 @@ public class DictionaryBuilder {
     }
 
     public void addIntArray(String key, byte[] data, IntegerFieldBits bits,
-                            Signedness signedness, Endianness endianness) {
+                            Signedness signedness, ByteOrder endianness) {
         addIntArray(key, data, 0, data.length, bits, signedness, endianness);
     }
 
     public void addIntArray(String key, byte[] data, IntegerFieldBits bits,
-                            Signedness signedness, Endianness endianness, String description,
+                            Signedness signedness, ByteOrder endianness, String description,
                             IntegerFieldRepresentation rep) {
         addIntArray(key, data, 0, data.length, bits, signedness, endianness, description, rep);
     }
 
     public void addIntArray(String key, byte[] data, int offset, int length,
-                            IntegerFieldBits bits, Signedness signedness, Endianness endianness) {
+                            IntegerFieldBits bits, Signedness signedness, ByteOrder endianness) {
         addIntArray(key, data, offset, length, bits, signedness, endianness, null, DECIMAL);
     }
 
     public void addIntArray(String key, byte[] data, int offset, int length,
-                            IntegerFieldBits bits, Signedness signedness, Endianness endianness, String description,
+                            IntegerFieldBits bits, Signedness signedness, ByteOrder endianness, String description,
                             IntegerFieldRepresentation rep) {
         if (length % bits.getBytes() != 0)
             throw new RuntimeException("Supplied data is not aligned to size of type.");
         String arrayTypeName = switch (signedness) {
             case SIGNED -> "S";
             case UNSIGNED -> "U";
-            default -> throw new IllegalArgumentException("signedness == null!");
         };
         arrayTypeName += "Int" + bits.getBits() + "[" + (length / bits.getBytes()) + "]";
 //        System.err.println("DictionaryBuilder.addIntArray(): length = " + length);
@@ -276,7 +274,7 @@ public class DictionaryBuilder {
     }
 
     public void addInt(String key, byte[] data, int offset, int length,
-                       Signedness signedness, Endianness endianness, String description,
+                       Signedness signedness, ByteOrder endianness, String description,
                        String unit, IntegerFieldRepresentation rep) {
         switch (length) {
             case 1:
@@ -301,7 +299,7 @@ public class DictionaryBuilder {
         }
     }
 
-    public void addInt(String key, Field field, Object obj, Signedness signedness, Endianness endianness,
+    public void addInt(String key, Field field, Object obj, Signedness signedness, ByteOrder endianness,
                        String description, String unit, IntegerFieldRepresentation rep) {
         int length = getSize(field);
         switch (length) {

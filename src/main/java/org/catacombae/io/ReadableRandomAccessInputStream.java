@@ -42,22 +42,16 @@ public class ReadableRandomAccessInputStream extends InputStream {
 
     /** length == -1 means length == ras.length() */
     public ReadableRandomAccessInputStream(SynchronizedReadableRandomAccessStream ras, long offset, long length) {
-        try {
-            long rasLength = ras.length();
-            if (length == -1)
-                length = rasLength;
-            if (offset > rasLength || offset < 0)
-                throw new IllegalArgumentException("offset out of bounds (offset=" +
-                        offset + " length=" + length + ")");
-            if (length > rasLength - offset || length < 0)
-                throw new IllegalArgumentException("length out of bounds (offset=" +
-                        offset + " length=" + length + ")");
-            this.ras = ras;
-            this.streamPos = offset;
-            this.endPos = offset + length;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        long rasLength = ras.length();
+        if (length == -1)
+            length = rasLength;
+        if (offset > rasLength || offset < 0)
+            throw new IllegalArgumentException("offset out of bounds (offset=" + offset + " length=" + length + ")");
+        if (length > rasLength - offset || length < 0)
+            throw new IllegalArgumentException("length out of bounds (offset=" + offset + " length=" + length + ")");
+        this.ras = ras;
+        this.streamPos = offset;
+        this.endPos = offset + length;
     }
 
     /**
@@ -86,7 +80,7 @@ public class ReadableRandomAccessInputStream extends InputStream {
 
     /** Not supported, not implemented (not needed). */
     @Override
-    public void mark(int readlimit) {
+    public void mark(int readLimit) {
         throw new UnsupportedOperationException("Not supported");
     }
 

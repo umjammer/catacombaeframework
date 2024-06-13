@@ -18,7 +18,6 @@
 package org.catacombae.csjc;
 
 import org.catacombae.csjc.structelements.Dictionary;
-import org.catacombae.csjc.structelements.Endianness;
 import org.catacombae.csjc.structelements.FieldType;
 import org.catacombae.csjc.structelements.IntegerFieldBits;
 import org.catacombae.csjc.structelements.IntegerFieldRepresentation;
@@ -35,10 +34,6 @@ import org.catacombae.csjc.structelements.Signedness;
  */
 public interface StructElements {
 
-    /** Shorthand constant. */
-    Endianness BIG_ENDIAN = Endianness.BIG_ENDIAN;
-    /** Shorthand constant. */
-    Endianness LITTLE_ENDIAN = Endianness.LITTLE_ENDIAN;
     /** Shorthand constant. */
     Signedness SIGNED = Signedness.SIGNED;
     /** Shorthand constant. */

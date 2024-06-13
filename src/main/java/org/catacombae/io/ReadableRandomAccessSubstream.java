@@ -18,7 +18,10 @@
 
 package org.catacombae.io;
 
-import org.catacombae.util.Util;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -30,12 +33,7 @@ import org.catacombae.util.Util;
  */
 public class ReadableRandomAccessSubstream extends BasicReadableRandomAccessStream {
 
-    private static final boolean DEBUG =
-            Util.booleanEnabledByProperties(false,
-                    "org.catacombae.debug",
-                    "org.catacombae.io.debug",
-                    "org.catacombae.io." +
-                            ReadableRandomAccessSubstream.class.getSimpleName() + ".debug");
+    private static final Logger logger = getLogger(ReadableRandomAccessSubstream.class.getName());
 
     private final SynchronizedReadableRandomAccess sourceStream;
     private long internalFP;
@@ -75,28 +73,21 @@ public class ReadableRandomAccessSubstream extends BasicReadableRandomAccessStre
 
     @Override
     public int read(byte[] b, int pos, int len) throws RuntimeIOException {
-        if (DEBUG) {
-            System.err.println("ReadableRandomAccessSubstream.read(byte[" +
-                    b.length + "], " + pos + ", " + len + ");");
-            System.err.println("  readFrom: " + internalFP);
-        }
+        logger.log(Level.DEBUG, "ReadableRandomAccessSubstream.read(byte[" +
+                b.length + "], " + pos + ", " + len + ");");
+        logger.log(Level.DEBUG, "  readFrom: " + internalFP);
 
         int bytesRead = sourceStream.readFrom(internalFP, b, pos, len);
         if (bytesRead > 0) {
             internalFP += bytesRead;
 
-            if (DEBUG) {
-                System.err.println("  returning: " + bytesRead);
-            }
+            logger.log(Level.DEBUG, "  returning: " + bytesRead);
 
             return bytesRead;
         } else {
-            if (DEBUG) {
-                System.err.println("  returning: -1");
-            }
+            logger.log(Level.DEBUG, "  returning: -1");
 
             return -1;
         }
     }
-
 }

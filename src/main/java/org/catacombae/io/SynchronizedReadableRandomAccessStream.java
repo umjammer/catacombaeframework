@@ -18,9 +18,13 @@
 
 package org.catacombae.io;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.HashMap;
 
 import org.catacombae.util.Util;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -34,15 +38,10 @@ public class SynchronizedReadableRandomAccessStream
         extends BasicSynchronizedReadableRandomAccessStream
         implements SynchronizedReadableRandomAccess {
 
-    private static final boolean DEBUG =
-            Util.booleanEnabledByProperties(false,
-                    "org.catacombae.debug",
-                    "org.catacombae.io.debug",
-                    "org.catacombae.io." +
-                            SynchronizedReadableRandomAccessStream.class.getSimpleName() +
-                            ".debug");
+    private static final Logger logger = getLogger(SynchronizedReadableRandomAccessStream.class.getName());
+
     private static final boolean REFERENCES_DEBUG =
-            Util.booleanEnabledByProperties(DEBUG,
+            Util.booleanEnabledByProperties(logger.isLoggable(Level.DEBUG),
                     "org.catacombae.io." +
                             SynchronizedReadableRandomAccessStream.class.getSimpleName() +
                             ".references_debug");
@@ -76,26 +75,17 @@ public class SynchronizedReadableRandomAccessStream
         return ras;
     }
 
-    /** {@inheritDoc} */
-    //@Override
-    public synchronized int readFrom(long pos, byte[] b, int off, int len)
-            throws RuntimeIOException {
-        if (DEBUG) {
-            System.err.println(
-                    "SynchronizedReadableRandomAccessStream.readFrom(" + pos +
-                            ", byte[" + b.length + "], " + off + ", " + len + ");");
-        }
+    @Override
+    public synchronized int readFrom(long pos, byte[] b, int off, int len) throws RuntimeIOException {
+        logger.log(Level.DEBUG, "SynchronizedReadableRandomAccessStream.readFrom(" + pos +
+                ", byte[" + b.length + "], " + off + ", " + len + ");");
 
         long oldFP = getFilePointer();
 
-        if (DEBUG) {
-            System.err.println("  oldFP=" + oldFP);
-        }
+        logger.log(Level.DEBUG, "  oldFP=" + oldFP);
 
         if (oldFP != pos) {
-            if (DEBUG) {
-                System.err.println("  seeking to " + pos + "...");
-            }
+            logger.log(Level.DEBUG, "  seeking to " + pos + "...");
 
             seek(pos);
         }
@@ -103,73 +93,57 @@ public class SynchronizedReadableRandomAccessStream
         int res;
 
         try {
-            if (DEBUG) {
-                System.err.println("  Reading " + len + " bytes...");
-            }
+            logger.log(Level.DEBUG, "  Reading " + len + " bytes...");
 
             res = read(b, off, len);
 
-            if (DEBUG) {
-                System.err.println("    read " + res + " bytes.");
-            }
+            logger.log(Level.DEBUG, "    read " + res + " bytes.");
         } finally {
-            if (DEBUG) {
-                System.err.println("  seeking to " + oldFP + "...");
-            }
+            logger.log(Level.DEBUG, "  seeking to " + oldFP + "...");
 
             seek(oldFP); // Reset file pointer to previous position
-
         }
 
-        if (DEBUG) {
-            System.err.println("  returning " + res + ".");
-        }
+        logger.log(Level.DEBUG, "  returning " + res + ".");
 
         return res;
     }
 
-    /** {@inheritDoc} */
-    //@Override
-    public synchronized long skipFrom(long pos, long length)
-            throws RuntimeIOException {
+    @Override
+    public synchronized long skipFrom(long pos, long length) throws RuntimeIOException {
         long streamLength = length();
         long newPos = pos + length;
 
         long res;
         if (newPos > streamLength) {
-            //seek(streamLength);
+//            seek(streamLength);
             res = streamLength - pos;
         } else {
-            //seek(newPos);
+//            seek(newPos);
             res = length;
         }
 
         return res;
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized long remainingLength() throws RuntimeIOException {
         return length() - getFilePointer();
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized void close() throws RuntimeIOException {
-        if (DEBUG) {
-            System.err.println(
-                    SynchronizedReadableRandomAccessStream.class.getName() +
-                            "@" + Util.toHexStringBE(hashCode()) + ".close(): Called " +
-                            "from " + new Exception().getStackTrace()[1] + ".");
-        }
+        logger.log(Level.DEBUG, SynchronizedReadableRandomAccessStream.class.getName() +
+                "@" + Util.toHexStringBE(hashCode()) + ".close(): Called " +
+                "from " + new Exception().getStackTrace()[1] + ".");
 
         if (closed) {
-            throw new RuntimeException("Already closed.");
+            throw new IllegalStateException("Already closed.");
         }
 
         if (REFERENCES_DEBUG) {
             if (references.remove(this) == null) {
-                throw new RuntimeException("Own reference not found!");
+                throw new IllegalStateException("Own reference not found!");
             }
         }
 
@@ -184,66 +158,52 @@ public class SynchronizedReadableRandomAccessStream
         }
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized long getFilePointer() throws RuntimeIOException {
         return ras.getFilePointer();
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized long length() throws RuntimeIOException {
         return ras.length();
     }
 
-    /** {@inheritDoc} */
     @Override
     public synchronized int read() throws RuntimeIOException {
         return ras.read();
     }
 
-    /** {@inheritDoc} */
     @Override
     public synchronized int read(byte[] b) throws RuntimeIOException {
         return ras.read(b);
     }
 
-    /** {@inheritDoc} */
-    //@Override
-    public synchronized int read(byte[] b, int off, int len)
-            throws RuntimeIOException {
-        if (DEBUG) {
-            System.err.println("SynchronizedReadableRandomAccessStream.read(" +
-                    "byte[" + b.length + "], " + off + ", " + len + ");");
-            System.err.println("  ras=" + ras);
-        }
+    @Override
+    public synchronized int read(byte[] b, int off, int len) throws RuntimeIOException {
+        logger.log(Level.DEBUG, "SynchronizedReadableRandomAccessStream.read(" +
+                "byte[" + b.length + "], " + off + ", " + len + ");");
+        logger.log(Level.DEBUG, "  ras=" + ras);
 
         return ras.read(b, off, len);
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized void seek(long pos) throws RuntimeIOException {
         ras.seek(pos);
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized void addReference(Object referrer) {
-        if (DEBUG) {
-            System.err.println(this + ": Reference added (" + refCount + " " +
-                    "-> " + (refCount + 1) + ") by " + referrer + ".");
-        }
+        logger.log(Level.DEBUG, this + ": Reference added (" + refCount + " " +
+                "-> " + (refCount + 1) + ") by " + referrer + ".");
 
         if (!closed) {
             if (REFERENCES_DEBUG) {
                 if (references.get(referrer) != null) {
-                    throw new RuntimeException("Only one reference per " +
-                            "referrer is allowed.");
+                    throw new IllegalStateException("Only one reference per referrer is allowed.");
                 }
 
-                references.put(referrer, new Reference(referrer,
-                        new Exception().getStackTrace()));
+                references.put(referrer, new Reference(referrer, new Exception().getStackTrace()));
             }
 
             ++refCount;
@@ -251,17 +211,14 @@ public class SynchronizedReadableRandomAccessStream
             throw new RuntimeIOException("Stream is closed!");
     }
 
-    /** {@inheritDoc} */
-    //@Override
+    @Override
     public synchronized void removeReference(Object referrer) {
         if ((closed && refCount == 0) || (!closed && refCount == 1)) {
             throw new RuntimeException("No references!");
         }
 
-        if (DEBUG) {
-            System.err.println(this + ": Reference removed (" + refCount + " " +
-                    "-> " + (refCount - 1) + ") by " + referrer + ".");
-        }
+        logger.log(Level.DEBUG, this + ": Reference removed (" + refCount + " " +
+                "-> " + (refCount - 1) + ") by " + referrer + ".");
 
         if (REFERENCES_DEBUG) {
             if (references.remove(referrer) == null) {
@@ -278,14 +235,14 @@ public class SynchronizedReadableRandomAccessStream
     protected synchronized void finalize() throws Throwable {
         try {
             if (refCount != 0) {
-                System.err.println("[WARNING] " + this + " is garbage " +
+                logger.log(Level.DEBUG, "[WARNING] " + this + " is garbage " +
                         "collected with " + refCount + " remaining references" +
                         (REFERENCES_DEBUG ? ":" : "."));
                 if (REFERENCES_DEBUG) {
                     for (Reference r : references.values()) {
-                        System.err.println(r.referrer);
+                        logger.log(Level.DEBUG, r.referrer);
                         for (StackTraceElement ste : r.stackTrace) {
-                            System.err.println("\t" + ste);
+                            logger.log(Level.DEBUG, "\t" + ste);
                         }
                     }
                 }

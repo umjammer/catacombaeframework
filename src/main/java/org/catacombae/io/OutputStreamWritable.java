@@ -35,7 +35,6 @@ public class OutputStreamWritable extends BasicWritable implements Stream {
         this.os = os;
     }
 
-    /** {@inheritDoc} */
     @Override
     public void write(byte[] b, int off, int len) throws RuntimeIOException {
         try {
@@ -45,7 +44,7 @@ public class OutputStreamWritable extends BasicWritable implements Stream {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close() throws RuntimeIOException {
         try {
             os.close();
@@ -53,5 +52,4 @@ public class OutputStreamWritable extends BasicWritable implements Stream {
             throw new RuntimeIOException(ex);
         }
     }
-
 }

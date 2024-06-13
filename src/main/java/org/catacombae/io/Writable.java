@@ -49,5 +49,4 @@ public interface Writable {
      * @param data integer containing the single byte to write to the stream.
      */
     void write(int data) throws RuntimeIOException;
-
 }

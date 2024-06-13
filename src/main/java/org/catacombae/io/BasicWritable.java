@@ -32,15 +32,12 @@ public abstract class BasicWritable implements Writable {
     protected BasicWritable() {
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void write(byte[] b) throws RuntimeIOException {
         defaultWrite(this, b);
     }
 
-    /** {@inheritDoc} */
-    public abstract void write(byte[] b, int off, int len) throws RuntimeIOException;
-
-    /** {@inheritDoc} */
+    @Override
     public void write(int b) throws RuntimeIOException {
         defaultWrite(this, b);
     }

@@ -19,6 +19,7 @@ package org.catacombae.csjc.structelements;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.nio.ByteOrder;
 
 import org.catacombae.util.Util;
 
@@ -32,31 +33,31 @@ public class IntegerField extends StringRepresentableField {
     private final int offset;
     private final IntegerFieldBits bits;
     private final Signedness signedness;
-    private final Endianness endianness;
+    private final ByteOrder endianness;
     private final BigInteger maxValue;
     private final BigInteger minValue;
     private final IntegerFieldRepresentation representation;
 
     public IntegerField(byte[] fieldData, IntegerFieldBits bits,
-                        Signedness signedness, Endianness endianness) {
+                        Signedness signedness, ByteOrder endianness) {
         this(fieldData, 0, bits, signedness, endianness);
     }
 
     public IntegerField(byte[] fieldData, int offset, IntegerFieldBits bits,
-                        Signedness signedness, Endianness endianness) {
+                        Signedness signedness, ByteOrder endianness) {
         this(fieldData, offset, bits, signedness, endianness,
                 IntegerFieldRepresentation.DECIMAL, null);
     }
 
     public IntegerField(byte[] fieldData, int offset, IntegerFieldBits bits,
-                        Signedness signedness, Endianness endianness,
+                        Signedness signedness, ByteOrder endianness,
                         IntegerFieldRepresentation representation, String unitComponent) {
         this(new ByteArrayDataHandle(fieldData), offset, bits, signedness,
                 endianness, representation, unitComponent);
     }
 
     public IntegerField(Object obj, Field fieldData, int offset, IntegerFieldBits bits,
-                        Signedness signedness, Endianness endianness,
+                        Signedness signedness, ByteOrder endianness,
                         IntegerFieldRepresentation representation, String unitComponent) {
         this(new IntegerFieldDataHandle(obj, fieldData, bits.getBytes()),
                 offset, bits, signedness, endianness, representation,
@@ -64,7 +65,7 @@ public class IntegerField extends StringRepresentableField {
     }
 
     public IntegerField(DataHandle fieldData, int offset, IntegerFieldBits bits,
-                        Signedness signedness, Endianness endianness,
+                        Signedness signedness, ByteOrder endianness,
                         IntegerFieldRepresentation representation, String unitComponent) {
         super((signedness == Signedness.SIGNED ? "S" : "U") + "Int" + bits.getBits(),
                 FieldType.INTEGER, unitComponent);
@@ -121,9 +122,9 @@ public class IntegerField extends StringRepresentableField {
 
     public BigInteger getValueAsBigInteger() {
         byte[] data;
-        if (endianness == Endianness.LITTLE_ENDIAN)
+        if (endianness == ByteOrder.LITTLE_ENDIAN)
             data = Util.byteSwap(fieldData.getBytesAsCopy(offset, bits.getBytes())); // Util.createReverseCopy(fieldData, offset, bits.getBytes());
-        else if (endianness == Endianness.BIG_ENDIAN)
+        else if (endianness == ByteOrder.BIG_ENDIAN)
             data = fieldData.getBytesAsCopy(offset, bits.getBytes()); // Util.createCopy(fieldData, offset, bits.getBytes());
         else
             throw new RuntimeException("Illegal endianness value: " + endianness);
@@ -153,13 +154,13 @@ public class IntegerField extends StringRepresentableField {
                         ")");
             if (signedness == Signedness.UNSIGNED && ba.length != (bits.getBytes() + 1))
                 throw new RuntimeException("UNEXPECTED: ba.length (" +
-                        ba.length + ") != bits.getBytes()+1(" +
+                        ba.length + ") != bits.getBytes() + 1(" +
                         bits.getBytes() + "+1=" + (bits.getBytes() + 1) + ")");
             byte[] trueContents;
-            if (endianness == Endianness.LITTLE_ENDIAN)
+            if (endianness == ByteOrder.LITTLE_ENDIAN)
                 trueContents = Util.createReverseCopy(ba,
                         ba.length - bits.getBytes(), bits.getBytes());
-            else if (endianness == Endianness.BIG_ENDIAN)
+            else if (endianness == ByteOrder.BIG_ENDIAN)
                 trueContents = Util.createCopy(ba, ba.length - bits.getBytes(),
                         bits.getBytes());
             else

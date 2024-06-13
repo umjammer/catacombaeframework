@@ -35,7 +35,6 @@ public class InputStreamReadable extends BasicReadable implements Stream {
         this.is = is;
     }
 
-    /** {@inheritDoc} */
     @Override
     public int read(byte[] data, int pos, int len) throws RuntimeIOException {
         try {
@@ -45,7 +44,7 @@ public class InputStreamReadable extends BasicReadable implements Stream {
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close() throws RuntimeIOException {
         try {
             is.close();

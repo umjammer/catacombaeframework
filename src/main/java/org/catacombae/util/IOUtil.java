@@ -40,33 +40,27 @@ public class IOUtil {
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred
      *                                              when reading the stream.
      */
-    public static byte[] readFully(ReadableRandomAccessStream s)
-            throws RuntimeIOException {
+    public static byte[] readFully(ReadableRandomAccessStream s) throws RuntimeIOException {
         if (s.length() < 0 || s.length() > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException("Length of s is out of range: " +
-                    s.length());
+            throw new IllegalArgumentException("Length of s is out of range: " + s.length());
         }
 
         return readFully(s, null, (int) s.length());
     }
 
-    public static byte[] readFully(ReadableRandomAccessStream s, long offset,
-                                   int length) throws RuntimeIOException {
+    public static byte[] readFully(ReadableRandomAccessStream s, long offset, int length) throws RuntimeIOException {
         return readFully(s, Long.valueOf(offset), length);
     }
 
-    private static byte[] readFully(ReadableRandomAccessStream s, Long offset,
-                                    int length) throws RuntimeIOException {
+    private static byte[] readFully(ReadableRandomAccessStream s, Long offset, int length) throws RuntimeIOException {
         long trueOffset;
 
         trueOffset = Objects.requireNonNullElseGet(offset, s::getFilePointer);
 
         if (length > s.length()) {
-            throw new IllegalArgumentException("'length' is unreasonably " +
-                    "large: " + length);
+            throw new IllegalArgumentException("'length' is unreasonably large: " + length);
         } else if ((s.length() - length) < trueOffset) {
-            throw new IllegalArgumentException("Offset out of range: " +
-                    trueOffset + "(length: " + s.length() + ")");
+            throw new IllegalArgumentException("Offset out of range: " + trueOffset + "(length: " + s.length() + ")");
         }
 
         byte[] res = new byte[length];

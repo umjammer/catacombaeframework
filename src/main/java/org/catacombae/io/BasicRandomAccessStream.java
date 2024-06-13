@@ -31,17 +31,4 @@ public abstract class BasicRandomAccessStream extends BasicReadableRandomAccessS
      */
     protected BasicRandomAccessStream() {
     }
-
-    /** {@inheritDoc} */
-    public void write(byte[] b) {
-        BasicWritableRandomAccessStream.defaultWrite(this, b);
-    }
-
-    /** {@inheritDoc} */
-    public abstract void write(byte[] b, int off, int len);
-
-    /** {@inheritDoc} */
-    public void write(int b) {
-        BasicWritableRandomAccessStream.defaultWrite(this, b);
-    }
 }

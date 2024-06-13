@@ -19,9 +19,13 @@
 package org.catacombae.io;
 
 import java.io.PrintStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -32,8 +36,7 @@ import java.util.List;
 public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStream>
         extends BasicReadableRandomAccessStream {
 
-    private static final IOLog log =
-            IOLog.getInstance(BasicConcatenatedStream.class);
+    private static final Logger logger = getLogger(BasicConcatenatedStream.class.getName());
 
     protected class Part {
 
@@ -52,13 +55,12 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
     protected long virtualFP;
 
     protected BasicConcatenatedStream(A firstPart, long startOffset, long length) {
-        if (log.trace)
-            log.traceEnter(firstPart, startOffset, length);
+        logger.log(Level.TRACE, "enter: {}, {}, {}", firstPart, startOffset, length);
 
         try {
             if (startOffset < 0) {
-                /* Negative startOffset means there is an hole segment inserted
-                 * before the first byte of the stream. */
+                // Negative startOffset means there is an hole segment inserted
+                // before the first byte of the stream.
                 Part missingPart = new Part(null, startOffset, -startOffset);
                 parts.add(missingPart);
                 length += startOffset;
@@ -69,8 +71,7 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
             parts.add(currentPart);
             virtualFP = 0;
         } finally {
-            if (log.trace)
-                log.traceLeave(firstPart, startOffset, length);
+            logger.log(Level.TRACE, "leave: {}, {}, {}", firstPart, startOffset, length);
         }
     }
 
@@ -96,34 +97,29 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
     }
 
     public void addPart(A newFile, long off, long len) {
-        if (log.trace)
-            log.traceEnter(newFile, off, len);
+        logger.log(Level.TRACE, "enter: {}, {}, {}", newFile, off, len);
 
         Part newPart = new Part(newFile, off, len);
         parts.add(newPart);
 
-        if (log.trace)
-            log.traceLeave(newFile, off, len);
+        logger.log(Level.TRACE, "leave: {}, {}, {}", newFile, off, len);
     }
 
+    @Override
     public void seek(long pos) {
-        if (log.trace)
-            log.traceEnter(pos);
+        logger.log(Level.TRACE, "enter: {}", pos);
 
         virtualFP = pos;
 
-        if (log.trace)
-            log.traceLeave(pos);
+        logger.log(Level.TRACE, "leave: {}", pos);
     }
 
+    @Override
     public int read(byte[] data, int off, int len) {
-        //String METHOD_NAME = "read";
-        if (log.trace)
-            log.traceEnter(data, off, len);
+//        String METHOD_NAME = "read";
+        logger.log(Level.TRACE, "enter: {}, {}, {}", data, off, len);
 
-        if (log.debug) {
-            log.debug("virtualFP=" + virtualFP);
-        }
+        logger.log(Level.DEBUG, "virtualFP=" + virtualFP);
 
         try {
             int bytesRead = 0;
@@ -132,7 +128,7 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
             int requestedPartIndex = 0;
             for (Part p : parts) {
                 if (bytesToSkip < p.length) {
-                    /* The first byte of virtualFP is within this part. */
+                    // The first byte of virtualFP is within this part.
                     break;
                 }
 
@@ -147,73 +143,52 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
             while (requestedPartIndex < parts.size()) {
                 Part requestedPart = parts.get(requestedPartIndex++);
 
-                if (log.debug) {
-                    log.debug("requestedPartIndex = " + requestedPartIndex);
-                    log.debug("requestedPart.length = " + requestedPart.length);
-                    log.debug("requestedPart.startOffset = " +
-                            requestedPart.startOffset);
-                }
+                logger.log(Level.DEBUG, "requestedPartIndex = " + requestedPartIndex);
+                logger.log(Level.DEBUG, "requestedPart.length = " + requestedPart.length);
+                logger.log(Level.DEBUG, "requestedPart.startOffset = " + requestedPart.startOffset);
 
                 long bytesToSkipInPart = bytesToSkip;
 
-                if (log.debug) {
-                    log.debug("bytesToSkipInPart = " + bytesToSkipInPart);
-                }
+                logger.log(Level.DEBUG, "bytesToSkipInPart = " + bytesToSkipInPart);
 
                 bytesToSkip = 0;
 
                 int bytesLeftToRead = len - bytesRead;
 
-                if (log.debug) {
-                    log.debug("bytesLeftToRead = " + bytesLeftToRead);
-                }
+                logger.log(Level.DEBUG, "bytesLeftToRead = " + bytesLeftToRead);
 
                 int bytesToRead = (int) (bytesLeftToRead < requestedPart.length
                         ? bytesLeftToRead : requestedPart.length);
 
-                if (log.debug) {
-                    log.debug("bytesToRead = " + bytesToRead);
-                }
+                logger.log(Level.DEBUG, "bytesToRead = " + bytesToRead);
 
                 int res;
                 if (requestedPart.file == null) {
-                    /* This is a hole, so just zero-fill. */
+                    // This is a hole, so just zero-fill.
                     Arrays.fill(data, off + bytesRead, bytesToRead, (byte) 0);
                     res = bytesToRead;
                 } else {
-                    if (log.debug) {
-                        log.debug("seeking to " + bytesToSkipInPart);
-                    }
+                    logger.log(Level.DEBUG, "seeking to " + bytesToSkipInPart);
 
-                    requestedPart.file.seek(requestedPart.startOffset +
-                            bytesToSkipInPart);
+                    requestedPart.file.seek(requestedPart.startOffset + bytesToSkipInPart);
 
-                    if (log.debug) {
-                        log.debug("invoking requestedPart.file.read(byte[" +
-                                data.length + "], " + (off + bytesRead) + ", " +
-                                bytesToRead + ")");
-                    }
+                    logger.log(Level.DEBUG, "invoking requestedPart.file.read(byte[" +
+                            data.length + "], " + (off + bytesRead) + ", " + bytesToRead + ")");
 
-                    res = requestedPart.file.read(data, off + bytesRead,
-                            bytesToRead);
+                    res = requestedPart.file.read(data, off + bytesRead, bytesToRead);
                 }
 
-                if (log.debug) {
-                    log.debug("res = " + res);
-                }
+                logger.log(Level.DEBUG, "res = " + res);
 
                 if (res > 0) {
                     virtualFP += res;
                     bytesRead += res;
                     if (bytesRead == len) {
-                        if (log.debug) {
-                            log.debug("returning " + bytesRead);
-                        }
+                        logger.log(Level.DEBUG, "returning " + bytesRead);
 
                         return bytesRead;
                     } else if (bytesRead > len)
-                        throw new RuntimeException("Read more than I was " +
-                                "supposed to! This should not be possible.");
+                        throw new RuntimeException("Read more than I was supposed to! This should not be possible.");
                 } else {
                     if (bytesRead > 0)
                         return bytesRead;
@@ -222,46 +197,43 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
                 }
             }
 
-            if (log.trace)
-                log.traceReturn(bytesRead);
+            logger.log(Level.TRACE, "return: {}", bytesRead);
             return bytesRead;
         } finally {
-            if (log.trace)
-                log.traceLeave(data, off, len);
+            logger.log(Level.TRACE, "leave: {}, {}, {}", data, off, len);
         }
     }
 
+    @Override
     public long length() {
-        //String METHOD_NAME = "length";
-        if (log.trace)
-            log.traceEnter();
+//        String METHOD_NAME = "length";
+        logger.log(Level.TRACE, "enter");
 
         long result = 0;
-        for (Part p : parts)
+        for (BasicConcatenatedStream<?>.Part p : parts)
             result += p.length;
-        log.debug("returning " + result);
 
-        if (log.trace) {
-            log.traceReturn(virtualFP);
-            log.traceLeave();
-        }
+        logger.log(Level.DEBUG, "returning " + result);
+        logger.log(Level.TRACE, "return: {}", virtualFP);
+        logger.log(Level.TRACE, "leave");
+
         return result;
     }
 
+    @Override
     public long getFilePointer() {
-        //String METHOD_NAME = "getFilePointer";
-        if (log.trace) {
-            log.traceEnter();
-            log.traceReturn(virtualFP);
-            log.traceLeave();
-        }
+//        String METHOD_NAME = "getFilePointer";
+        logger.log(Level.TRACE, "enter");
+        logger.log(Level.TRACE, "return: {}", virtualFP);
+        logger.log(Level.TRACE, "leave");
+
         return virtualFP;
     }
 
     /** Closes all the files constituting this BasicConcatenatedStream. */
+    @Override
     public void close() {
-        if (log.trace)
-            log.traceEnter();
+        logger.log(Level.TRACE, "enter");
 
         for (Part p : parts) {
             if (p.file != null) {
@@ -269,8 +241,6 @@ public abstract class BasicConcatenatedStream<A extends ReadableRandomAccessStre
             }
         }
 
-        if (log.trace)
-            log.traceLeave();
+        logger.log(Level.TRACE, "leave");
     }
-
 }

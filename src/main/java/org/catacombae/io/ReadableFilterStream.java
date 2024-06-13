@@ -35,42 +35,52 @@ public class ReadableFilterStream implements ReadableRandomAccessStream {
         this.backingStore = backing;
     }
 
+    @Override
     public void seek(long pos) {
         backingStore.seek(pos);
     }
 
+    @Override
     public int read() {
         return backingStore.read();
     }
 
+    @Override
     public int read(byte[] data) {
         return backingStore.read(data);
     }
 
+    @Override
     public int read(byte[] data, int pos, int len) {
         return backingStore.read(data, pos, len);
     }
 
+    @Override
     public byte readFully() {
         return backingStore.readFully();
     }
 
+    @Override
     public void readFully(byte[] data) {
         backingStore.readFully(data);
     }
 
+    @Override
     public void readFully(byte[] data, int offset, int length) {
         backingStore.readFully(data, offset, length);
     }
 
+    @Override
     public long length() {
         return backingStore.length();
     }
 
+    @Override
     public long getFilePointer() {
         return backingStore.getFilePointer();
     }
 
+    @Override
     public void close() {
         backingStore.close();
     }

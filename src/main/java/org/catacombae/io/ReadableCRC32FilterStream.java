@@ -39,59 +39,69 @@ public class ReadableCRC32FilterStream implements ReadableRandomAccessStream {
     }
 
     public int getChecksumValue() {
-        return (int) (checksum.getValue() & 0xFFFFFFFFL);
+        return (int) (checksum.getValue() & 0xffff_ffffL);
     }
 
     public void resetChecksum() {
         checksum.reset();
     }
 
+    @Override
     public void seek(long pos) {
         source.seek(pos);
     }
 
+    @Override
     public int read() {
         int res = source.read();
         if (res > 0) checksum.update(res);
         return res;
     }
 
+    @Override
     public int read(byte[] data) {
         int res = source.read(data);
         if (res > 0) checksum.update(data, 0, res);
         return res;
     }
 
+    @Override
     public int read(byte[] data, int pos, int len) {
         int res = source.read(data);
         if (res > 0) checksum.update(data, pos, res);
         return res;
     }
 
+    @Override
     public byte readFully() {
         byte res = source.readFully();
-        if (res > 0) checksum.update(res & 0xFF);
+        if (res > 0) checksum.update(res & 0xff);
         return res;
     }
 
+    @Override
     public void readFully(byte[] data) {
         source.readFully(data);
         checksum.update(data);
     }
 
+    @Override
     public void readFully(byte[] data, int offset, int length) {
         source.readFully(data, offset, length);
         checksum.update(data, offset, length);
     }
 
+    @Override
     public long length() {
         return source.length();
     }
 
+    @Override
     public long getFilePointer() {
         return source.getFilePointer();
     }
 
+    @Override
     public void close() {
         source.close();
     }

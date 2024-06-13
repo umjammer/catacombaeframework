@@ -32,7 +32,7 @@ public abstract class BasicReadable implements Readable {
     protected BasicReadable() {
     }
 
-    /** {@inheritDoc} */
+    @Override
     public int read() throws RuntimeIOException {
         byte[] res = new byte[1];
         if (read(res, 0, 1) == 1)
@@ -41,27 +41,27 @@ public abstract class BasicReadable implements Readable {
             return -1;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public int read(byte[] data) throws RuntimeIOException {
         return read(data, 0, data.length);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public abstract int read(byte[] data, int pos, int len) throws RuntimeIOException;
 
-    /** {@inheritDoc} */
+    @Override
     public byte readFully() throws RuntimeIOException {
         byte[] data = new byte[1];
         readFully(data, 0, 1);
         return data[0];
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void readFully(byte[] data) throws RuntimeIOException {
         readFully(data, 0, data.length);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void readFully(byte[] data, int offset, int length) throws RuntimeIOException {
         if (length < 0)
             throw new IllegalArgumentException("length is negative: " + length);

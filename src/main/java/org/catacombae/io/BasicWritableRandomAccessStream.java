@@ -28,16 +28,4 @@ public abstract class BasicWritableRandomAccessStream extends BasicWritable impl
      */
     protected BasicWritableRandomAccessStream() {
     }
-
-    /** {@inheritDoc} */
-    public abstract void close() throws RuntimeIOException;
-
-    /** {@inheritDoc} */
-    public abstract void seek(long pos) throws RuntimeIOException;
-
-    /** {@inheritDoc} */
-    public abstract long length() throws RuntimeIOException;
-
-    /** {@inheritDoc} */
-    public abstract long getFilePointer() throws RuntimeIOException;
 }
