@@ -24,6 +24,8 @@ package org.catacombae.csjc;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface DynamicStruct extends AbstractStruct {
-    public int maxSize();
-    public int occupiedSize();
+
+    int maxSize();
+
+    int occupiedSize();
 }

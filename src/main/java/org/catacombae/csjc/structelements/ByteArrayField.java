@@ -19,6 +19,7 @@ package org.catacombae.csjc.structelements;
 
 import org.catacombae.util.Util;
 
+
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
@@ -46,11 +47,11 @@ public class ByteArrayField extends StringRepresentableField {
 
     @Override
     public void setStringValue(String value) throws IllegalArgumentException {
-        throw new UnsupportedOperationException("Can\'t set byte string to string value at this point.");
+        throw new UnsupportedOperationException("Can't set byte string to string value at this point.");
     }
 
     @Override
     public String validateStringValue(String s) {
-        return "Can\'t set a byte string to a string value.";
+        return "Can't set a byte string to a string value.";
     }
 }

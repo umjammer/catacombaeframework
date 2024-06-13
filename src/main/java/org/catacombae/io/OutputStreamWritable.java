@@ -21,35 +21,35 @@ package org.catacombae.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
+
 /**
  * Transforms a java.io.OutputStream into an org.catacombae.io.Writable.
  *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class OutputStreamWritable extends BasicWritable implements Stream {
+
     private final OutputStream os;
 
     public OutputStreamWritable(OutputStream os) {
         this.os = os;
     }
-    
-    /** {@inheritDoc} */
+
     @Override
     public void write(byte[] b, int off, int len) throws RuntimeIOException {
         try {
             os.write(b, off, len);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close() throws RuntimeIOException {
         try {
             os.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         }
     }
-
 }

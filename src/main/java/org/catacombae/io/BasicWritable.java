@@ -21,24 +21,23 @@ package org.catacombae.io;
 /**
  * Basic implementation of core features of Writable, to allow the subclasser to only implement the
  * essential methods.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class BasicWritable implements Writable {
+
     /**
      * Empty constructor (there is no state maintained in this class).
      */
-    protected BasicWritable() { }
+    protected BasicWritable() {
+    }
 
-    /** {@inheritDoc} */
+    @Override
     public void write(byte[] b) throws RuntimeIOException {
         defaultWrite(this, b);
     }
 
-    /** {@inheritDoc} */
-    public abstract void write(byte[] b, int off, int len) throws RuntimeIOException;
-
-    /** {@inheritDoc} */
+    @Override
     public void write(int b) throws RuntimeIOException {
         defaultWrite(this, b);
     }
@@ -48,6 +47,6 @@ public abstract class BasicWritable implements Writable {
     }
 
     static void defaultWrite(Writable w, int b) throws RuntimeIOException {
-        w.write(new byte[] { (byte)(b & 0xFF) }, 0, 1);
+        w.write(new byte[] {(byte) (b & 0xFF)}, 0, 1);
     }
 }

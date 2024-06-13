@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,35 +20,36 @@ package org.catacombae.io;
 
 /**
  * Defines the methods that must exist for a stream to be seekable in a random access way.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface RandomAccess {
+
     /**
      * Repositions the stream to a specific byte position, counted from the start of the stream. The
      * next read from the stream will start at byte position <code>pos</code>.
-     * 
+     *
      * @param pos the new stream position.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public void seek(long pos) throws RuntimeIOException;
-    
+    void seek(long pos) throws RuntimeIOException;
+
     /**
      * Returns the length of the stream in bytes, counted from the start. Maximum seekable position
      * will be this value.
-     * 
+     *
      * @return the length of the stream in bytes.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public long length() throws RuntimeIOException;
-    
+    long length() throws RuntimeIOException;
+
     /**
      * Returns the current byte position in the stream. This method is named getFilePointer()
      * despite that the stream may not be backed by a file in order to maintain interchangeability
      * with java.io.RandomAccessFile .
-     * 
+     *
      * @return the current byte position in the stream.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred.
      */
-    public long getFilePointer() throws RuntimeIOException;
+    long getFilePointer() throws RuntimeIOException;
 }

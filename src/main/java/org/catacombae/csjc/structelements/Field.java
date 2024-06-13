@@ -27,6 +27,7 @@ public abstract class Field extends StructElement {
     protected Field(String typeName, FieldType type) {
         this(typeName, null, type);
     }
+
     protected Field(String typeName, String typeDescription, FieldType type) {
         super(typeName, typeDescription);
         this.type = type;

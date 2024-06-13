@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -21,7 +21,7 @@ package org.catacombae.io;
 /**
  * This convenient base class provides default implementations for some of the
  * methods in RandomAccessStream.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class BasicRandomAccessStream extends BasicReadableRandomAccessStream implements RandomAccessStream {
@@ -29,18 +29,6 @@ public abstract class BasicRandomAccessStream extends BasicReadableRandomAccessS
     /**
      * Empty constructor (there is no state maintained in this class).
      */
-    protected BasicRandomAccessStream() { }
-    
-    /** {@inheritDoc} */
-    public void write(byte[] b) {
-        BasicWritableRandomAccessStream.defaultWrite(this, b);
-    }
-
-    /** {@inheritDoc} */
-    public abstract void write(byte[] b, int off, int len);
-
-    /** {@inheritDoc} */
-    public void write(int b) {
-        BasicWritableRandomAccessStream.defaultWrite(this, b);
+    protected BasicRandomAccessStream() {
     }
 }

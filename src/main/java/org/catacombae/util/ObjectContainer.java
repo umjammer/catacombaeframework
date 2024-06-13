@@ -25,7 +25,7 @@ package org.catacombae.util;
  */
 public class ObjectContainer<A> {
 
-    public volatile A o;
+    public final A o;
 
     public ObjectContainer(A o) {
         super();

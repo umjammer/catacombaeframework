@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -22,8 +22,9 @@ package org.catacombae.io;
  * This interface defines a readable stream designed for random access, i.e. the user of the stream
  * can tell the stream to reposition itself. It was designed to mimic RandomAccessFile, but without
  * limiting itself to working with files in a file system.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface ReadableRandomAccessStream extends Stream, RandomAccess, Readable {
+
 }

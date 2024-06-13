@@ -17,133 +17,139 @@
 
 package org.catacombae.csjc;
 
-import org.catacombae.util.Util;
 import java.lang.reflect.Field;
+
+import org.catacombae.util.Util;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class MutableStruct {
+
     private final boolean mutable;
 
     public MutableStruct() {
-	this.mutable = false;
+        this.mutable = false;
     }
+
     public MutableStruct(boolean mutable) {
-	this.mutable = true;
+        this.mutable = true;
     }
+
     public void setByteField(String fieldName, byte value) {
-	if(mutable) {
-	    byte[] fieldData = getFieldData(fieldName);
-	    if(fieldData.length != 1)
-		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-	    else
-		System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, 1);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            byte[] fieldData = getFieldData(fieldName);
+            if (fieldData.length != 1)
+                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+            else
+                System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, 1);
+        } else
+            accessViolation();
     }
+
     public void setShortField(String fieldName, short value) {
-	if(mutable) {
-	    byte[] fieldData = getFieldData(fieldName);
-	    if(fieldData.length != 2)
-		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-	    else
-		System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            byte[] fieldData = getFieldData(fieldName);
+            if (fieldData.length != 2)
+                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+            else
+                System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
+        } else
+            accessViolation();
     }
+
     public void setCharField(String fieldName, char value) {
-	if(mutable) {
-	    byte[] fieldData = getFieldData(fieldName);
-	    if(fieldData.length != 2)
-		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-	    else
-		System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            byte[] fieldData = getFieldData(fieldName);
+            if (fieldData.length != 2)
+                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+            else
+                System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
+        } else
+            accessViolation();
     }
+
     public void setIntField(String fieldName, int value) {
-	if(mutable) {
-	    byte[] fieldData = getFieldData(fieldName);
-	    if(fieldData.length != 4)
-		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-	    else
-		System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            byte[] fieldData = getFieldData(fieldName);
+            if (fieldData.length != 4)
+                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+            else
+                System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
+        } else
+            accessViolation();
     }
+
     public void setLongField(String fieldName, long value) {
-	if(mutable) {
-	    byte[] fieldData = getFieldData(fieldName);
-	    if(fieldData.length != 8)
-		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-	    else
-		System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            byte[] fieldData = getFieldData(fieldName);
+            if (fieldData.length != 8)
+                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+            else
+                System.arraycopy(Util.toByteArrayBE(value), 0, fieldData, 0, fieldData.length);
+        } else
+            accessViolation();
     }
+
     public void setByteArrayField(String fieldName, byte[] value) {
-	setByteArrayField(fieldName, value, 0, value.length);
+        setByteArrayField(fieldName, value, 0, value.length);
     }
+
     public void setByteArrayField(String fieldName, byte[] value, int offset, int length) {
-	if(mutable) {
-	    byte[] fieldData = getFieldData(fieldName);
-	    if(length != fieldData.length)
-		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-	    else
-		System.arraycopy(value, offset, fieldData, 0, length);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            byte[] fieldData = getFieldData(fieldName);
+            if (length != fieldData.length)
+                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+            else
+                System.arraycopy(value, offset, fieldData, 0, length);
+        } else
+            accessViolation();
     }
+
     public void setStructField(String fieldName, MutableStruct yada) {
-	if(mutable) {
- 	    Object fieldObject = getFieldObject(fieldName);
-	    if(fieldObject instanceof MutableStruct) {
-		// UNFINISHED
-	    }
-	    else
-		throw new IllegalArgumentException("No such Struct field.");
-// 	    if(length != fieldData.length)
-// 		throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
-// 	    else
-// 		System.arraycopy(value, offset, fieldData, 0, length);
-	}
-	else
-	    accessViolation();
+        if (mutable) {
+            Object fieldObject = getFieldObject(fieldName);
+            if (fieldObject instanceof MutableStruct) {
+                // UNFINISHED
+            } else
+                throw new IllegalArgumentException("No such Struct field.");
+//            if (length != fieldData.length)
+//                throw new IllegalArgumentException("Invalid input! length is not equal to the length of the field data");
+//            else
+//                System.arraycopy(value, offset, fieldData, 0, length);
+        } else
+            accessViolation();
     }
-//     public void setField(String fieldName,  value) {
-//     }
+
+//    public void setField(String fieldName, value) {
+//    }
 
     protected void accessViolation() {
-	throw new RuntimeException("Access violation: Tried to set fields in an immutable object.");
+        throw new RuntimeException("Access violation: Tried to set fields in an immutable object.");
     }
 
-    /** Looks up the byte array with identifer <code>fieldName</code> in
-	the current class and returns it (an actual reference, no copy).
-	If no identifier can be found, or the identifier is not of type
-	<code>byte[]</code>, an IllegalArgumentException is thrown. */
+    /**
+     * Looks up the byte array with identifier <code>fieldName</code> in
+     * the current class and returns it (an actual reference, no copy).
+     * If no identifier can be found, or the identifier is not of type
+     * <code>byte[]</code>, an IllegalArgumentException is thrown.
+     */
     private byte[] getFieldData(String fieldName) {
-	Object o = getFieldObject(fieldName);
-	if(o instanceof byte[])
-	    return (byte[]) o;
-	else
-	    throw new IllegalArgumentException("No such byte array field.");
+        Object o = getFieldObject(fieldName);
+        if (o instanceof byte[])
+            return (byte[]) o;
+        else
+            throw new IllegalArgumentException("No such byte array field.");
     }
+
     private Object getFieldObject(String fieldName) {
-	try {
-	    Class thisClass = this.getClass();
-	    Field f = thisClass.getField(fieldName);
-	    return f.get(this);
-	} catch(NoSuchFieldException nsfe) {
-	    throw new IllegalArgumentException(nsfe);
-	} catch(IllegalAccessException iae) {
-	    throw new IllegalArgumentException(iae);
-	}
+        try {
+            Class<?> thisClass = this.getClass();
+            Field f = thisClass.getField(fieldName);
+            return f.get(this);
+        } catch (NoSuchFieldException | IllegalAccessException nsfe) {
+            throw new IllegalArgumentException(nsfe);
+        }
     }
 }

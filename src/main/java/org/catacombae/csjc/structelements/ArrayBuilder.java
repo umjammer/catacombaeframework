@@ -17,10 +17,19 @@
 
 package org.catacombae.csjc.structelements;
 
+import java.nio.ByteOrder;
+import java.util.Arrays;
 import java.util.LinkedList;
-import static org.catacombae.csjc.structelements.IntegerFieldBits.*;
-import static org.catacombae.csjc.structelements.Signedness.*;
-import static org.catacombae.csjc.structelements.Endianness.*;
+
+import static java.nio.ByteOrder.BIG_ENDIAN;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_16;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_32;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_64;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_8;
+import static org.catacombae.csjc.structelements.Signedness.SIGNED;
+import static org.catacombae.csjc.structelements.Signedness.UNSIGNED;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
@@ -28,7 +37,7 @@ import static org.catacombae.csjc.structelements.Endianness.*;
 public class ArrayBuilder {
 
     private final String typeName;
-    private final LinkedList<StructElement> elements = new LinkedList<StructElement>();
+    private final LinkedList<StructElement> elements = new LinkedList<>();
 
     public ArrayBuilder(String typeName) {
         super();
@@ -36,8 +45,7 @@ public class ArrayBuilder {
     }
 
     public void add(StructElement... elements) {
-        for(StructElement element : elements)
-            this.elements.add(element);
+        this.elements.addAll(Arrays.asList(elements));
     }
 
     /*
@@ -75,8 +83,8 @@ public class ArrayBuilder {
         addInt(data, offset, length, UNSIGNED, LITTLE_ENDIAN);
     }
 
-    private void addInt(byte[] data, int offset, int length, Signedness signedness, Endianness endianness) {
-        switch(length) {
+    private void addInt(byte[] data, int offset, int length, Signedness signedness, ByteOrder endianness) {
+        switch (length) {
             case 1:
                 add(new IntegerField(data, offset, BITS_8, signedness, endianness));
                 break;
@@ -95,6 +103,6 @@ public class ArrayBuilder {
     }
 
     public Array getResult() {
-        return new Array(typeName, elements.toArray(new StructElement[elements.size()]));
+        return new Array(typeName, elements.toArray(StructElement[]::new));
     }
 }

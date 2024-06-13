@@ -18,12 +18,20 @@
 package org.catacombae.csjc.structelements;
 
 import java.lang.reflect.Field;
+import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.LinkedList;
-import static org.catacombae.csjc.structelements.IntegerFieldBits.*;
-import static org.catacombae.csjc.structelements.Signedness.*;
-import static org.catacombae.csjc.structelements.Endianness.*;
-import static org.catacombae.csjc.structelements.IntegerFieldRepresentation.*;
+
+import static java.nio.ByteOrder.BIG_ENDIAN;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_16;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_32;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_64;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_8;
+import static org.catacombae.csjc.structelements.IntegerFieldRepresentation.DECIMAL;
+import static org.catacombae.csjc.structelements.Signedness.SIGNED;
+import static org.catacombae.csjc.structelements.Signedness.UNSIGNED;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
@@ -32,11 +40,9 @@ public class DictionaryBuilder {
 
     private final String typeName;
     private final String typeDescription;
-    private final LinkedList<String> keys = new LinkedList<String>();
-    private final HashMap<String, StructElement> mappings =
-            new HashMap<String, StructElement>();
-    private final HashMap<String, String> descriptions =
-            new HashMap<String, String>();
+    private final LinkedList<String> keys = new LinkedList<>();
+    private final HashMap<String, StructElement> mappings = new HashMap<>();
+    private final HashMap<String, String> descriptions = new HashMap<>();
 
     public DictionaryBuilder(String typeName) {
         this(typeName, null);
@@ -48,53 +54,46 @@ public class DictionaryBuilder {
     }
 
     public void addIntArray(String key, byte[] data, IntegerFieldBits bits,
-            Signedness signedness, Endianness endianness) {
+                            Signedness signedness, ByteOrder endianness) {
         addIntArray(key, data, 0, data.length, bits, signedness, endianness);
     }
 
     public void addIntArray(String key, byte[] data, IntegerFieldBits bits,
-            Signedness signedness, Endianness endianness, String description,
-            IntegerFieldRepresentation rep) {
+                            Signedness signedness, ByteOrder endianness, String description,
+                            IntegerFieldRepresentation rep) {
         addIntArray(key, data, 0, data.length, bits, signedness, endianness, description, rep);
     }
 
     public void addIntArray(String key, byte[] data, int offset, int length,
-            IntegerFieldBits bits, Signedness signedness, Endianness endianness) {
+                            IntegerFieldBits bits, Signedness signedness, ByteOrder endianness) {
         addIntArray(key, data, offset, length, bits, signedness, endianness, null, DECIMAL);
     }
 
     public void addIntArray(String key, byte[] data, int offset, int length,
-            IntegerFieldBits bits, Signedness signedness, Endianness endianness, String description,
-            IntegerFieldRepresentation rep) {
-        if(length % bits.getBytes() != 0)
+                            IntegerFieldBits bits, Signedness signedness, ByteOrder endianness, String description,
+                            IntegerFieldRepresentation rep) {
+        if (length % bits.getBytes() != 0)
             throw new RuntimeException("Supplied data is not aligned to size of type.");
-        String arrayTypeName;
-        switch(signedness) {
-            case SIGNED:
-                arrayTypeName = "S";
-                break;
-            case UNSIGNED:
-                arrayTypeName = "U";
-                break;
-            default:
-                throw new IllegalArgumentException("signedness == null!");
-        }
+        String arrayTypeName = switch (signedness) {
+            case SIGNED -> "S";
+            case UNSIGNED -> "U";
+        };
         arrayTypeName += "Int" + bits.getBits() + "[" + (length / bits.getBytes()) + "]";
-        //System.err.println("DictionaryBuilder.addIntArray(): length = " + length);
-        //System.err.println("DictionaryBuilder.addIntArray(): bits.getBytes() = " + bits.getBytes());
+//        System.err.println("DictionaryBuilder.addIntArray(): length = " + length);
+//        System.err.println("DictionaryBuilder.addIntArray(): bits.getBytes() = " + bits.getBytes());
         ArrayBuilder ab = new ArrayBuilder(arrayTypeName);
         int i;
-        for(i = 0; i < length; i += bits.getBytes()) {
-            //System.err.println("DictionaryBuilder.addIntArray():  i = " + i);
+        for (i = 0; i < length; i += bits.getBytes()) {
+//            System.err.println("DictionaryBuilder.addIntArray():  i = " + i);
             ab.add(new IntegerField(data, offset + i, bits, signedness, endianness, rep, null));
         }
-        //System.err.println("DictionaryBuilder.addIntArray():  i = " + i);
-        //System.err.println("DictionaryBuilder.addIntArray():  length/bits.getBytes() = " + (length / bits.getBytes()));
+//        System.err.println("DictionaryBuilder.addIntArray():  i = " + i);
+//        System.err.println("DictionaryBuilder.addIntArray():  length/bits.getBytes() = " + (length / bits.getBytes()));
         add(key, ab.getResult(), description);
     }
 
     public Dictionary getResult() {
-        return new Dictionary(typeName, typeDescription, keys.toArray(new String[keys.size()]), mappings, descriptions);
+        return new Dictionary(typeName, typeDescription, keys.toArray(String[]::new), mappings, descriptions);
     }
 
     public void add(String key, StructElement mapping) {
@@ -102,11 +101,11 @@ public class DictionaryBuilder {
     }
 
     public void add(String key, StructElement mapping, String description) {
-        //System.err.println(this + ": add(" + key + ", " + mapping + ", " + description + ");");
-        if(mappings.get(key) != null)
+//        System.err.println(this + ": add(" + key + ", " + mapping + ", " + description + ");");
+        if (mappings.get(key) != null)
             throw new IllegalArgumentException("A mapping already exists for key \"" + key + "\"!");
         mappings.put(key, mapping);
-        if(description != null)
+        if (description != null)
             descriptions.put(key, description);
         keys.add(key);
     }
@@ -275,9 +274,9 @@ public class DictionaryBuilder {
     }
 
     public void addInt(String key, byte[] data, int offset, int length,
-            Signedness signedness, Endianness endianness, String description,
-            String unit, IntegerFieldRepresentation rep) {
-        switch(length) {
+                       Signedness signedness, ByteOrder endianness, String description,
+                       String unit, IntegerFieldRepresentation rep) {
+        switch (length) {
             case 1:
                 add(key, new IntegerField(data, offset, BITS_8, signedness,
                         endianness, rep, unit), description);
@@ -300,10 +299,10 @@ public class DictionaryBuilder {
         }
     }
 
-    public void addInt(String key, Field field, Object obj, Signedness signedness, Endianness endianness,
-            String description, String unit, IntegerFieldRepresentation rep) {
+    public void addInt(String key, Field field, Object obj, Signedness signedness, ByteOrder endianness,
+                       String description, String unit, IntegerFieldRepresentation rep) {
         int length = getSize(field);
-        switch(length) {
+        switch (length) {
             case 1:
                 add(key, new IntegerField(obj, field, 0, BITS_8, signedness,
                         endianness, rep, unit), description);
@@ -327,92 +326,118 @@ public class DictionaryBuilder {
         }
     }
 
-    /*
-    public void addSInt8(String key, byte[] data) {
-    addSInt8(key, data, 0);
-    }
-    public void addSInt8(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_8, SIGNED, BIG_ENDIAN));
-    }
-    public void addUInt8(String key, byte[] data) {
-    addUInt8(key, data, 0);
-    }
-    public void addUInt8(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_8, UNSIGNED, BIG_ENDIAN));
-    }
-    public void addSInt16LE(String key, byte[] data) {
-    addUInt16LE(key, data, 0);
-    }
-    public void addSInt16LE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_16, SIGNED, LITTLE_ENDIAN));
-    }
-    public void addSInt16BE(String key, byte[] data) {
-    addSInt16BE(key, data, 0);
-    }
-    public void addSInt16BE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_16, SIGNED, BIG_ENDIAN));
-    }
-    public void addUInt16LE(String key, byte[] data) {
-    addUInt16LE(key, data, 0);
-    }
-    public void addUInt16LE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_16, UNSIGNED, LITTLE_ENDIAN));
-    }
-    public void addUInt16BE(String key, byte[] data) {
-    addUInt16BE(key, data, 0);
-    }
-    public void addUInt16BE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_16, UNSIGNED, BIG_ENDIAN));
-    }
-    public void addSInt32LE(String key, byte[] data) {
-    addUInt32LE(key, data, 0);
-    }
-    public void addSInt32LE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_32, SIGNED, LITTLE_ENDIAN));
-    }
-    public void addSInt32BE(String key, byte[] data) {
-    addSInt32BE(key, data, 0);
-    }
-    public void addSInt32BE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_32, SIGNED, BIG_ENDIAN));
-    }
-    public void addUInt32LE(String key, byte[] data) {
-    addUInt32LE(key, data, 0);
-    }
-    public void addUInt32LE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_32, UNSIGNED, LITTLE_ENDIAN));
-    }
-    public void addUInt32BE(String key, byte[] data) {
-    addUInt32BE(key, data, 0);
-    }
-    public void addUInt32BE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_32, UNSIGNED, BIG_ENDIAN));
-    }
-    public void addSInt64LE(String key, byte[] data) {
-    addUInt64LE(key, data, 0);
-    }
-    public void addSInt64LE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_64, SIGNED, LITTLE_ENDIAN));
-    }
-    public void addSInt64BE(String key, byte[] data) {
-    addSInt64BE(key, data, 0);
-    }
-    public void addSInt64BE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_64, SIGNED, BIG_ENDIAN));
-    }
-    public void addUInt64LE(String key, byte[] data) {
-    addUInt64LE(key, data, 0);
-    }
-    public void addUInt64LE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_64, UNSIGNED, LITTLE_ENDIAN));
-    }
-    public void addUInt64BE(String key, byte[] data) {
-    addUInt64BE(key, data, 0);
-    }
-    public void addUInt64BE(String key, byte[] data, int offset) {
-    add(key, new IntegerField(data, BITS_64, UNSIGNED, BIG_ENDIAN));
-    }
-     */
+//    public void addSInt8(String key, byte[] data) {
+//        addSInt8(key, data, 0);
+//    }
+//
+//    public void addSInt8(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_8, SIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addUInt8(String key, byte[] data) {
+//        addUInt8(key, data, 0);
+//    }
+//
+//    public void addUInt8(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_8, UNSIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addSInt16LE(String key, byte[] data) {
+//        addUInt16LE(key, data, 0);
+//    }
+//
+//    public void addSInt16LE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_16, SIGNED, LITTLE_ENDIAN));
+//    }
+//
+//    public void addSInt16BE(String key, byte[] data) {
+//        addSInt16BE(key, data, 0);
+//    }
+//
+//    public void addSInt16BE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_16, SIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addUInt16LE(String key, byte[] data) {
+//        addUInt16LE(key, data, 0);
+//    }
+//
+//    public void addUInt16LE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_16, UNSIGNED, LITTLE_ENDIAN));
+//    }
+//
+//    public void addUInt16BE(String key, byte[] data) {
+//        addUInt16BE(key, data, 0);
+//    }
+//
+//    public void addUInt16BE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_16, UNSIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addSInt32LE(String key, byte[] data) {
+//        addUInt32LE(key, data, 0);
+//    }
+//
+//    public void addSInt32LE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_32, SIGNED, LITTLE_ENDIAN));
+//    }
+//
+//    public void addSInt32BE(String key, byte[] data) {
+//        addSInt32BE(key, data, 0);
+//    }
+//
+//    public void addSInt32BE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_32, SIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addUInt32LE(String key, byte[] data) {
+//        addUInt32LE(key, data, 0);
+//    }
+//
+//    public void addUInt32LE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_32, UNSIGNED, LITTLE_ENDIAN));
+//    }
+//
+//    public void addUInt32BE(String key, byte[] data) {
+//        addUInt32BE(key, data, 0);
+//    }
+//
+//    public void addUInt32BE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_32, UNSIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addSInt64LE(String key, byte[] data) {
+//        addUInt64LE(key, data, 0);
+//    }
+//
+//    public void addSInt64LE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_64, SIGNED, LITTLE_ENDIAN));
+//    }
+//
+//    public void addSInt64BE(String key, byte[] data) {
+//        addSInt64BE(key, data, 0);
+//    }
+//
+//    public void addSInt64BE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_64, SIGNED, BIG_ENDIAN));
+//    }
+//
+//    public void addUInt64LE(String key, byte[] data) {
+//        addUInt64LE(key, data, 0);
+//    }
+//
+//    public void addUInt64LE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_64, UNSIGNED, LITTLE_ENDIAN));
+//    }
+//
+//    public void addUInt64BE(String key, byte[] data) {
+//        addUInt64BE(key, data, 0);
+//    }
+//
+//    public void addUInt64BE(String key, byte[] data, int offset) {
+//        add(key, new IntegerField(data, BITS_64, UNSIGNED, BIG_ENDIAN));
+//    }
+
     public void addByteArray(String key, byte[] data) {
         addByteArray(key, data, 0, data.length);
     }
@@ -459,9 +484,9 @@ public class DictionaryBuilder {
 
     /** Adds all the key-value mappings present in <code>d</code> in order. */
     public void addAll(Dictionary d) {
-        for(String key : d.getKeys()) {
+        for (String key : d.getKeys()) {
             String description = d.getDescription(key);
-            if(description != null)
+            if (description != null)
                 add(key, d.getElement(key), description);
             else
                 add(key, d.getElement(key));
@@ -472,14 +497,14 @@ public class DictionaryBuilder {
         int size;
         Class<?> fieldType = field.getType();
 
-        if(fieldType.equals(byte.class))
+        if (fieldType.equals(byte.class))
             size = 1;
-        else if(fieldType.equals(short.class) ||
+        else if (fieldType.equals(short.class) ||
                 fieldType.equals(char.class))
             size = 2;
-        else if(fieldType.equals(int.class))
+        else if (fieldType.equals(int.class))
             size = 4;
-        else if(fieldType.equals(long.class))
+        else if (fieldType.equals(long.class))
             size = 8;
         else
             throw new RuntimeException("Invalid field type: " + fieldType);

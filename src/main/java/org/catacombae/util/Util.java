@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2006-2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -26,13 +26,16 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * All-purpose utility class with various useful functionality.
  *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class Util {
-    public static class Pair<A,B> {
+
+    public static class Pair<A, B> {
+
         private A a;
         private B b;
 
@@ -46,29 +49,38 @@ public class Util {
             b = iB;
         }
 
-        public final A getA() { return a; }
-        public final B getB() { return b; }
+        public final A getA() {
+            return a;
+        }
 
-        public final void setA(A iA) { a = iA; }
-        public final void setB(B iB) { b = iB; }
+        public final B getB() {
+            return b;
+        }
+
+        public final void setA(A iA) {
+            a = iA;
+        }
+
+        public final void setB(B iB) {
+            b = iB;
+        }
     }
-    
+
     public static String byteArrayToHexString(byte[] array) {
         return byteArrayToHexString(array, 0, array.length);
     }
 
     public static String byteArrayToHexString(byte[] array, int offset,
-            int length)
-    {
-        String result = "";
-        for(int i = offset; i < (offset + length); ++i) {
+                                              int length) {
+        StringBuilder result = new StringBuilder();
+        for (int i = offset; i < (offset + length); ++i) {
             byte b = array[i];
             String currentHexString = Integer.toHexString(b & 0xFF);
-            if(currentHexString.length() == 1)
+            if (currentHexString.length() == 1)
                 currentHexString = "0" + currentHexString;
-            result += currentHexString;
+            result.append(currentHexString);
         }
-        return result;
+        return result.toString();
     }
 
     public static String toHexStringBE(char[] array) {
@@ -77,7 +89,7 @@ public class Util {
 
     public static String toHexStringBE(char[] array, int offset, int length) {
         StringBuilder result = new StringBuilder();
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             result.append(toHexStringBE(array[i]));
         return result.toString();
     }
@@ -88,7 +100,7 @@ public class Util {
 
     public static String toHexStringBE(short[] array, int offset, int length) {
         StringBuilder result = new StringBuilder();
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             result.append(toHexStringBE(array[i]));
         return result.toString();
     }
@@ -99,7 +111,7 @@ public class Util {
 
     public static String toHexStringBE(int[] array, int offset, int length) {
         StringBuilder result = new StringBuilder();
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             result.append(toHexStringBE(array[i]));
         return result.toString();
     }
@@ -146,7 +158,7 @@ public class Util {
 
     public static byte[] invert(byte[] array) {
         byte[] newArray = new byte[array.length];
-        for(int i = 0; i < array.length; ++i)
+        for (int i = 0; i < array.length; ++i)
             newArray[newArray.length - i - 1] = array[i];
         return newArray;
     }
@@ -298,22 +310,24 @@ public class Util {
     }
 
     public static boolean zeroed(byte[] ba) {
-        for(byte b : ba)
-            if(b != 0)
+        for (byte b : ba)
+            if (b != 0)
                 return false;
         return true;
     }
 
     public static void zero(byte[]... arrays) {
-        for(byte[] ba : arrays)
-            set(ba, 0, ba.length, (byte)0);
+        for (byte[] ba : arrays)
+            set(ba, 0, ba.length, (byte) 0);
     }
+
     public static void zero(byte[] ba, int offset, int length) {
-        set(ba, offset, length, (byte)0);
+        set(ba, offset, length, (byte) 0);
     }
+
     public static void zero(short[]... arrays) {
-        for(short[] array : arrays)
-            set(array, 0, array.length, (short)0);
+        for (short[] array : arrays)
+            set(array, 0, array.length, (short) 0);
     }
 
     public static void zero(short[] ba, int offset, int length) {
@@ -321,21 +335,21 @@ public class Util {
     }
 
     public static void zero(int[]... arrays) {
-        for(int[] array : arrays)
-            set(array, 0, array.length, (int) 0);
+        for (int[] array : arrays)
+            set(array, 0, array.length, 0);
     }
 
     public static void zero(int[] ba, int offset, int length) {
-        set(ba, offset, length, (int) 0);
+        set(ba, offset, length, 0);
     }
 
     public static void zero(long[]... arrays) {
-        for(long[] array : arrays)
-            set(array, 0, array.length, (long) 0);
+        for (long[] array : arrays)
+            set(array, 0, array.length, 0);
     }
 
     public static void zero(long[] ba, int offset, int length) {
-        set(ba, offset, length, (long) 0);
+        set(ba, offset, length, 0);
     }
 
     public static void set(boolean[] array, boolean value) {
@@ -366,39 +380,38 @@ public class Util {
         set(array, 0, array.length, value);
     }
 
-    public static void set(boolean[] ba, int offset, int length, boolean value)
-    {
-        for(int i = offset; i < length; ++i)
+    public static void set(boolean[] ba, int offset, int length, boolean value) {
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
     public static void set(byte[] ba, int offset, int length, byte value) {
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
     public static void set(short[] ba, int offset, int length, short value) {
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
     public static void set(char[] ba, int offset, int length, char value) {
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
     public static void set(int[] ba, int offset, int length, int value) {
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
     public static void set(long[] ba, int offset, int length, long value) {
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
     public static <T> void set(T[] ba, int offset, int length, T value) {
-        for(int i = offset; i < length; ++i)
+        for (int i = offset; i < length; ++i)
             ba[i] = value;
     }
 
@@ -456,7 +469,7 @@ public class Util {
      * Creates a copy of the input data reversed byte by byte. This is helpful
      * for endian swapping.
      *
-     * @param data
+     * @param data the input data
      * @return a copy of the input data reversed byte by byte.
      */
     public static byte[] createReverseCopy(byte[] data) {
@@ -467,15 +480,14 @@ public class Util {
      * Creates a copy of the input data reversed byte by byte. This is helpful
      * for endian swapping.
      *
-     * @param data
-     * @param offset
-     * @param length
+     * @param data   the input data
+     * @param offset start offset to store
+     * @param length store length
      * @return a copy of the input data reversed byte by byte.
      */
-    public static byte[] createReverseCopy(byte[] data, int offset, int length)
-    {
+    public static byte[] createReverseCopy(byte[] data, int offset, int length) {
         byte[] copy = new byte[length];
-        for(int i = 0; i < copy.length; ++i) {
+        for (int i = 0; i < copy.length; ++i) {
             copy[i] = data[offset + (length - i - 1)];
         }
         return copy;
@@ -494,19 +506,18 @@ public class Util {
     }
 
     public static byte[] arrayCopy(byte[] source, int sourcePos, byte[] dest,
-            int destPos)
-    {
+                                   int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
+
     public static byte[] arrayCopy(byte[] source, int sourcePos, byte[] dest,
-            int destPos, int length)
-    {
-        if(source.length - sourcePos < length) {
+                                   int destPos, int length) {
+        if (source.length - sourcePos < length) {
             throw new RuntimeException("Source array not large enough.");
         }
 
-        if(dest.length - destPos < length) {
+        if (dest.length - destPos < length) {
             throw new RuntimeException("Destination array not large enough.");
         }
 
@@ -520,31 +531,28 @@ public class Util {
     }
 
     public static boolean[] arrayCopy(boolean[] source, int sourcePos,
-            boolean[] dest)
-    {
+                                      boolean[] dest) {
         return arrayCopy(source, sourcePos, dest, 0);
     }
 
     public static boolean[] arrayCopy(boolean[] source, boolean[] dest,
-            int destPos)
-    {
+                                      int destPos) {
         return arrayCopy(source, 0, dest, destPos);
     }
 
     public static boolean[] arrayCopy(boolean[] source, int sourcePos,
-            boolean[] dest, int destPos)
-    {
+                                      boolean[] dest, int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
+
     public static boolean[] arrayCopy(boolean[] source, int sourcePos,
-            boolean[] dest, int destPos, int length)
-    {
-        if(source.length - sourcePos < length) {
+                                      boolean[] dest, int destPos, int length) {
+        if (source.length - sourcePos < length) {
             throw new RuntimeException("Source array not large enough.");
         }
 
-        if(dest.length - destPos < length) {
+        if (dest.length - destPos < length) {
             throw new RuntimeException("Destination array not large enough.");
         }
 
@@ -557,8 +565,7 @@ public class Util {
         return arrayCopy(source, 0, dest, 0);
     }
 
-    public static short[] arrayCopy(short[] source, int sourcePos, short[] dest)
-    {
+    public static short[] arrayCopy(short[] source, int sourcePos, short[] dest) {
         return arrayCopy(source, sourcePos, dest, 0);
     }
 
@@ -567,19 +574,18 @@ public class Util {
     }
 
     public static short[] arrayCopy(short[] source, int sourcePos, short[] dest,
-            int destPos)
-    {
+                                    int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
+
     public static short[] arrayCopy(short[] source, int sourcePos, short[] dest,
-            int destPos, int length)
-    {
-        if(source.length - sourcePos < length) {
+                                    int destPos, int length) {
+        if (source.length - sourcePos < length) {
             throw new RuntimeException("Source array not large enough.");
         }
 
-        if(dest.length - destPos < length) {
+        if (dest.length - destPos < length) {
             throw new RuntimeException("Destination array not large enough.");
         }
 
@@ -601,19 +607,18 @@ public class Util {
     }
 
     public static char[] arrayCopy(char[] source, int sourcePos, char[] dest,
-            int destPos)
-    {
+                                   int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
+
     public static char[] arrayCopy(char[] source, int sourcePos, char[] dest,
-            int destPos, int length)
-    {
-        if(source.length - sourcePos < length) {
+                                   int destPos, int length) {
+        if (source.length - sourcePos < length) {
             throw new RuntimeException("Source array not large enough.");
         }
 
-        if(dest.length - destPos < length) {
+        if (dest.length - destPos < length) {
             throw new RuntimeException("Destination array not large enough.");
         }
 
@@ -635,19 +640,18 @@ public class Util {
     }
 
     public static int[] arrayCopy(int[] source, int sourcePos, int[] dest,
-            int destPos)
-    {
+                                  int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
+
     public static int[] arrayCopy(int[] source, int sourcePos, int[] dest,
-            int destPos, int length)
-    {
-        if(source.length - sourcePos < length) {
+                                  int destPos, int length) {
+        if (source.length - sourcePos < length) {
             throw new RuntimeException("Source array not large enough.");
         }
 
-        if(dest.length - destPos < length) {
+        if (dest.length - destPos < length) {
             throw new RuntimeException("Destination array not large enough.");
         }
 
@@ -669,19 +673,18 @@ public class Util {
     }
 
     public static long[] arrayCopy(long[] source, int sourcePos, long[] dest,
-            int destPos)
-    {
+                                   int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
+
     public static long[] arrayCopy(long[] source, int sourcePos, long[] dest,
-            int destPos, int length)
-    {
-        if(source.length - sourcePos < length) {
+                                   int destPos, int length) {
+        if (source.length - sourcePos < length) {
             throw new RuntimeException("Source array not large enough.");
         }
 
-        if(dest.length - destPos < length) {
+        if (dest.length - destPos < length) {
             throw new RuntimeException("Destination array not large enough.");
         }
 
@@ -703,18 +706,16 @@ public class Util {
     }
 
     public static <T> T[] arrayCopy(T[] source, int sourcePos, T[] dest,
-            int destPos)
-    {
+                                    int destPos) {
         return arrayCopy(source, sourcePos, dest, destPos,
                 source.length - sourcePos);
     }
 
     public static <T> T[] arrayCopy(T[] source, int sourcePos, T[] dest,
-            int destPos, int length)
-    {
-        if(source.length - sourcePos < length)
+                                    int destPos, int length) {
+        if (source.length - sourcePos < length)
             throw new RuntimeException("Source array not large enough.");
-        if(dest.length - destPos < length)
+        if (dest.length - destPos < length)
             throw new RuntimeException("Destination array not large enough.");
         System.arraycopy(source, sourcePos, dest, destPos, length);
         return dest;
@@ -725,12 +726,12 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(boolean[] a, int aoff, int alen,
-            boolean[] b, int boff, int blen) {
-        if(alen != blen)
+                                            boolean[] b, int boff, int blen) {
+        if (alen != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(a[aoff + i] != b[boff + i])
+            for (int i = 0; i < alen; ++i)
+                if (a[aoff + i] != b[boff + i])
                     return false;
             return true;
         }
@@ -741,12 +742,12 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(byte[] a, int aoff, int alen,
-            byte[] b, int boff, int blen) {
-        if(a.length != blen)
+                                            byte[] b, int boff, int blen) {
+        if (a.length != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(a[aoff + i] != b[boff + i])
+            for (int i = 0; i < alen; ++i)
+                if (a[aoff + i] != b[boff + i])
                     return false;
             return true;
         }
@@ -757,12 +758,12 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(char[] a, int aoff, int alen,
-            char[] b, int boff, int blen) {
-        if(alen != blen)
+                                            char[] b, int boff, int blen) {
+        if (alen != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(a[aoff + i] != b[boff + i])
+            for (int i = 0; i < alen; ++i)
+                if (a[aoff + i] != b[boff + i])
                     return false;
             return true;
         }
@@ -773,12 +774,12 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(short[] a, int aoff, int alen,
-            short[] b, int boff, int blen) {
-        if(alen != blen)
+                                            short[] b, int boff, int blen) {
+        if (alen != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(a[aoff + i] != b[boff + i])
+            for (int i = 0; i < alen; ++i)
+                if (a[aoff + i] != b[boff + i])
                     return false;
             return true;
         }
@@ -789,12 +790,12 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(int[] a, int aoff, int alen,
-            int[] b, int boff, int blen) {
-        if(alen != blen)
+                                            int[] b, int boff, int blen) {
+        if (alen != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(a[aoff + i] != b[boff + i])
+            for (int i = 0; i < alen; ++i)
+                if (a[aoff + i] != b[boff + i])
                     return false;
             return true;
         }
@@ -805,12 +806,12 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(long[] a, int aoff, int alen,
-            long[] b, int boff, int blen) {
-        if(alen != blen)
+                                            long[] b, int boff, int blen) {
+        if (alen != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(a[aoff + i] != b[boff + i])
+            for (int i = 0; i < alen; ++i)
+                if (a[aoff + i] != b[boff + i])
                     return false;
             return true;
         }
@@ -821,31 +822,31 @@ public class Util {
     }
 
     public static boolean arrayRegionsEqual(Object[] a, int aoff, int alen,
-            Object[] b, int boff, int blen) {
-        if(alen != blen)
+                                            Object[] b, int boff, int blen) {
+        if (alen != blen)
             return false;
         else {
-            for(int i = 0; i < alen; ++i)
-                if(!a[aoff + i].equals(b[boff + i]))
+            for (int i = 0; i < alen; ++i)
+                if (!a[aoff + i].equals(b[boff + i]))
                     return false;
             return true;
         }
     }
 
     public static long pow(long a, long b) {
-        if(b < 0)
+        if (b < 0)
             throw new IllegalArgumentException("b can not be negative");
 
         long result = 1;
-        for(long i = 0; i < b; ++i)
+        for (long i = 0; i < b; ++i)
             result *= a;
         return result;
     }
 
     public static int strlen(byte[] data) {
         int length = 0;
-        for(byte b : data) {
-            if(b == 0)
+        for (byte b : data) {
+            if (b == 0)
                 break;
             else
                 ++length;
@@ -858,39 +859,39 @@ public class Util {
     }
 
     public static byte setBit(byte data, int bitNumber, boolean value) {
-        if(bitNumber < 0 || bitNumber > 7)
+        if (bitNumber < 0 || bitNumber > 7)
             throw new IllegalArgumentException("bitNumber out of range");
         return (byte) setBit(data & 0xFF, bitNumber, value);
     }
 
     public static short setBit(short data, int bitNumber, boolean value) {
-        if(bitNumber < 0 || bitNumber > 15)
+        if (bitNumber < 0 || bitNumber > 15)
             throw new IllegalArgumentException("bitNumber out of range");
         return (short) setBit(data & 0xFFFF, bitNumber, value);
     }
 
     public static char setBit(char data, int bitNumber, boolean value) {
-        if(bitNumber < 0 || bitNumber > 15)
+        if (bitNumber < 0 || bitNumber > 15)
             throw new IllegalArgumentException("bitNumber out of range");
         return (char) setBit(data & 0xFFFF, bitNumber, value);
     }
 
     public static int setBit(int data, int bitNumber, boolean value) {
-        if(bitNumber < 0 || bitNumber > 31)
+        if (bitNumber < 0 || bitNumber > 31)
             throw new IllegalArgumentException("bitNumber out of range");
-        if(value)
+        if (value)
             return data | (0x1 << bitNumber);
         else
             return data & (data ^ (0x1 << bitNumber));
     }
 
     public static long setBit(long data, int bitNumber, boolean value) {
-        if(bitNumber < 0 || bitNumber > 63)
+        if (bitNumber < 0 || bitNumber > 63)
             throw new IllegalArgumentException("bitNumber out of range");
-        if(value)
-            return data | (0x1 << bitNumber);
+        if (value)
+            return data | (0x1L << bitNumber);
         else
-            return data & (data ^ (0x1 << bitNumber));
+            return data & (data ^ (0x1L << bitNumber));
     }
 
     public static int arrayCompareLex(byte[] a, byte[] b) {
@@ -898,13 +899,12 @@ public class Util {
     }
 
     public static int arrayCompareLex(byte[] a, int aoff, int alen, byte[] b,
-            int boff, int blen)
-    {
+                                      int boff, int blen) {
         int compareLen = alen < blen ? alen : blen; // equiv. Math.min
-        for(int i = 0; i < compareLen; ++i) {
+        for (int i = 0; i < compareLen; ++i) {
             byte curA = a[aoff + i];
             byte curB = b[boff + i];
-            if(curA != curB)
+            if (curA != curB)
                 return curA - curB;
         }
         return alen - blen; // The shortest array gets higher priority
@@ -915,13 +915,12 @@ public class Util {
     }
 
     public static int unsignedArrayCompareLex(byte[] a, int aoff, int alen,
-            byte[] b, int boff, int blen)
-    {
+                                              byte[] b, int boff, int blen) {
         int compareLen = alen < blen ? alen : blen; // equiv. Math.min
-        for(int i = 0; i < compareLen; ++i) {
+        for (int i = 0; i < compareLen; ++i) {
             int curA = a[aoff + i] & 0xFF;
             int curB = b[boff + i] & 0xFF;
-            if(curA != curB)
+            if (curA != curB)
                 return curA - curB;
         }
         return alen - blen; // The shortest array gets higher priority
@@ -932,13 +931,12 @@ public class Util {
     }
 
     public static int unsignedArrayCompareLex(char[] a, int aoff, int alen,
-            char[] b, int boff, int blen)
-    {
+                                              char[] b, int boff, int blen) {
         int compareLen = alen < blen ? alen : blen; // equiv. Math.min
-        for(int i = 0; i < compareLen; ++i) {
+        for (int i = 0; i < compareLen; ++i) {
             int curA = a[aoff + i] & 0xFFFF; // Unsigned char values represented as int
             int curB = b[boff + i] & 0xFFFF;
-            if(curA != curB)
+            if (curA != curB)
                 return curA - curB;
         }
         return alen - blen; // The shortest array gets higher priority
@@ -966,11 +964,10 @@ public class Util {
     }
 
     public static String readString(byte[] data, int offset, int length,
-            String encoding)
-    {
+                                    String encoding) {
         try {
             return new String(data, offset, length, encoding);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -988,11 +985,10 @@ public class Util {
     }
 
     public static String readNullTerminatedASCIIString(byte[] data, int offset,
-            int maxLength)
-    {
+                                                       int maxLength) {
         int i;
-        for(i = offset; i < (offset + maxLength); ++i)
-            if(data[i] == 0)
+        for (i = offset; i < (offset + maxLength); ++i)
+            if (data[i] == 0)
                 break;
         return toASCIIString(data, offset, i - offset);
     }
@@ -1017,27 +1013,27 @@ public class Util {
 
     /** Stupid method which should go away. */
     public static byte[] readByteArrayBE(byte b) {
-        return readByteArrayBE(toByteArrayBE(b), 0, 1*1);
+        return readByteArrayBE(toByteArrayBE(b), 0, 1 * 1);
     }
 
     /** Stupid method which should go away. */
     public static byte[] readByteArrayBE(short s) {
-        return readByteArrayBE(toByteArrayBE(s), 0, 2*1);
+        return readByteArrayBE(toByteArrayBE(s), 0, 2 * 1);
     }
 
     /** Stupid method which should go away. */
     public static byte[] readByteArrayBE(char c) {
-        return readByteArrayBE(toByteArrayBE(c), 0, 2*1);
+        return readByteArrayBE(toByteArrayBE(c), 0, 2 * 1);
     }
 
     /** Stupid method which should go away. */
     public static byte[] readByteArrayBE(int i) {
-        return readByteArrayBE(toByteArrayBE(i), 0, 4*1);
+        return readByteArrayBE(toByteArrayBE(i), 0, 4 * 1);
     }
 
     /** Stupid method which should go away. */
     public static byte[] readByteArrayBE(long l) {
-        return readByteArrayBE(toByteArrayBE(l), 0, 8*1);
+        return readByteArrayBE(toByteArrayBE(l), 0, 8 * 1);
     }
 
     /** Stupid method which should go away. */
@@ -1051,19 +1047,19 @@ public class Util {
     }
 
     public static char[] readCharArrayLE(short s) {
-        return readCharArrayLE(toByteArrayBE(s), 0, 1*2);
+        return readCharArrayLE(toByteArrayBE(s), 0, 1 * 2);
     }
 
     public static char[] readCharArrayLE(char c) {
-        return readCharArrayLE(toByteArrayBE(c), 0, 1*2);
+        return readCharArrayLE(toByteArrayBE(c), 0, 1 * 2);
     }
 
     public static char[] readCharArrayLE(int i) {
-        return readCharArrayLE(toByteArrayBE(i), 0, 2*2);
+        return readCharArrayLE(toByteArrayBE(i), 0, 2 * 2);
     }
 
     public static char[] readCharArrayLE(long l) {
-        return readCharArrayLE(toByteArrayBE(l), 0, 4*2);
+        return readCharArrayLE(toByteArrayBE(l), 0, 4 * 2);
     }
 
     public static char[] readCharArrayLE(byte[] b) {
@@ -1072,25 +1068,25 @@ public class Util {
 
     public static char[] readCharArrayLE(byte[] b, int offset, int length) {
         char[] result = new char[length / 2];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readCharLE(b, offset + (i * 2));
         return result;
     }
 
     public static char[] readCharArrayBE(short s) {
-        return readCharArrayBE(toByteArrayBE(s), 0, 1*2);
+        return readCharArrayBE(toByteArrayBE(s), 0, 1 * 2);
     }
 
     public static char[] readCharArrayBE(char c) {
-        return readCharArrayBE(toByteArrayBE(c), 0, 1*2);
+        return readCharArrayBE(toByteArrayBE(c), 0, 1 * 2);
     }
 
     public static char[] readCharArrayBE(int i) {
-        return readCharArrayBE(toByteArrayBE(i), 0, 2*2);
+        return readCharArrayBE(toByteArrayBE(i), 0, 2 * 2);
     }
 
     public static char[] readCharArrayBE(long l) {
-        return readCharArrayBE(toByteArrayBE(l), 0, 4*2);
+        return readCharArrayBE(toByteArrayBE(l), 0, 4 * 2);
     }
 
     public static char[] readCharArrayBE(byte[] b) {
@@ -1099,25 +1095,25 @@ public class Util {
 
     public static char[] readCharArrayBE(byte[] b, int offset, int length) {
         char[] result = new char[length / 2];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readCharBE(b, offset + (i * 2));
         return result;
     }
 
     public static short[] readShortArrayLE(short s) {
-        return readShortArrayLE(toByteArrayBE(s), 0, 1*2);
+        return readShortArrayLE(toByteArrayBE(s), 0, 1 * 2);
     }
 
     public static short[] readShortArrayLE(char c) {
-        return readShortArrayLE(toByteArrayBE(c), 0, 1*2);
+        return readShortArrayLE(toByteArrayBE(c), 0, 1 * 2);
     }
 
     public static short[] readShortArrayLE(int i) {
-        return readShortArrayLE(toByteArrayBE(i), 0, 2*2);
+        return readShortArrayLE(toByteArrayBE(i), 0, 2 * 2);
     }
 
     public static short[] readShortArrayLE(long l) {
-        return readShortArrayLE(toByteArrayBE(l), 0, 4*2);
+        return readShortArrayLE(toByteArrayBE(l), 0, 4 * 2);
     }
 
     public static short[] readShortArrayLE(byte[] b) {
@@ -1126,25 +1122,25 @@ public class Util {
 
     public static short[] readShortArrayLE(byte[] b, int offset, int length) {
         short[] result = new short[length / 2];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readShortLE(b, offset + (i * 2));
         return result;
     }
 
     public static short[] readShortArrayBE(short s) {
-        return readShortArrayBE(toByteArrayBE(s), 0, 1*2);
+        return readShortArrayBE(toByteArrayBE(s), 0, 1 * 2);
     }
 
     public static short[] readShortArrayBE(char c) {
-        return readShortArrayBE(toByteArrayBE(c), 0, 1*2);
+        return readShortArrayBE(toByteArrayBE(c), 0, 1 * 2);
     }
 
     public static short[] readShortArrayBE(int i) {
-        return readShortArrayBE(toByteArrayBE(i), 0, 2*2);
+        return readShortArrayBE(toByteArrayBE(i), 0, 2 * 2);
     }
 
     public static short[] readShortArrayBE(long l) {
-        return readShortArrayBE(toByteArrayBE(l), 0, 4*2);
+        return readShortArrayBE(toByteArrayBE(l), 0, 4 * 2);
     }
 
     public static short[] readShortArrayBE(byte[] b) {
@@ -1153,17 +1149,17 @@ public class Util {
 
     public static short[] readShortArrayBE(byte[] b, int offset, int length) {
         short[] result = new short[length / 2];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readShortBE(b, offset + (i * 2));
         return result;
     }
 
     public static int[] readIntArrayLE(int i) {
-        return readIntArrayLE(toByteArrayBE(i), 0, 1*4);
+        return readIntArrayLE(toByteArrayBE(i), 0, 1 * 4);
     }
 
     public static int[] readIntArrayLE(long l) {
-        return readIntArrayLE(toByteArrayBE(l), 0, 2*4);
+        return readIntArrayLE(toByteArrayBE(l), 0, 2 * 4);
     }
 
     public static int[] readIntArrayLE(byte[] b) {
@@ -1172,17 +1168,17 @@ public class Util {
 
     public static int[] readIntArrayLE(byte[] b, int offset, int length) {
         int[] result = new int[length / 4];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readIntLE(b, offset + (i * 4));
         return result;
     }
 
     public static int[] readIntArrayBE(int i) {
-        return readIntArrayBE(toByteArrayBE(i), 0, 1*4);
+        return readIntArrayBE(toByteArrayBE(i), 0, 1 * 4);
     }
 
     public static int[] readIntArrayBE(long l) {
-        return readIntArrayBE(toByteArrayBE(l), 0, 2*4);
+        return readIntArrayBE(toByteArrayBE(l), 0, 2 * 4);
     }
 
     public static int[] readIntArrayBE(byte[] b) {
@@ -1191,13 +1187,13 @@ public class Util {
 
     public static int[] readIntArrayBE(byte[] b, int offset, int length) {
         int[] result = new int[length / 4];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readIntBE(b, offset + (i * 4));
         return result;
     }
 
     public static long[] readLongArrayLE(long l) {
-        return readLongArrayLE(toByteArrayBE(l), 0, 1*8);
+        return readLongArrayLE(toByteArrayBE(l), 0, 1 * 8);
     }
 
     public static long[] readLongArrayLE(byte[] b) {
@@ -1206,13 +1202,13 @@ public class Util {
 
     public static long[] readLongArrayLE(byte[] b, int offset, int length) {
         long[] result = new long[length / 8];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readLongLE(b, offset + (i * 8));
         return result;
     }
 
     public static long[] readLongArrayBE(long l) {
-        return readLongArrayBE(toByteArrayBE(l), 0, 1*8);
+        return readLongArrayBE(toByteArrayBE(l), 0, 1 * 8);
     }
 
     public static long[] readLongArrayBE(byte[] b) {
@@ -1221,7 +1217,7 @@ public class Util {
 
     public static long[] readLongArrayBE(byte[] b, int offset, int length) {
         long[] result = new long[length / 8];
-        for(int i = 0; i < result.length; ++i)
+        for (int i = 0; i < result.length; ++i)
             result[i] = Util.readLongBE(b, offset + (i * 8));
         return result;
     }
@@ -1232,7 +1228,7 @@ public class Util {
 
     public static byte[] readByteArrayLE(char[] data, int offset, int length) {
         byte[] result = new byte[length * 2];
-        for(int i = 0; i < length; ++i) {
+        for (int i = 0; i < length; ++i) {
             byte[] cur = toByteArrayLE(data[offset + i]);
             result[i * 2] = cur[0];
             result[i * 2 + 1] = cur[1];
@@ -1246,7 +1242,7 @@ public class Util {
 
     public static byte[] readByteArrayBE(char[] data, int offset, int length) {
         byte[] result = new byte[length * 2];
-        for(int i = 0; i < length; ++i) {
+        for (int i = 0; i < length; ++i) {
             byte[] cur = toByteArrayBE(data[offset + i]);
             result[i * 2] = cur[0];
             result[i * 2 + 1] = cur[1];
@@ -1255,8 +1251,7 @@ public class Util {
     }
 
     public static byte[] fillBuffer(InputStream is, byte[] buffer)
-            throws IOException
-    {
+            throws IOException {
         DataInputStream dis = new DataInputStream(is);
         dis.readFully(buffer);
         return buffer;
@@ -1281,38 +1276,38 @@ public class Util {
     public static BigInteger unsign(long l) {
         return new BigInteger(1, toByteArrayBE(l));
     }
-    
+
     public static short[] unsign(byte[] ab) {
         short[] res = new short[ab.length];
-        for(int i = 0; i < ab.length; ++i)
+        for (int i = 0; i < ab.length; ++i)
             res[i] = unsign(ab[i]);
         return res;
     }
 
     public static int[] unsign(short[] as) {
         int[] res = new int[as.length];
-        for(int i = 0; i < as.length; ++i)
+        for (int i = 0; i < as.length; ++i)
             res[i] = unsign(as[i]);
         return res;
     }
 
     public static int[] unsign(char[] ac) {
         int[] res = new int[ac.length];
-        for(int i = 0; i < ac.length; ++i)
+        for (int i = 0; i < ac.length; ++i)
             res[i] = unsign(ac[i]);
         return res;
     }
 
     public static long[] unsign(int[] ai) {
         long[] res = new long[ai.length];
-        for(int i = 0; i < ai.length; ++i)
+        for (int i = 0; i < ai.length; ++i)
             res[i] = unsign(ai[i]);
         return res;
     }
 
     public static BigInteger[] unsign(long[] al) {
         BigInteger[] res = new BigInteger[al.length];
-        for(int i = 0; i < al.length; ++i)
+        for (int i = 0; i < al.length; ++i)
             res[i] = unsign(al[i]);
         return res;
     }
@@ -1323,7 +1318,7 @@ public class Util {
         char[] temp = new char[512];
         long bytesRead = 0;
         int curBytesRead = r.read(temp, 0, temp.length);
-        while(curBytesRead >= 0) {
+        while (curBytesRead >= 0) {
             sb.append(temp, 0, curBytesRead);
             curBytesRead = r.read(temp, 0, temp.length);
         }
@@ -1348,7 +1343,7 @@ public class Util {
     public static byte[] encodeString(String string, String encoding) {
         try {
             return string.getBytes(encoding);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -1370,25 +1365,23 @@ public class Util {
      * Encodes a String containing only ASCII characters into ASCII-encoded
      * data, stored in <code>b</code>.
      *
-     * @param s     source string.
-     * @param sPos  read position in source String.
-     * @param b     target array.
-     * @param bPos  store position in target array.
-     * @param len   the number of codepoints to read from <code>s</code> and
-     *              thus the number of bytes to write to <code>b</code>.
+     * @param s    source string.
+     * @param sPos read position in source String.
+     * @param b    target array.
+     * @param bPos store position in target array.
+     * @param len  the number of codepoints to read from <code>s</code> and
+     *             thus the number of bytes to write to <code>b</code>.
      */
     public static void encodeASCIIString(String s, int sPos, byte[] b, int bPos,
-            final int len)
-    {
-        for(int i = 0; i < len; ++i) {
-            int curCodePoint = s.codePointAt(i+sPos);
+                                         int len) {
+        for (int i = 0; i < len; ++i) {
+            int curCodePoint = s.codePointAt(i + sPos);
 
-            if(curCodePoint >= 0 && curCodePoint < 0x80) {
-                b[i+bPos] = (byte) curCodePoint;
-            }
-            else {
+            if (curCodePoint >= 0 && curCodePoint < 0x80) {
+                b[i + bPos] = (byte) curCodePoint;
+            } else {
                 throw new IllegalArgumentException("Illegal ASCII character: " +
-                        "\"" + new String(new int[]{curCodePoint}, 0, 1) +
+                        "\"" + new String(new int[] {curCodePoint}, 0, 1) +
                         "\" (0x" + Util.toHexStringBE(curCodePoint) + ")");
             }
         }
@@ -1398,14 +1391,14 @@ public class Util {
      * Checks if the given <code>array</code> contains the specified
      * <code>element</code> at least once.
      *
-     * @param array the array to search.
+     * @param array   the array to search.
      * @param element the element to look for.
      * @return true if <code>element</code> was present in <code>array</code>,
      * and false otherwise.
      */
     public static boolean contains(byte[] array, byte element) {
-        for(byte b : array) {
-            if(b == element)
+        for (byte b : array) {
+            if (b == element)
                 return true;
         }
         return false;
@@ -1416,14 +1409,14 @@ public class Util {
      * Checks if the given <code>array</code> contains the specified
      * <code>element</code> at least once.
      *
-     * @param array the array to search.
+     * @param array   the array to search.
      * @param element the element to look for.
      * @return true if <code>element</code> was present in <code>array</code>,
      * and false otherwise.
      */
     public static boolean contains(char[] array, char element) {
-        for(char c : array) {
-            if(c == element)
+        for (char c : array) {
+            if (c == element)
                 return true;
         }
         return false;
@@ -1434,14 +1427,14 @@ public class Util {
      * Checks if the given <code>array</code> contains the specified
      * <code>element</code> at least once.
      *
-     * @param array the array to search.
+     * @param array   the array to search.
      * @param element the element to look for.
      * @return true if <code>element</code> was present in <code>array</code>,
      * and false otherwise.
      */
     public static boolean contains(short[] array, short element) {
-        for(short s : array) {
-            if(s == element)
+        for (short s : array) {
+            if (s == element)
                 return true;
         }
         return false;
@@ -1452,14 +1445,14 @@ public class Util {
      * Checks if the given <code>array</code> contains the specified
      * <code>element</code> at least once.
      *
-     * @param array the array to search.
+     * @param array   the array to search.
      * @param element the element to look for.
      * @return true if <code>element</code> was present in <code>array</code>,
      * and false otherwise.
      */
     public static boolean contains(int[] array, int element) {
-        for(int i : array) {
-            if(i == element)
+        for (int i : array) {
+            if (i == element)
                 return true;
         }
         return false;
@@ -1470,14 +1463,14 @@ public class Util {
      * Checks if the given <code>array</code> contains the specified
      * <code>element</code> at least once.
      *
-     * @param array the array to search.
+     * @param array   the array to search.
      * @param element the element to look for.
      * @return true if <code>element</code> was present in <code>array</code>,
      * and false otherwise.
      */
     public static boolean contains(long[] array, long element) {
-        for(long l : array) {
-            if(l == element)
+        for (long l : array) {
+            if (l == element)
                 return true;
         }
         return false;
@@ -1488,14 +1481,14 @@ public class Util {
      * Checks if the given <code>array</code> contains the specified
      * <code>element</code> at least once.
      *
-     * @param array the array to search.
+     * @param array   the array to search.
      * @param element the element to look for.
      * @return true if <code>element</code> was present in <code>array</code>,
      * and false otherwise.
      */
     public static <A> boolean contains(A[] array, A element) {
-        for(A a : array) {
-            if(a == element)
+        for (A a : array) {
+            if (a == element)
                 return true;
         }
         return false;
@@ -1507,15 +1500,15 @@ public class Util {
      * must have the same number of elements, and every pair of elements must be
      * equal according to Object.equals).
      *
-     * @param <A> the type of the array.
+     * @param <A>          the type of the array.
      * @param listOfArrays the list of arrays to search.
-     * @param array the array to match.
+     * @param array        the array to match.
      * @return <code>true</code> if an equal to <code>array</code> was found in
      * <code>listOfArrays</code>, otherwise <code>false</code>.
      */
     public static <A> boolean contains(List<A[]> listOfArrays, A[] array) {
-        for(A[] curArray : listOfArrays) {
-            if(Arrays.equals(curArray, array))
+        for (A[] curArray : listOfArrays) {
+            if (Arrays.equals(curArray, array))
                 return true;
         }
         return false;
@@ -1527,39 +1520,35 @@ public class Util {
      * <code>concatenateStrings(new String[] {"joe", "lisa", "bob"},
      * " and ");</code> yields the string "joe and lisa and bob".
      *
-     * @param strings
-     * @param glueString
+     * @param strings    the input strings
+     * @param glueString the strings to concatenate inter words
      * @return the input strings concatenated into one string, adding the
      * <code>glueString</code> between each pair.
      */
-    public static String concatenateStrings(Object[] strings, String glueString)
-    {
-        if(strings.length > 0) {
+    public static String concatenateStrings(Object[] strings, String glueString) {
+        if (strings.length > 0) {
             StringBuilder sb = new StringBuilder(strings[0].toString());
-            for(int i = 1; i < strings.length; ++i)
+            for (int i = 1; i < strings.length; ++i)
                 sb.append(glueString).append(strings[i].toString());
             return sb.toString();
-        }
-        else
+        } else
             return "";
     }
 
-    public static String concatenateStrings(List<? extends Object> strings,
-            String glueString)
-    {
-        if(strings.size() > 0) {
+    public static String concatenateStrings(List<?> strings,
+                                            String glueString) {
+        if (!strings.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             boolean first = true;
-            for(Object s : strings) {
-                if(!first)
+            for (Object s : strings) {
+                if (!first)
                     sb.append(glueString);
                 else
                     first = false;
                 sb.append(s.toString());
             }
             return sb.toString();
-        }
-        else
+        } else
             return "";
     }
 
@@ -1567,36 +1556,34 @@ public class Util {
         int parts = string.length() / unitSize;
         StringBuilder sizeStringBuilder = new StringBuilder();
         String head = string.substring(0, string.length() - parts * unitSize);
-        if(head.length() > 0)
+        if (!head.isEmpty())
             sizeStringBuilder.append(head);
-        for(int i = parts - 1; i >= 0; --i) {
-            if(i < parts-1 || (i == parts-1 && head.length() > 0))
+        for (int i = parts - 1; i >= 0; --i) {
+            if (i < parts - 1 || (i == parts - 1 && !head.isEmpty()))
                 sizeStringBuilder.append(" ");
-            sizeStringBuilder.append(string.substring(string.length() -
-                    (i + 1) * unitSize, string.length() - i * unitSize));
+            sizeStringBuilder.append(string, string.length() -
+                    (i + 1) * unitSize, string.length() - i * unitSize);
         }
         return sizeStringBuilder.toString();
     }
 
     public static void buildStackTrace(Throwable t, int maxStackTraceLines,
-            StringBuilder sb)
-    {
+                                       StringBuilder sb) {
         int stackTraceLineCount = 0;
         Throwable curThrowable = t;
-        while(curThrowable != null && stackTraceLineCount < maxStackTraceLines)
-        {
-            sb.append(curThrowable.toString()).append("\n");
+        while (curThrowable != null && stackTraceLineCount < maxStackTraceLines) {
+            sb.append(curThrowable).append("\n");
             ++stackTraceLineCount;
-            for(StackTraceElement ste : curThrowable.getStackTrace()) {
-                if(stackTraceLineCount < maxStackTraceLines) {
+            for (StackTraceElement ste : curThrowable.getStackTrace()) {
+                if (stackTraceLineCount < maxStackTraceLines) {
                     sb.append("        ").append(ste.toString()).append("\n");
                 }
                 ++stackTraceLineCount;
             }
 
             Throwable cause = curThrowable.getCause();
-            if(cause != null) {
-                if(stackTraceLineCount < maxStackTraceLines) {
+            if (cause != null) {
+                if (stackTraceLineCount < maxStackTraceLines) {
                     sb.append("Caused by:\n");
                     ++stackTraceLineCount;
                 }
@@ -1604,8 +1591,8 @@ public class Util {
             curThrowable = cause;
         }
 
-        if(stackTraceLineCount >= maxStackTraceLines)
-            sb.append("...and ").append(stackTraceLineCount-maxStackTraceLines).
+        if (stackTraceLineCount >= maxStackTraceLines)
+            sb.append("...and ").append(stackTraceLineCount - maxStackTraceLines).
                     append(" more.");
     }
 
@@ -1623,7 +1610,7 @@ public class Util {
      * Reverses the order of the range defined by <code>offset</code> and
      * <code>length</code> in the array <code>data</code>.
      *
-     * @param data the array to reverse.
+     * @param data   the array to reverse.
      * @param offset the start offset of the region to reverse.
      * @param length the length of the region to reverse.
      * @return <code>data</code>.
@@ -1633,9 +1620,9 @@ public class Util {
         int middleOffset = offset + (length / 2);
         byte tmp;
 
-        for(int head = offset; head < middleOffset; ++head) {
+        for (int head = offset; head < middleOffset; ++head) {
             int tail = endOffset - head;
-            if(head == tail)
+            if (head == tail)
                 break;
 
             // Swap data[head] and data[tail]
@@ -1706,11 +1693,11 @@ public class Util {
      * representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, byte data) {
-        array[pos+0] = data;
+        array[pos + 0] = data;
     }
 
     /**
@@ -1718,12 +1705,12 @@ public class Util {
      * representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, short data) {
-        array[pos+0] = (byte) ((data >> 8) & 0xFF);
-        array[pos+1] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 0) & 0xFF);
     }
 
     /**
@@ -1731,12 +1718,12 @@ public class Util {
      * representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, char data) {
-        array[pos+0] = (byte) ((data >> 8) & 0xFF);
-        array[pos+1] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 0) & 0xFF);
     }
 
     /**
@@ -1744,14 +1731,14 @@ public class Util {
      * representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, int data) {
-        array[pos+0] = (byte) ((data >> 24) & 0xFF);
-        array[pos+1] = (byte) ((data >> 16) & 0xFF);
-        array[pos+2] = (byte) ((data >> 8) & 0xFF);
-        array[pos+3] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 24) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 16) & 0xFF);
+        array[pos + 2] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 3] = (byte) ((data >> 0) & 0xFF);
     }
 
     /**
@@ -1759,18 +1746,18 @@ public class Util {
      * representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, long data) {
-        array[pos+0] = (byte) ((data >> 56) & 0xFF);
-        array[pos+1] = (byte) ((data >> 48) & 0xFF);
-        array[pos+2] = (byte) ((data >> 40) & 0xFF);
-        array[pos+3] = (byte) ((data >> 32) & 0xFF);
-        array[pos+4] = (byte) ((data >> 24) & 0xFF);
-        array[pos+5] = (byte) ((data >> 16) & 0xFF);
-        array[pos+6] = (byte) ((data >> 8) & 0xFF);
-        array[pos+7] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 56) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 48) & 0xFF);
+        array[pos + 2] = (byte) ((data >> 40) & 0xFF);
+        array[pos + 3] = (byte) ((data >> 32) & 0xFF);
+        array[pos + 4] = (byte) ((data >> 24) & 0xFF);
+        array[pos + 5] = (byte) ((data >> 16) & 0xFF);
+        array[pos + 6] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 7] = (byte) ((data >> 0) & 0xFF);
     }
 
     /**
@@ -1778,8 +1765,8 @@ public class Util {
      * Big Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, char[] data) {
         arrayPutBE(array, pos, data, 0, data.length);
@@ -1789,18 +1776,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Big Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutBE(byte[] array, int pos, char[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutBE(array, pos + i, data[offset + i]);
         }
     }
@@ -1810,8 +1796,8 @@ public class Util {
      * Big Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, short[] data) {
         arrayPutBE(array, pos, data, 0, data.length);
@@ -1821,18 +1807,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Big Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutBE(byte[] array, int pos, short[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutBE(array, pos + i, data[offset + i]);
         }
     }
@@ -1842,8 +1827,8 @@ public class Util {
      * Big Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, int[] data) {
         arrayPutBE(array, pos, data, 0, data.length);
@@ -1853,18 +1838,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Big Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutBE(byte[] array, int pos, int[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutBE(array, pos + i, data[offset + i]);
         }
     }
@@ -1874,8 +1858,8 @@ public class Util {
      * Big Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutBE(byte[] array, int pos, long[] data) {
         arrayPutBE(array, pos, data, 0, data.length);
@@ -1885,18 +1869,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Big Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutBE(byte[] array, int pos, long[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutBE(array, pos + i, data[offset + i]);
         }
     }
@@ -1906,11 +1889,11 @@ public class Util {
      * Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, byte data) {
-        array[pos+0] = data;
+        array[pos + 0] = data;
     }
 
     /**
@@ -1918,12 +1901,12 @@ public class Util {
      * Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, short data) {
-        array[pos+0] = (byte) ((data >> 0) & 0xFF);
-        array[pos+1] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 8) & 0xFF);
     }
 
     /**
@@ -1931,12 +1914,12 @@ public class Util {
      * Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, char data) {
-        array[pos+0] = (byte) ((data >> 0) & 0xFF);
-        array[pos+1] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 8) & 0xFF);
     }
 
     /**
@@ -1944,14 +1927,14 @@ public class Util {
      * Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, int data) {
-        array[pos+0] = (byte) ((data >> 0) & 0xFF);
-        array[pos+1] = (byte) ((data >> 8) & 0xFF);
-        array[pos+2] = (byte) ((data >> 16) & 0xFF);
-        array[pos+3] = (byte) ((data >> 24) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 2] = (byte) ((data >> 16) & 0xFF);
+        array[pos + 3] = (byte) ((data >> 24) & 0xFF);
     }
 
     /**
@@ -1959,18 +1942,18 @@ public class Util {
      * Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, long data) {
-        array[pos+0] = (byte) ((data >> 0) & 0xFF);
-        array[pos+1] = (byte) ((data >> 8) & 0xFF);
-        array[pos+2] = (byte) ((data >> 16) & 0xFF);
-        array[pos+3] = (byte) ((data >> 24) & 0xFF);
-        array[pos+4] = (byte) ((data >> 32) & 0xFF);
-        array[pos+5] = (byte) ((data >> 40) & 0xFF);
-        array[pos+6] = (byte) ((data >> 48) & 0xFF);
-        array[pos+7] = (byte) ((data >> 56) & 0xFF);
+        array[pos + 0] = (byte) ((data >> 0) & 0xFF);
+        array[pos + 1] = (byte) ((data >> 8) & 0xFF);
+        array[pos + 2] = (byte) ((data >> 16) & 0xFF);
+        array[pos + 3] = (byte) ((data >> 24) & 0xFF);
+        array[pos + 4] = (byte) ((data >> 32) & 0xFF);
+        array[pos + 5] = (byte) ((data >> 40) & 0xFF);
+        array[pos + 6] = (byte) ((data >> 48) & 0xFF);
+        array[pos + 7] = (byte) ((data >> 56) & 0xFF);
     }
 
     /**
@@ -1978,8 +1961,8 @@ public class Util {
      * Little Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, char[] data) {
         arrayPutLE(array, pos, data, 0, data.length);
@@ -1989,18 +1972,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Little Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutLE(byte[] array, int pos, char[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutLE(array, pos + i, data[offset + i]);
         }
     }
@@ -2010,8 +1992,8 @@ public class Util {
      * Little Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, short[] data) {
         arrayPutLE(array, pos, data, 0, data.length);
@@ -2021,18 +2003,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Little Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutLE(byte[] array, int pos, short[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutLE(array, pos + i, data[offset + i]);
         }
     }
@@ -2042,8 +2023,8 @@ public class Util {
      * Little Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, int[] data) {
         arrayPutLE(array, pos, data, 0, data.length);
@@ -2053,18 +2034,17 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Little Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutLE(byte[] array, int pos, int[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutLE(array, pos + i, data[offset + i]);
         }
     }
@@ -2074,8 +2054,8 @@ public class Util {
      * Little Endian representation.
      *
      * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param pos   the position in the array where writing should begin.
+     * @param data  the data to write.
      */
     public static void arrayPutLE(byte[] array, int pos, long[] data) {
         arrayPutLE(array, pos, data, 0, data.length);
@@ -2085,37 +2065,33 @@ public class Util {
      * Writes the specified array of native types to <code>array</code> using
      * Little Endian representation.
      *
-     * @param array the array to which we should write.
-     * @param pos the position in the array where writing should begin.
-     * @param data the data to write.
+     * @param array  the array to which we should write.
+     * @param pos    the position in the array where writing should begin.
+     * @param data   the data to write.
      * @param offset offset into <code>data</code> where we should start
-     *        reading.
+     *               reading.
      * @param length the number of array elements to put into
-     *        <code>array</code>.
+     *               <code>array</code>.
      */
     public static void arrayPutLE(byte[] array, int pos, long[] data,
-            int offset, int length)
-    {
-        for(int i = 0; i < length; ++i) {
+                                  int offset, int length) {
+        for (int i = 0; i < length; ++i) {
             arrayPutLE(array, pos + i, data[offset + i]);
         }
     }
 
     public static boolean booleanEnabledByProperties(boolean defaultValue,
-            final String... debugProperties)
-    {
+                                                     String... debugProperties) {
         boolean debug = defaultValue;
-        for(String debugProperty : debugProperties) {
+        for (String debugProperty : debugProperties) {
             String value = System.getProperty(debugProperty);
 
-            if(value == null);
-            else if(value.equals("true")) {
+            if (value == null) ;
+            else if (value.equals("true")) {
                 debug = true;
-            }
-            else if(value.equals("false")) {
+            } else if (value.equals("false")) {
                 debug = false;
-            }
-            else {
+            } else {
                 System.err.println("[WARNING] Unrecognized value for debug " +
                         "property \"" + debugProperty + "\": \"" + value +
                         "\"");

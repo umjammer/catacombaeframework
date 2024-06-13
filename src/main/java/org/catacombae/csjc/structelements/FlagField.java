@@ -37,17 +37,17 @@ public class FlagField extends BooleanRepresentableField {
         this.offset = offset;
         this.length = length;
         this.bitNumber = bitNumber;
-        if(bitNumber < 0 || bitNumber > length * 8)
+        if (bitNumber < 0 || bitNumber > length * 8)
             throw new IllegalArgumentException("Illegal bit address! Valid " + "addresses are in the range 0 to " + (length * 8 - 1));
     }
 
     @Override
     public boolean getValueAsBoolean() {
-        //System.err.println("getValueAsBoolean(): bitNumber/8 = " + (bitNumber/8));
+//        System.err.println("getValueAsBoolean(): bitNumber/8 = " + (bitNumber / 8));
         int byteNumber = (length - 1) - (bitNumber / 8);
-        //System.err.println("getValueAsBoolean(): byteNumber = " + byteNumber);
+//        System.err.println("getValueAsBoolean(): byteNumber = " + byteNumber);
         byte flagByte = fieldData[offset + byteNumber];
-        //System.err.println("getValueAsBoolean(): bitNumber%8 = " + (bitNumber%8));
+//        System.err.println("getValueAsBoolean(): bitNumber%8 = " + (bitNumber % 8));
         int flag = (flagByte >> (bitNumber % 8)) & 1;
         return flag != 0;
     }
@@ -57,38 +57,11 @@ public class FlagField extends BooleanRepresentableField {
         int byteNumber = (length - 1) - (bitNumber / 8);
         byte flagByte = fieldData[offset + byteNumber];
         int bitmask = 1 << (bitNumber % 8);
-        final byte modifiedFlagByte;
-        if(b)
+        byte modifiedFlagByte;
+        if (b)
             modifiedFlagByte = (byte) (flagByte | bitmask);
         else
             modifiedFlagByte = (byte) ~((~flagByte) | bitmask);
         fieldData[offset + byteNumber] = modifiedFlagByte;
     }
-
-    /**
-     * Testcode.
-     *
-     * @param args command line arguments.
-     */
-    /*
-    public static void main(String[] args) {
-        byte[] i = new byte[] { 0x00, (byte) 0xFF, 0x00, (byte) 0xEE };
-        System.err.println("(1) 0x" + Util.byteArrayToHexString(i));
-
-        FlagField ff = new FlagField(i, 1, 2, 15);
-
-        System.err.println("Flag set to: " + ff.getValueAsBoolean());
-        System.err.println("Setting flag to true.");
-        ff.setBooleanValue(true);
-        System.err.println("(2) 0x" + Util.byteArrayToHexString(i));
-
-        System.err.println("Setting flag to false.");
-        ff.setBooleanValue(false);
-        System.err.println("(3) 0x" + Util.byteArrayToHexString(i));
-
-        System.err.println("Setting flag to true again.");
-        ff.setBooleanValue(true);
-        System.err.println("(4) 0x" + Util.byteArrayToHexString(i));
-    }
-    */
 }

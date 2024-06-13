@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -22,90 +22,86 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+
 /**
  * Utility functions that the GUI designer can use to ease his/her existential suffering.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class GUIUtil {
+
     /**
      * Displays an exception dialog with a stack trace. Convenience method that omits a user defined
      * message and sets the default window title to "Exception" and the message type to
      * JOptionPane.ERROR_MESSAGE. Maximum lines shown in the stack trace is set to 10.
-     * 
-     * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
+     *
      * @param t the exception thrown.
      * @param c the dialog's parent component.
+     * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
      */
     public static void displayExceptionDialog(Throwable t, Component c) {
         displayExceptionDialog(t, 10, c, "", "Exception", JOptionPane.ERROR_MESSAGE);
     }
-    
+
     /**
      * Displays an exception dialog with a stack trace. Convenience method that omits a user defined
      * message and sets the default window title to "Exception" and the message type to
      * JOptionPane.ERROR_MESSAGE.
-     * 
-     * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
-     * @param t the exception thrown.
+     *
+     * @param t                  the exception thrown.
      * @param maxStackTraceLines the maximum number of lines of the stack trace to display.
-     * @param c the dialog's parent component.
+     * @param c                  the dialog's parent component.
+     * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
      */
     public static void displayExceptionDialog(Throwable t, int maxStackTraceLines, Component c) {
         displayExceptionDialog(t, maxStackTraceLines, c, "", "Exception", JOptionPane.ERROR_MESSAGE);
     }
-    
+
     /**
      * Displays an exception dialog with a stack trace. Convenience method that sets the default
      * window title to "Exception" and the message type to JOptionPane.ERROR_MESSAGE.
-     * 
-     * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
-     * @param t the exception thrown.
+     *
+     * @param t                  the exception thrown.
      * @param maxStackTraceLines the maximum number of lines of the stack trace to display.
-     * @param c the dialog's parent component.
-     * @param message the message to be printed above the exception.
+     * @param c                  the dialog's parent component.
+     * @param message            the message to be printed above the exception.
+     * @see #displayExceptionDialog(Throwable, int, Component, String, String, int)
      */
-    public static void displayExceptionDialog(Throwable t, int maxStackTraceLines, Component c,
-            String message) {
+    public static void displayExceptionDialog(Throwable t, int maxStackTraceLines, Component c, String message) {
         displayExceptionDialog(t, maxStackTraceLines, c, message, "Exception", JOptionPane.ERROR_MESSAGE);
     }
-    
+
     /**
      * Displays an exception dialog with a stack trace.
-     * 
-     * @param t the exception thrown.
+     *
+     * @param t                  the exception thrown.
      * @param maxStackTraceLines the maximum number of lines of the stack trace to display.
-     * @param c the dialog's parent component.
-     * @param message the message to be printed above the exception.
-     * @param title the dialog's title.
-     * @param messageType the dialog's message type (JOptionPane.ERROR_MESSAGE,
-     * JOptionPane.INFORMATION_MESSAGE, etc.).
+     * @param c                  the dialog's parent component.
+     * @param message            the message to be printed above the exception.
+     * @param title              the dialog's title.
+     * @param messageType        the dialog's message type (JOptionPane.ERROR_MESSAGE,
+     *                           JOptionPane.INFORMATION_MESSAGE, etc.).
      */
-    public static void displayExceptionDialog(final Throwable t, final int maxStackTraceLines,
-            final Component c, final String message, final String title, final int messageType) {
+    public static void displayExceptionDialog(Throwable t, int maxStackTraceLines,
+                                              Component c, String message, String title, int messageType) {
         StringBuilder sb = new StringBuilder();
-        if(message.length() > 0) {
+        if (!message.isEmpty()) {
             sb.append(message);
             sb.append("\n\n");
         }
-        
+
         Util.buildStackTrace(t, maxStackTraceLines, sb);
-        
-        final String finalMessage = sb.toString();
+
+        String finalMessage = sb.toString();
         try {
-            Runnable r = new Runnable() {
-                //@Override
-                public void run() {
-                    JOptionPane.showMessageDialog(c, finalMessage, title, messageType);
-                }
-            };
-            if(SwingUtilities.isEventDispatchThread())
+            //@Override
+            Runnable r = () -> JOptionPane.showMessageDialog(c, finalMessage, title, messageType);
+            if (SwingUtilities.isEventDispatchThread())
                 r.run();
             else
                 SwingUtilities.invokeAndWait(r);
-        } catch(Exception e) {
-            throw new RuntimeException("Exception during invokeAndWait!", e);
+        } catch (Exception e) {
+            throw new IllegalStateException("Exception during invokeAndWait!", e);
         }
-        
     }
 }

@@ -14,18 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
- *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 class TestUnsign {
 
     @Test
     void test() {
-        byte bLow = 0x0, bMiddle = 0x7F, bHigh = (byte)0xFF;
-        short sLow = 0x0, sMiddle = 0x7FFF, sHigh = (short)0xFFFF;
-        char cLow = 0x0, cMiddle = 0x7FFF, cHigh = 0xFFFF;
-        int iLow = 0x0, iMiddle = 0x7FFFFFFF, iHigh = 0xFFFFFFFF;
-        long lLow = 0x0, lMiddle = 0x7FFFFFFFFFFFFFFFL, lHigh = 0xFFFFFFFFFFFFFFFFL;
+        byte bLow = 0x0, bMiddle = 0x7f, bHigh = (byte) 0xff;
+        short sLow = 0x0, sMiddle = 0x7fff, sHigh = (short) 0xffff;
+        char cLow = 0x0, cMiddle = 0x7fff, cHigh = 0xffff;
+        int iLow = 0x0, iMiddle = 0x7fff_ffff, iHigh = 0xffff_ffff;
+        long lLow = 0x0, lMiddle = 0x7fff_ffff_ffff_ffffL, lHigh = 0xffff_ffff_ffff_ffffL;
 
         // byte
         assertEquals(0, bLow);
@@ -57,13 +56,13 @@ class TestUnsign {
         assertEquals(2147483647, iMiddle);
         assertEquals(2147483647, Util.unsign(iMiddle));
         assertEquals(-1, iHigh);
-        assertEquals(4294967295l, Util.unsign(iHigh));
+        assertEquals(4294967295L, Util.unsign(iHigh));
 
         // long
         assertEquals(0, lLow);
         assertEquals(BigInteger.ZERO, Util.unsign(lLow));
-        assertEquals(9223372036854775807l, lMiddle);
-        assertEquals(BigInteger.valueOf(9223372036854775807l), Util.unsign(lMiddle));
+        assertEquals(9223372036854775807L, lMiddle);
+        assertEquals(BigInteger.valueOf(9223372036854775807L), Util.unsign(lMiddle));
         assertEquals(-1, lHigh);
         assertEquals(new BigInteger("18446744073709551615"), Util.unsign(lHigh));
     }

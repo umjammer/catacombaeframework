@@ -21,6 +21,7 @@ package org.catacombae.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 /**
  * Transforms a java.io.InputStream into an org.catacombae.io.Readable.
  *
@@ -34,21 +35,20 @@ public class InputStreamReadable extends BasicReadable implements Stream {
         this.is = is;
     }
 
-    /** {@inheritDoc} */
     @Override
     public int read(byte[] data, int pos, int len) throws RuntimeIOException {
         try {
             return is.read(data, pos, len);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         }
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void close() throws RuntimeIOException {
         try {
             is.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         }
     }

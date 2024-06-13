@@ -18,65 +18,54 @@
 
 package org.catacombae.util;
 
+import java.util.Objects;
+
 import org.catacombae.io.ReadableRandomAccessStream;
 import org.catacombae.io.RuntimeIOException;
 
+
 /**
  * CatacombaeIO-specific utility class.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class IOUtil {
+
     /**
      * Reads the supplied ReadableRandomAccessStream from its current position
      * until the end of the stream.
      *
-     * @param s
+     * @param s the stream
      * @return the contents of the remainder of the stream.
      * @throws org.catacombae.io.RuntimeIOException if an I/O error occurred
-     * when reading the stream.
+     *                                              when reading the stream.
      */
-    public static byte[] readFully(ReadableRandomAccessStream s)
-            throws RuntimeIOException
-    {
-        if(s.length() < 0 || s.length() > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException("Length of s is out of range: " +
-                    s.length());
+    public static byte[] readFully(ReadableRandomAccessStream s) throws RuntimeIOException {
+        if (s.length() < 0 || s.length() > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Length of s is out of range: " + s.length());
         }
 
         return readFully(s, null, (int) s.length());
     }
 
-    public static byte[] readFully(ReadableRandomAccessStream s, long offset,
-            int length) throws RuntimeIOException
-    {
+    public static byte[] readFully(ReadableRandomAccessStream s, long offset, int length) throws RuntimeIOException {
         return readFully(s, Long.valueOf(offset), length);
     }
 
-    private static byte[] readFully(ReadableRandomAccessStream s, Long offset,
-            int length) throws RuntimeIOException
-    {
+    private static byte[] readFully(ReadableRandomAccessStream s, Long offset, int length) throws RuntimeIOException {
         long trueOffset;
 
-        if(offset == null) {
-            trueOffset = s.getFilePointer();
-        }
-        else {
-            trueOffset = offset;
-        }
+        trueOffset = Objects.requireNonNullElseGet(offset, s::getFilePointer);
 
-        if(length > s.length()) {
-            throw new IllegalArgumentException("'length' is unreasonably " +
-                    "large: " + length);
-        }
-        else if((s.length() - length) < trueOffset) {
-            throw new IllegalArgumentException("Offset out of range: " +
-                    trueOffset + "(length: " + s.length() + ")");
+        if (length > s.length()) {
+            throw new IllegalArgumentException("'length' is unreasonably large: " + length);
+        } else if ((s.length() - length) < trueOffset) {
+            throw new IllegalArgumentException("Offset out of range: " + trueOffset + "(length: " + s.length() + ")");
         }
 
         byte[] res = new byte[length];
 
-        if(offset != null) {
+        if (offset != null) {
             s.seek(trueOffset);
         }
 

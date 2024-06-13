@@ -19,6 +19,7 @@ package org.catacombae.csjc;
 
 import java.io.PrintStream;
 
+
 /**
  * Represents a struct which is printable, i.e. a view of its contents can be printed to a
  * java.io.PrintStream.<br>
@@ -27,21 +28,22 @@ import java.io.PrintStream;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface PrintableStruct {
+
     /**
      * Prints the name of the struct along with the fields of the struct to <code>ps</code>
      * prepending <code>prefix</code> to each line.
      *
-     * @param ps the stream to print the contents to.
+     * @param ps     the stream to print the contents to.
      * @param prefix the string prefix to prepend to each line (useful for indenting).
      */
-    public void print(PrintStream ps, String prefix);
+    void print(PrintStream ps, String prefix);
 
     /**
      * Prints <b>only the fields of the struct</b> to <code>ps</code> prepending
      * <code>prefix</code> to each line.
      *
-     * @param ps the stream to print the contents to.
+     * @param ps     the stream to print the contents to.
      * @param prefix the string prefix to prepend to each line (useful for indenting).
      */
-    public void printFields(PrintStream ps, String prefix);
+    void printFields(PrintStream ps, String prefix);
 }

@@ -21,8 +21,10 @@ package org.catacombae.csjc.structelements;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface DataHandle {
-    public byte[] getBytesAsCopy();
-    public byte[] getBytesAsCopy(int offset, int length);
 
-    public int getLength();
+    byte[] getBytesAsCopy();
+
+    byte[] getBytesAsCopy(int offset, int length);
+
+    int getLength();
 }

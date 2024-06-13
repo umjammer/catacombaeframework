@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -19,25 +19,13 @@
 package org.catacombae.io;
 
 /**
- *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class BasicWritableRandomAccessStream extends BasicWritable implements WritableRandomAccessStream {
-    
+
     /**
      * Empty constructor (there is no state maintained in this class).
      */
-    protected BasicWritableRandomAccessStream() { }
-    
-    /** {@inheritDoc} */
-    public abstract void close() throws RuntimeIOException;
-
-    /** {@inheritDoc} */
-    public abstract void seek(long pos) throws RuntimeIOException;
-
-    /** {@inheritDoc} */
-    public abstract long length() throws RuntimeIOException;
-
-    /** {@inheritDoc} */
-    public abstract long getFilePointer() throws RuntimeIOException;
+    protected BasicWritableRandomAccessStream() {
+    }
 }

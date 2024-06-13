@@ -19,25 +19,29 @@ package org.catacombae.csjc.structelements;
 
 import org.catacombae.util.Util;
 
+
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 class ByteArrayDataHandle implements DataHandle {
 
-    private byte[] data;
+    private final byte[] data;
 
     public ByteArrayDataHandle(byte[] data) {
         this.data = data;
     }
 
+    @Override
     public byte[] getBytesAsCopy() {
         return getBytesAsCopy(0, data.length);
     }
 
+    @Override
     public byte[] getBytesAsCopy(int offset, int length) {
         return Util.createCopy(data, offset, length);
     }
 
+    @Override
     public int getLength() {
         return data.length;
     }
