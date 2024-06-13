@@ -28,6 +28,7 @@ public abstract class StructElement {
     protected StructElement(String typeName) {
         this(typeName, null);
     }
+
     protected StructElement(String typeName, String typeDescription) {
         this.typeName = typeName;
         this.typeDescription = typeDescription;

@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,72 +20,74 @@ package org.catacombae.io;
 
 /**
  * A ReadableRandomAccessStream implementation backed by a byte array.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ReadableByteArrayStream extends BasicReadableRandomAccessStream {
+
     private final byte[] backingArray;
     private final int startOffset;
     private final int length;
     private int filePointer;
     private boolean closed = false;
-    
+
     public ReadableByteArrayStream(byte[] array) {
         this(array, 0, array.length);
     }
+
     public ReadableByteArrayStream(byte[] array, int off, int len) {
-        if(off >= array.length || off < 0)
+        if (off >= array.length || off < 0)
             throw new IllegalArgumentException("parameter off out of bounds (off=" + off + ")");
-        if(off+len > array.length || len < 0)
+        if (off + len > array.length || len < 0)
             throw new IllegalArgumentException("parameter len out of bounds (len=" + len + ")");
         this.backingArray = array;
         this.startOffset = off;
         this.length = len;
         this.filePointer = 0;
     }
-    
+
     public void seek(long pos) {
-        if(closed)
+        if (closed)
             throw new RuntimeException("File has been closed!");
-        
-        if(pos >= length || pos < 0)
+
+        if (pos >= length || pos < 0)
             throw new IllegalArgumentException("parameter pos out of bounds");
         else
-            filePointer = (int)pos;
+            filePointer = (int) pos;
     }
 
     public int read(byte[] data, int pos, int len) {
-        if(closed)
+        if (closed)
             throw new RuntimeException("File has been closed!");
-        
-        int remainingBytes = length-filePointer;
-        if(remainingBytes == 0)
+
+        int remainingBytes = length - filePointer;
+        if (remainingBytes == 0)
             return -1;
-        
+
         int trueLen = Math.min(remainingBytes, len);
-        System.arraycopy(backingArray, startOffset+filePointer, data, pos, trueLen);
+        System.arraycopy(backingArray, startOffset + filePointer, data, pos, trueLen);
         filePointer += trueLen;
         return trueLen;
     }
-    
+
     public long length() {
-        if(closed)
+        if (closed)
             throw new RuntimeException("File has been closed!");
-        
+
         return length;
     }
 
     public long getFilePointer() {
-        if(closed)
+        if (closed)
             throw new RuntimeException("File has been closed!");
-        
+
         return filePointer;
     }
 
     public void close() {
-        if(closed)
+        if (closed)
             throw new RuntimeException("File has been closed!");
-        
+
         closed = true;
     }
 

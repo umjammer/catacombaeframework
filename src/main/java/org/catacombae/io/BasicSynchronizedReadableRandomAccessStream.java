@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,15 +20,16 @@ package org.catacombae.io;
 
 /**
  * Basic implementation of convenience methods in a SynchronizedReadableRandomAccess.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class BasicSynchronizedReadableRandomAccessStream extends BasicReadableRandomAccessStream implements SynchronizedReadableRandomAccess {
+
     /** {@inheritDoc} */
     //@Override
     public int readFrom(long pos) throws RuntimeIOException {
         byte[] res = new byte[1];
-        if(readFrom(pos, res, 0, 1) == 1)
+        if (readFrom(pos, res, 0, 1) == 1)
             return res[0] & 0xFF;
         else
             return -1;
@@ -39,24 +40,24 @@ public abstract class BasicSynchronizedReadableRandomAccessStream extends BasicR
     public int readFrom(long pos, byte[] b) throws RuntimeIOException {
         return readFrom(pos, b, 0, b.length);
     }
-    
+
     /** {@inheritDoc} */
     //@Override
     public void readFullyFrom(long pos, byte[] data) throws RuntimeIOException {
-	readFullyFrom(pos, data, 0, data.length);
+        readFullyFrom(pos, data, 0, data.length);
     }
 
     /** {@inheritDoc} */
     //@Override
     public void readFullyFrom(long pos, byte[] data, int offset, int length) throws RuntimeIOException {
-        if(length < 0)
+        if (length < 0)
             throw new IllegalArgumentException("length is negative: " + length);
-	int bytesRead = 0;
-	while(bytesRead < length) {
-	    int curBytesRead = readFrom(pos+bytesRead, data, offset+bytesRead, length-bytesRead);
-	    if(curBytesRead > 0) bytesRead += curBytesRead;
-	    else 
-		throw new RuntimeIOException("Couldn't read the entire length.");
-	}
+        int bytesRead = 0;
+        while (bytesRead < length) {
+            int curBytesRead = readFrom(pos + bytesRead, data, offset + bytesRead, length - bytesRead);
+            if (curBytesRead > 0) bytesRead += curBytesRead;
+            else
+                throw new RuntimeIOException("Couldn't read the entire length.");
+        }
     }
 }

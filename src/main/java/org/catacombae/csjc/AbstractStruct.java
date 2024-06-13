@@ -23,6 +23,7 @@ package org.catacombae.csjc;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface AbstractStruct {
+
     /**
      * Returns a serialized one-to-one representation of the struct's data.
      *

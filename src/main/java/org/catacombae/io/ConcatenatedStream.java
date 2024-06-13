@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -25,7 +25,7 @@ package org.catacombae.io;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStream> implements RandomAccessStream {
-    
+
     public ConcatenatedStream(RandomAccessStream firstPart, long startOffset, long length) {
         super(firstPart, startOffset, length);
     }
@@ -40,8 +40,8 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
         // First: Look up the position represented by our virtual file pointer.
         long bytesToSkip = virtualFP;
         int requestedPartIndex = 0;
-        for(Part p : parts) {
-            if(bytesToSkip < p.length) {
+        for (Part p : parts) {
+            if (bytesToSkip < p.length) {
                 /* The first byte of virtualFP is within this part. */
                 break;
             }
@@ -50,13 +50,13 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
             bytesToSkip -= p.length;
         }
 
-        if(requestedPartIndex >= parts.size()) {
+        if (requestedPartIndex >= parts.size()) {
             throw new RuntimeIOException("Tried to write beyond end of " +
                     "stream.");
         }
 
         // Loop as long as we still have data to fill, and we still have parts to process.
-        while(bytesWritten < len && requestedPartIndex < parts.size()) {
+        while (bytesWritten < len && requestedPartIndex < parts.size()) {
             Part requestedPart = parts.get(requestedPartIndex++);
             long bytesToSkipInPart = bytesToSkip;
             bytesToSkip = 0;
@@ -64,22 +64,22 @@ public class ConcatenatedStream extends BasicConcatenatedStream<RandomAccessStre
             int bytesLeftToWrite = len - bytesWritten;
             int bytesToWrite = (int) ((bytesLeftToWrite < requestedPart.length) ? bytesLeftToWrite : requestedPart.length);
 
-            if(requestedPart.file == null) {
+            if (requestedPart.file == null) {
                 throw new RuntimeException("Tried to write to hole at " +
                         "offset: " + requestedPart.startOffset);
             }
 
             requestedPart.file.seek(bytesToSkipInPart);
             requestedPart.file.write(data, off + bytesWritten, bytesToWrite);
-            
+
             bytesWritten += bytesToWrite;
         }
 
-        if(bytesWritten < len)
+        if (bytesWritten < len)
             throw new RuntimeIOException("Could not write all data requested (wrote: " +
                     bytesWritten + " requested:" + len + ".");
-        
-        if(bytesWritten > len) // Debug check.
+
+        if (bytesWritten > len) // Debug check.
             throw new RuntimeException("Wrote more than I was supposed to (" + bytesWritten +
                     " / " + len + " bytes)! This can't happen.");
     }

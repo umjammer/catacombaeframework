@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2007-2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,35 +29,44 @@ import java.io.IOException;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class FileStream extends ReadableFileStream implements TruncatableRandomAccessStream {
+
     public FileStream(String filename) {
-	super(new File(filename), "rw");
+        super(new File(filename), "rw");
     }
-    
+
     public FileStream(File file) {
         super(file, "rw");
     }
-    
+
     public void write(byte[] b) {
-	try {
-	    raf.write(b);
-	} catch(IOException ex) { throw new RuntimeIOException(ex); }
+        try {
+            raf.write(b);
+        } catch (IOException ex) {
+            throw new RuntimeIOException(ex);
+        }
     }
-    
+
     public void write(byte[] b, int off, int len) {
-	try {
-	    raf.write(b, off, len);
-	} catch(IOException ex) { throw new RuntimeIOException(ex); }
+        try {
+            raf.write(b, off, len);
+        } catch (IOException ex) {
+            throw new RuntimeIOException(ex);
+        }
     }
-    
+
     public void write(int b) {
-	try {
-	    raf.write(b);
-	} catch(IOException ex) { throw new RuntimeIOException(ex); }
+        try {
+            raf.write(b);
+        } catch (IOException ex) {
+            throw new RuntimeIOException(ex);
+        }
     }
 
     public void setLength(long newLength) throws RuntimeIOException {
-	try {
-	    raf.setLength(newLength);
-	} catch(IOException ex) { throw new RuntimeIOException(ex); }
+        try {
+            raf.setLength(newLength);
+        } catch (IOException ex) {
+            throw new RuntimeIOException(ex);
+        }
     }
 }

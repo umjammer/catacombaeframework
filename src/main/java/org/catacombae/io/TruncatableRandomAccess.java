@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -21,10 +21,11 @@ package org.catacombae.io;
 /**
  * Extension of RandomAccess for situations where the the size of the underlying
  * storage can be set.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface TruncatableRandomAccess extends RandomAccess {
+
     void setLength(long newLength)
             throws RuntimeIOException;
 }

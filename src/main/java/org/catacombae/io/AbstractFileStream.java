@@ -27,7 +27,7 @@ public interface AbstractFileStream {
 
     /**
      * Get the path passed to the underlying file open interface.
-     *
+     * <p>
      * This is informational only and only represents the file path at open time
      * and doesn't trace any renames or moves that may have happened after it
      * was opened (i.e. it's not guaranteed to exist.

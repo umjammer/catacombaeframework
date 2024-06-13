@@ -37,7 +37,7 @@ public class FlagField extends BooleanRepresentableField {
         this.offset = offset;
         this.length = length;
         this.bitNumber = bitNumber;
-        if(bitNumber < 0 || bitNumber > length * 8)
+        if (bitNumber < 0 || bitNumber > length * 8)
             throw new IllegalArgumentException("Illegal bit address! Valid " + "addresses are in the range 0 to " + (length * 8 - 1));
     }
 
@@ -58,7 +58,7 @@ public class FlagField extends BooleanRepresentableField {
         byte flagByte = fieldData[offset + byteNumber];
         int bitmask = 1 << (bitNumber % 8);
         byte modifiedFlagByte;
-        if(b)
+        if (b)
             modifiedFlagByte = (byte) (flagByte | bitmask);
         else
             modifiedFlagByte = (byte) ~((~flagByte) | bitmask);

@@ -19,9 +19,16 @@ package org.catacombae.csjc.structelements;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import static org.catacombae.csjc.structelements.IntegerFieldBits.*;
-import static org.catacombae.csjc.structelements.Signedness.*;
-import static org.catacombae.csjc.structelements.Endianness.*;
+
+import static org.catacombae.csjc.structelements.Endianness.BIG_ENDIAN;
+import static org.catacombae.csjc.structelements.Endianness.LITTLE_ENDIAN;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_16;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_32;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_64;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_8;
+import static org.catacombae.csjc.structelements.Signedness.SIGNED;
+import static org.catacombae.csjc.structelements.Signedness.UNSIGNED;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
@@ -76,7 +83,7 @@ public class ArrayBuilder {
     }
 
     private void addInt(byte[] data, int offset, int length, Signedness signedness, Endianness endianness) {
-        switch(length) {
+        switch (length) {
             case 1:
                 add(new IntegerField(data, offset, BITS_8, signedness, endianness));
                 break;

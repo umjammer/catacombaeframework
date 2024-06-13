@@ -20,35 +20,37 @@ package org.catacombae.io;
 
 import org.catacombae.util.Util;
 
+
 /**
  * A substream class using a SynchronizedReadableRandomAccess as source for a
  * completely independent stream with its own file pointer and access to the
  * same data.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ReadableRandomAccessSubstream extends BasicReadableRandomAccessStream {
+
     private static final boolean DEBUG =
             Util.booleanEnabledByProperties(false,
-            "org.catacombae.debug",
-            "org.catacombae.io.debug",
-            "org.catacombae.io." +
-            ReadableRandomAccessSubstream.class.getSimpleName() + ".debug");
+                    "org.catacombae.debug",
+                    "org.catacombae.io.debug",
+                    "org.catacombae.io." +
+                            ReadableRandomAccessSubstream.class.getSimpleName() + ".debug");
 
     private final SynchronizedReadableRandomAccess sourceStream;
     private long internalFP;
     private boolean closed = false;
-    
+
     public ReadableRandomAccessSubstream(SynchronizedReadableRandomAccess iSourceStream) {
         this.sourceStream = iSourceStream;
         this.internalFP = 0;
-        
+
         sourceStream.addReference(this);
     }
-    
+
     @Override
     public synchronized void close() throws RuntimeIOException {
-        if(closed) {
+        if (closed) {
             throw new RuntimeException(this + " already closed!");
         }
 
@@ -73,24 +75,23 @@ public class ReadableRandomAccessSubstream extends BasicReadableRandomAccessStre
 
     @Override
     public int read(byte[] b, int pos, int len) throws RuntimeIOException {
-        if(DEBUG) {
+        if (DEBUG) {
             System.err.println("ReadableRandomAccessSubstream.read(byte[" +
                     b.length + "], " + pos + ", " + len + ");");
             System.err.println("  readFrom: " + internalFP);
         }
 
         int bytesRead = sourceStream.readFrom(internalFP, b, pos, len);
-        if(bytesRead > 0) {
+        if (bytesRead > 0) {
             internalFP += bytesRead;
 
-            if(DEBUG) {
+            if (DEBUG) {
                 System.err.println("  returning: " + bytesRead);
             }
 
             return bytesRead;
-        }
-        else {
-            if(DEBUG) {
+        } else {
+            if (DEBUG) {
                 System.err.println("  returning: -1");
             }
 

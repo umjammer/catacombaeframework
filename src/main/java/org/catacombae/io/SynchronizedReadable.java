@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,28 +20,29 @@ package org.catacombae.io;
 
 /**
  * Interface that defines methods to access a ReadableRandomAccessStream in a thread-safe way.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface SynchronizedReadable {
+
     /** Atomic seek+read. Does <b>not</b> change the file pointer of the stream permanently! */
     int readFrom(long pos) throws RuntimeIOException;
-    
+
     /** Atomic seek+read. Does <b>not</b> change the file pointer of the stream permanently! */
     int readFrom(long pos, byte[] b) throws RuntimeIOException;
-    
+
     /** Atomic seek+read. Does <b>not</b> change the file pointer of the stream permanently! */
     int readFrom(long pos, byte[] b, int off, int len) throws RuntimeIOException;
-    
+
     /** Atomic seek+read. Does <b>not</b> change the file pointer of the stream permanently! */
     void readFullyFrom(long pos, byte[] data) throws RuntimeIOException;
-    
+
     /** Atomic seek+read. Does <b>not</b> change the file pointer of the stream permanently! */
     void readFullyFrom(long pos, byte[] data, int offset, int length) throws RuntimeIOException;
-    
+
     /** Atomic seek+skip. Does <b>not</b> change the file pointer of the stream permanently! */
     long skipFrom(long pos, long length) throws RuntimeIOException;
-    
+
     /** Atomic length() - getFilePointer(). */
     long remainingLength() throws RuntimeIOException;
 }

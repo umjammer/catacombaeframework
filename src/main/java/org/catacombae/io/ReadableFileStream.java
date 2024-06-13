@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2006-2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -30,8 +30,8 @@ import java.io.RandomAccessFile;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class ReadableFileStream implements ReadableRandomAccessStream,
-        AbstractFileStream
-{
+        AbstractFileStream {
+
     private static final IOLog log =
             IOLog.getInstance(ReadableFileStream.class);
 
@@ -47,16 +47,16 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
     }
 
     public ReadableFileStream(RandomAccessFile raf, String openPath) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(raf);
 
         try {
-            if(raf == null)
+            if (raf == null)
                 throw new IllegalArgumentException("raf may NOT be null");
             this.raf = raf;
             this.openPath = openPath;
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(raf);
         }
     }
@@ -66,88 +66,88 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
     }
 
     protected ReadableFileStream(File file, String mode) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(file, mode);
 
         try {
             this.raf = new RandomAccessFile(file, mode);
             this.openPath = file.getPath();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(file, mode);
         }
     }
 
     public void seek(long pos) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(pos);
 
         try {
             raf.seek(pos);
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             throw new RuntimeIOException("pos=" + pos + "," + ioe,
                     ioe);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(pos);
         }
     }
 
     public int read() {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter();
 
         try {
             int res = raf.read();
-            if(log.trace)
+            if (log.trace)
                 log.traceReturn(res);
             return res;
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave();
         }
     }
 
     public int read(byte[] data) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(data);
 
         try {
             int res = raf.read(data);
-            if(log.trace)
+            if (log.trace)
                 log.traceReturn(res);
             return res;
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(data);
         }
     }
 
     public int read(byte[] data, int pos, int len) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(data, pos, len);
 
         try {
             int res = raf.read(data, pos, len);
-            if(log.trace)
+            if (log.trace)
                 log.traceReturn(res);
             return res;
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(data, pos, len);
         }
     }
 
     public byte readFully() {
-        if(log.trace) {
+        if (log.trace) {
             log.traceEnter();
         }
 
@@ -155,84 +155,84 @@ public class ReadableFileStream implements ReadableRandomAccessStream,
             byte[] data = new byte[1];
             raf.readFully(data);
             return data[0];
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace) {
+            if (log.trace) {
                 log.traceLeave();
             }
         }
     }
 
     public void readFully(byte[] data) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(data);
 
         try {
             raf.readFully(data);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(data);
         }
     }
 
     public void readFully(byte[] data, int offset, int length) {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter(data, offset, length);
 
         try {
             raf.readFully(data, offset, length);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave(data, offset, length);
         }
     }
 
     public long length() {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter();
 
         try {
             return raf.length();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave();
         }
     }
 
     public long getFilePointer() {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter();
 
         try {
             long res = raf.getFilePointer();
-            if(log.trace)
+            if (log.trace)
                 log.traceReturn(res);
             return res;
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave();
         }
     }
 
     public void close() {
-        if(log.trace)
+        if (log.trace)
             log.traceEnter();
 
         try {
             raf.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeIOException(ex);
         } finally {
-            if(log.trace)
+            if (log.trace)
                 log.traceLeave();
         }
     }

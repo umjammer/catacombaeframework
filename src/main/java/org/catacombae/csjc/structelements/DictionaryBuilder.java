@@ -20,10 +20,17 @@ package org.catacombae.csjc.structelements;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedList;
-import static org.catacombae.csjc.structelements.IntegerFieldBits.*;
-import static org.catacombae.csjc.structelements.Signedness.*;
-import static org.catacombae.csjc.structelements.Endianness.*;
-import static org.catacombae.csjc.structelements.IntegerFieldRepresentation.*;
+
+import static org.catacombae.csjc.structelements.Endianness.BIG_ENDIAN;
+import static org.catacombae.csjc.structelements.Endianness.LITTLE_ENDIAN;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_16;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_32;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_64;
+import static org.catacombae.csjc.structelements.IntegerFieldBits.BITS_8;
+import static org.catacombae.csjc.structelements.IntegerFieldRepresentation.DECIMAL;
+import static org.catacombae.csjc.structelements.Signedness.SIGNED;
+import static org.catacombae.csjc.structelements.Signedness.UNSIGNED;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
@@ -48,25 +55,25 @@ public class DictionaryBuilder {
     }
 
     public void addIntArray(String key, byte[] data, IntegerFieldBits bits,
-            Signedness signedness, Endianness endianness) {
+                            Signedness signedness, Endianness endianness) {
         addIntArray(key, data, 0, data.length, bits, signedness, endianness);
     }
 
     public void addIntArray(String key, byte[] data, IntegerFieldBits bits,
-            Signedness signedness, Endianness endianness, String description,
-            IntegerFieldRepresentation rep) {
+                            Signedness signedness, Endianness endianness, String description,
+                            IntegerFieldRepresentation rep) {
         addIntArray(key, data, 0, data.length, bits, signedness, endianness, description, rep);
     }
 
     public void addIntArray(String key, byte[] data, int offset, int length,
-            IntegerFieldBits bits, Signedness signedness, Endianness endianness) {
+                            IntegerFieldBits bits, Signedness signedness, Endianness endianness) {
         addIntArray(key, data, offset, length, bits, signedness, endianness, null, DECIMAL);
     }
 
     public void addIntArray(String key, byte[] data, int offset, int length,
-            IntegerFieldBits bits, Signedness signedness, Endianness endianness, String description,
-            IntegerFieldRepresentation rep) {
-        if(length % bits.getBytes() != 0)
+                            IntegerFieldBits bits, Signedness signedness, Endianness endianness, String description,
+                            IntegerFieldRepresentation rep) {
+        if (length % bits.getBytes() != 0)
             throw new RuntimeException("Supplied data is not aligned to size of type.");
         String arrayTypeName = switch (signedness) {
             case SIGNED -> "S";
@@ -78,7 +85,7 @@ public class DictionaryBuilder {
 //        System.err.println("DictionaryBuilder.addIntArray(): bits.getBytes() = " + bits.getBytes());
         ArrayBuilder ab = new ArrayBuilder(arrayTypeName);
         int i;
-        for(i = 0; i < length; i += bits.getBytes()) {
+        for (i = 0; i < length; i += bits.getBytes()) {
 //            System.err.println("DictionaryBuilder.addIntArray():  i = " + i);
             ab.add(new IntegerField(data, offset + i, bits, signedness, endianness, rep, null));
         }
@@ -97,10 +104,10 @@ public class DictionaryBuilder {
 
     public void add(String key, StructElement mapping, String description) {
 //        System.err.println(this + ": add(" + key + ", " + mapping + ", " + description + ");");
-        if(mappings.get(key) != null)
+        if (mappings.get(key) != null)
             throw new IllegalArgumentException("A mapping already exists for key \"" + key + "\"!");
         mappings.put(key, mapping);
-        if(description != null)
+        if (description != null)
             descriptions.put(key, description);
         keys.add(key);
     }
@@ -269,9 +276,9 @@ public class DictionaryBuilder {
     }
 
     public void addInt(String key, byte[] data, int offset, int length,
-            Signedness signedness, Endianness endianness, String description,
-            String unit, IntegerFieldRepresentation rep) {
-        switch(length) {
+                       Signedness signedness, Endianness endianness, String description,
+                       String unit, IntegerFieldRepresentation rep) {
+        switch (length) {
             case 1:
                 add(key, new IntegerField(data, offset, BITS_8, signedness,
                         endianness, rep, unit), description);
@@ -295,9 +302,9 @@ public class DictionaryBuilder {
     }
 
     public void addInt(String key, Field field, Object obj, Signedness signedness, Endianness endianness,
-            String description, String unit, IntegerFieldRepresentation rep) {
+                       String description, String unit, IntegerFieldRepresentation rep) {
         int length = getSize(field);
-        switch(length) {
+        switch (length) {
             case 1:
                 add(key, new IntegerField(obj, field, 0, BITS_8, signedness,
                         endianness, rep, unit), description);
@@ -479,9 +486,9 @@ public class DictionaryBuilder {
 
     /** Adds all the key-value mappings present in <code>d</code> in order. */
     public void addAll(Dictionary d) {
-        for(String key : d.getKeys()) {
+        for (String key : d.getKeys()) {
             String description = d.getDescription(key);
-            if(description != null)
+            if (description != null)
                 add(key, d.getElement(key), description);
             else
                 add(key, d.getElement(key));
@@ -492,14 +499,14 @@ public class DictionaryBuilder {
         int size;
         Class<?> fieldType = field.getType();
 
-        if(fieldType.equals(byte.class))
+        if (fieldType.equals(byte.class))
             size = 1;
-        else if(fieldType.equals(short.class) ||
+        else if (fieldType.equals(short.class) ||
                 fieldType.equals(char.class))
             size = 2;
-        else if(fieldType.equals(int.class))
+        else if (fieldType.equals(int.class))
             size = 4;
-        else if(fieldType.equals(long.class))
+        else if (fieldType.equals(long.class))
             size = 8;
         else
             throw new RuntimeException("Invalid field type: " + fieldType);

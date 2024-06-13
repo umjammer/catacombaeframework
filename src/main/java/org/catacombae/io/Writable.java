@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,31 +20,32 @@ package org.catacombae.io;
 
 /**
  * This interface defines the methods that must exist for a stream to be writable.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface Writable {
+
     /**
      * Writes the complete contents of <code>data</code> to the stream, at its current position.
-     * 
+     *
      * @param data array containing the data to write to the stream.
      */
     void write(byte[] data) throws RuntimeIOException;
-    
+
     /**
      * Writes a subset of <code>data</code> to the stream, starting at array offset <code>pos</code>
      * and writing <code>len</code> bytes in total.
-     * 
+     *
      * @param data array containing the data to write to the stream.
-     * @param off the offset in <code>data</code> to start reading.
-     * @param len the number of bytes to write to the stream.
+     * @param off  the offset in <code>data</code> to start reading.
+     * @param len  the number of bytes to write to the stream.
      */
     void write(byte[] data, int off, int len) throws RuntimeIOException;
-    
+
     /**
      * Writes a single byte to the stream. <code>data</code> will be unsigned first, so valid ranges
      * are <code>0 &lt;= data &lt;= 255</code> or <code>-128 &lt;= data &lt;= 127</code>.
-     * 
+     *
      * @param data integer containing the single byte to write to the stream.
      */
     void write(int data) throws RuntimeIOException;

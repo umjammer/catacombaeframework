@@ -10,7 +10,7 @@ class FlagFieldTest {
 
     @Test
     void test1() {
-        byte[] i = new byte[] { 0x00, (byte) 0xFF, 0x00, (byte) 0xEE };
+        byte[] i = new byte[] {0x00, (byte) 0xFF, 0x00, (byte) 0xEE};
         System.err.println("(1) 0x" + Util.byteArrayToHexString(i));
         assertEquals("00ff00ee", Util.byteArrayToHexString(i));
 

@@ -18,7 +18,9 @@
 package org.catacombae.csjc.structelements;
 
 import java.lang.reflect.Field;
+
 import org.catacombae.util.Util;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
@@ -31,7 +33,7 @@ class IntegerFieldDataHandle implements DataHandle {
 
     public IntegerFieldDataHandle(Object object, Field field, int length) {
 
-        switch(length) {
+        switch (length) {
             case 1:
             case 2:
             case 4:
@@ -57,7 +59,7 @@ class IntegerFieldDataHandle implements DataHandle {
             };
 
             return res;
-        } catch(IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new RuntimeException("Illegal access while trying to " +
                     "read field: [" + field, e);
         }

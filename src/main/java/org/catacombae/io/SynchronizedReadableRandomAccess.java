@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -25,17 +25,18 @@ package org.catacombae.io;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface SynchronizedReadableRandomAccess extends SynchronizedReadable, RandomAccess {
+
     /**
      * All open substreams of this stream must be added as references so that the synchronized
      * stream knows when it is safe to <code>close();</code> itself.
-     * 
+     *
      * @param referrer the object referring to this stream.
      */
     void addReference(Object referrer);
-    
+
     /**
      * When a substream closes, it must remove itself from the reference list of the parent stream.
-     * 
+     *
      * @param referrer the object referring to this stream.
      */
     void removeReference(Object referrer);

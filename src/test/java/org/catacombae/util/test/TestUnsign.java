@@ -14,15 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
- *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 class TestUnsign {
 
     @Test
     void test() {
-        byte bLow = 0x0, bMiddle = 0x7f, bHigh = (byte)0xff;
-        short sLow = 0x0, sMiddle = 0x7fff, sHigh = (short)0xffff;
+        byte bLow = 0x0, bMiddle = 0x7f, bHigh = (byte) 0xff;
+        short sLow = 0x0, sMiddle = 0x7fff, sHigh = (short) 0xffff;
         char cLow = 0x0, cMiddle = 0x7fff, cHigh = 0xffff;
         int iLow = 0x0, iMiddle = 0x7fff_ffff, iHigh = 0xffff_ffff;
         long lLow = 0x0, lMiddle = 0x7fff_ffff_ffff_ffffL, lHigh = 0xffff_ffff_ffff_ffffL;

@@ -17,22 +17,24 @@
 
 package org.catacombae.csjc;
 
-import org.catacombae.csjc.structelements.Signedness;
-import org.catacombae.csjc.structelements.Endianness;
-import org.catacombae.csjc.structelements.IntegerFieldBits;
 import org.catacombae.csjc.structelements.Dictionary;
+import org.catacombae.csjc.structelements.Endianness;
 import org.catacombae.csjc.structelements.FieldType;
+import org.catacombae.csjc.structelements.IntegerFieldBits;
 import org.catacombae.csjc.structelements.IntegerFieldRepresentation;
+import org.catacombae.csjc.structelements.Signedness;
+
 
 /**
  * Interface to implement when a struct wants to present detailed information on
  * its members to an external program, also allowing its members to be modified
  * externally in a controlled way.
  *
- * @see org.catacombae.csjc.structelements.StructElement
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
+ * @see org.catacombae.csjc.structelements.StructElement
  */
 public interface StructElements {
+
     /** Shorthand constant. */
     Endianness BIG_ENDIAN = Endianness.BIG_ENDIAN;
     /** Shorthand constant. */
@@ -75,12 +77,14 @@ public interface StructElements {
      * implementation of StructElements.
      */
     class DictionaryBuilder extends org.catacombae.csjc.structelements.DictionaryBuilder {
+
         /**
          * @see org.catacombae.csjc.structelements.DictionaryBuilder#DictionaryBuilder(java.lang.String)
          */
         public DictionaryBuilder(String typeName) {
             super(typeName);
         }
+
         /**
          * @see org.catacombae.csjc.structelements.DictionaryBuilder#DictionaryBuilder(java.lang.String, java.lang.String)
          */

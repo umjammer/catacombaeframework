@@ -1,6 +1,6 @@
 /*-
  * Copyright (C) 2008 Erik Larsson
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -20,16 +20,18 @@ package org.catacombae.io;
 
 import java.io.IOException;
 
+
 /**
  * Being forced to deal with IOExceptions all the time is one of the most
  * annoying things about the Java API. I prefer most exceptions to be
  * RuntimeExceptions.<br>
  * This is a subclass of RuntimeExceptions that are meant to be thrown when
  * it is caused by I/O problems.
- * 
+ *
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public class RuntimeIOException extends RuntimeException {
+
     private final IOException ioCause;
 
     public RuntimeIOException(String message) {
@@ -60,7 +62,7 @@ public class RuntimeIOException extends RuntimeException {
     /**
      * Returns the IOException that caused this RuntimeIOException to be thrown,
      * or <code>null</code> if the RuntimeIOException was thrown independently.
-     * 
+     *
      * @return the IOException that caused this RuntimeIOException to be thrown,
      * or <code>null</code> if the RuntimeIOException was thrown independently.
      */

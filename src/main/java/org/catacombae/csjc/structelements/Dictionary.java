@@ -18,7 +18,9 @@
 package org.catacombae.csjc.structelements;
 
 import java.util.HashMap;
+
 import org.catacombae.util.Util;
+
 
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
@@ -30,24 +32,23 @@ public class Dictionary extends StructElement {
     private final HashMap<String, String> descriptions;
 
     Dictionary(String typeName, String[] keys,
-            HashMap<String, StructElement> mappings,
-            HashMap<String, String> descriptions)
-    {
+               HashMap<String, StructElement> mappings,
+               HashMap<String, String> descriptions) {
         this(typeName, null, keys, mappings, descriptions);
     }
+
     Dictionary(String typeName, String typeDescription, String[] keys,
-            HashMap<String, StructElement> mappings,
-            HashMap<String, String> descriptions)
-    {
+               HashMap<String, StructElement> mappings,
+               HashMap<String, String> descriptions) {
         super(typeName, typeDescription);
         this.keys = new String[keys.length];
         System.arraycopy(keys, 0, this.keys, 0, keys.length);
         this.mappings = new HashMap<>();
         this.descriptions = new HashMap<>();
-        for(String key : keys) {
+        for (String key : keys) {
             this.mappings.put(key, mappings.get(key));
             String description = descriptions.get(key);
-            if(description != null) {
+            if (description != null) {
                 this.descriptions.put(key, description);
 
             }
@@ -63,7 +64,7 @@ public class Dictionary extends StructElement {
      * <code>null</code> otherwise.
      *
      * @param name the variable name, which must be equal to one of the elements in the array
-     * returned by <code>getKeys()</code>.
+     *             returned by <code>getKeys()</code>.
      * @return the associated description, if any, or null if no description exists.
      */
     public String getDescription(String name) {

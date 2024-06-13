@@ -23,5 +23,6 @@ package org.catacombae.csjc;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public interface StaticStruct extends AbstractStruct {
+
     int size();
 }

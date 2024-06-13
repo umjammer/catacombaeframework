@@ -25,15 +25,17 @@ package org.catacombae.io;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class BasicReadable implements Readable {
+
     /**
      * Empty constructor (there is no state maintained in this class).
      */
-    protected BasicReadable() { }
+    protected BasicReadable() {
+    }
 
     /** {@inheritDoc} */
     public int read() throws RuntimeIOException {
         byte[] res = new byte[1];
-        if(read(res, 0, 1) == 1)
+        if (read(res, 0, 1) == 1)
             return res[0] & 0xFF;
         else
             return -1;
@@ -61,12 +63,12 @@ public abstract class BasicReadable implements Readable {
 
     /** {@inheritDoc} */
     public void readFully(byte[] data, int offset, int length) throws RuntimeIOException {
-        if(length < 0)
+        if (length < 0)
             throw new IllegalArgumentException("length is negative: " + length);
         int bytesRead = 0;
-        while(bytesRead < length) {
+        while (bytesRead < length) {
             int curBytesRead = read(data, offset + bytesRead, length - bytesRead);
-            if(curBytesRead > 0)
+            if (curBytesRead > 0)
                 bytesRead += curBytesRead;
             else
                 throw new RuntimeIOException("Couldn't read the entire length.");

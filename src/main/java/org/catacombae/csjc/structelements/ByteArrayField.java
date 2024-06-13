@@ -19,6 +19,7 @@ package org.catacombae.csjc.structelements;
 
 import org.catacombae.util.Util;
 
+
 /**
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */

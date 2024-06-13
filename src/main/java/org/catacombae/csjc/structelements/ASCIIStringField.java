@@ -39,10 +39,10 @@ public class ASCIIStringField extends StringRepresentableField {
     public String validateStringValue(String s) {
         char[] sArray = s.toCharArray();
         byte[] asciiArray = new byte[sArray.length];
-        for(int i = 0; i < asciiArray.length; ++i) {
+        for (int i = 0; i < asciiArray.length; ++i) {
             char curChar = sArray[i];
             // Knowing that UTF-16 code units are ASCII compatible, we will do a simple check.
-            if(curChar < 0 || curChar > 127) {
+            if (curChar < 0 || curChar > 127) {
                 return "Invalid ASCII character at position " + i;
             }
             asciiArray[i] = (byte) curChar;
@@ -51,11 +51,11 @@ public class ASCIIStringField extends StringRepresentableField {
     }
 
     private String validate(byte[] data) {
-        if(data.length != fieldData.length)
+        if (data.length != fieldData.length)
             return "Invalid length for string. Was: " + data.length + " Should be: " + fieldData.length;
         // Check that the bytes are 7-bit only.
-        for(int i = 0; i < data.length; ++i) {
-            if(data[i] < 0 || data[i] > 127) {
+        for (int i = 0; i < data.length; ++i) {
+            if (data[i] < 0 || data[i] > 127) {
                 return "Invalid ASCII character at position " + i;
             }
         }
@@ -65,9 +65,9 @@ public class ASCIIStringField extends StringRepresentableField {
     @Override
     public String getValueAsString() {
         int[] codepoints = new int[fieldData.length];
-        for(int i = 0; i < codepoints.length; ++i) {
+        for (int i = 0; i < codepoints.length; ++i) {
             int cp = fieldData[i] & 127;
-            if(cp != fieldData[i])
+            if (cp != fieldData[i])
                 cp = '?';
             codepoints[i] = cp;
         }
@@ -77,17 +77,16 @@ public class ASCIIStringField extends StringRepresentableField {
     @Override
     public void setStringValue(String value) throws IllegalArgumentException {
         String validateMsg = validateStringValue(value);
-        if(validateMsg == null) {
+        if (validateMsg == null) {
             char[] valueArray = value.toCharArray();
-            if(valueArray.length != fieldData.length)
+            if (valueArray.length != fieldData.length)
                 throw new RuntimeException("You should not see this.");
             byte[] asciiChars = new byte[fieldData.length];
-            for(int i = 0; i < asciiChars.length; ++i) {
+            for (int i = 0; i < asciiChars.length; ++i) {
                 asciiChars[i] = (byte) (valueArray[i] & 127);
             }
             System.arraycopy(asciiChars, 0, fieldData, 0, fieldData.length);
-        }
-        else
+        } else
             throw new IllegalArgumentException("Invalid string value! Message: " + validateMsg);
     }
 }

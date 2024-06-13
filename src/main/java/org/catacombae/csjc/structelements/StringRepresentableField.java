@@ -21,6 +21,7 @@ package org.catacombae.csjc.structelements;
  * @author <a href="https://catacombae.org" target="_top">Erik Larsson</a>
  */
 public abstract class StringRepresentableField extends Field {
+
     private final String unitComponent;
 
     public StringRepresentableField(String typeName, FieldType type) {
