@@ -25,7 +25,7 @@ package org.catacombae.util;
  */
 public class ObjectContainer<A> {
 
-    public final A o;
+    public A o; // must not be final
 
     public ObjectContainer(A o) {
         super();
